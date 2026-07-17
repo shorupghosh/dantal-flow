@@ -289,20 +289,26 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
           {/* Quick Doctor Info card */}
           <div className="lg:col-span-4 space-y-4">
             <h3 className="text-lg font-bold">Specialist Info</h3>
-            <div className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm">
-              <div className="flex gap-4">
-                <img src={doctors[0].imageUrl} alt={doctors[0].name} className="w-16 h-16 object-cover rounded-xl" />
-                <div>
-                  <h4 className="font-bold text-foreground text-sm">{doctors[0].name}</h4>
-                  <span className="text-xs text-primary font-semibold">{doctors[0].specialization}</span>
-                  <div className="flex items-center text-yellow-500 text-xs font-semibold mt-1">
-                    <Star className="h-3.5 w-3.5 fill-yellow-500 mr-0.5" />
-                    {doctors[0].rating} Rating
+            {doctors.length > 0 ? (
+              <div className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm">
+                <div className="flex gap-4">
+                  <img src={doctors[0].imageUrl} alt={doctors[0].name} className="w-16 h-16 object-cover rounded-xl" />
+                  <div>
+                    <h4 className="font-bold text-foreground text-sm">{doctors[0].name}</h4>
+                    <span className="text-xs text-primary font-semibold">{doctors[0].specialization}</span>
+                    <div className="flex items-center text-yellow-500 text-xs font-semibold mt-1">
+                      <Star className="h-3.5 w-3.5 fill-yellow-500 mr-0.5" />
+                      {doctors[0].rating} Rating
+                    </div>
                   </div>
                 </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{doctors[0].bio}</p>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">{doctors[0].bio}</p>
-            </div>
+            ) : (
+              <div className="bg-card border border-border rounded-2xl p-5 shadow-sm text-center text-xs text-muted-foreground py-8">
+                No specialists registered in the database.
+              </div>
+            )}
           </div>
 
         </div>

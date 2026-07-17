@@ -67,47 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView, dar
               Contact & Book
             </button>
 
-            <span className="h-4 w-px bg-border"></span>
 
-            {/* Portal Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
-                className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium border border-border rounded-lg hover:bg-muted text-foreground/70 transition-colors"
-              >
-                Portals <ChevronDown className="h-4 w-4" />
-              </button>
-              {portalDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-lg py-1">
-                  <button
-                    onClick={() => handleNavClick('patient')}
-                    className="block w-full text-left px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary"
-                  >
-                    Patient Portal
-                  </button>
-                  <button
-                    onClick={() => handleNavClick('doctor')}
-                    className="block w-full text-left px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary"
-                  >
-                    Doctor Panel
-                  </button>
-                  <button
-                    onClick={() => handleNavClick('admin')}
-                    className="block w-full text-left px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary"
-                  >
-                    Admin Dashboard
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Local Mock Indicator */}
-            {isLocalMock && (
-              <div className="flex items-center gap-1 text-xs text-secondary bg-secondary/10 px-2 py-1 rounded-full border border-secondary/20">
-                <Database className="h-3 w-3" />
-                Mock Database
-              </div>
-            )}
 
             {/* Dark Mode toggle */}
             <button
@@ -170,35 +130,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView, dar
           >
             Contact & Book
           </button>
-          
-          <div className="pt-4 pb-2 border-t border-border mt-4">
-            <span className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Internal Portals</span>
-          </div>
-          
-          <button
-            onClick={() => handleNavClick('patient')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'patient' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
-          >
-            Patient Portal
-          </button>
-          <button
-            onClick={() => handleNavClick('doctor')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'doctor' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
-          >
-            Doctor Panel
-          </button>
-          <button
-            onClick={() => handleNavClick('admin')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'admin' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
-          >
-            Admin Dashboard
-          </button>
-          {isLocalMock && (
-            <div className="flex items-center gap-1 text-xs text-secondary bg-secondary/10 px-3 py-2 mt-4 rounded-md border border-secondary/20">
-              <Database className="h-3 w-3" />
-              Running in Local Mock Database
-            </div>
-          )}
+
         </div>
       )}
     </nav>

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#050d1f"/>
+  <title>DentalFlow AI — SmartDocSystem Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #050d1f;
+      --navy2:  #0a1628;
+      --blue:   #1e6fff;
+      --blue2:  #3b82f6;
+      --teal:   #0abfbc;
+      --teal2:  #06d6d6;
+      --glass:  rgba(255,255,255,0.04);
+      --glass2: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.10);
+      --text:   #f0f4ff;
+      --muted:  #7a8fba;
+      --accent: #ffd166;
+      --nav-h:  72px;  /* bottom nav height */
+    }
+
+    html { height: 100%; }
+    body {
+      height: 100%;
+      font-family: 'Outfit', sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* ─── BACKGROUND ORBS ─── */
+    .bg-orbs { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); animation: drift 12s ease-in-out infinite alternate; }
+    .orb-1 { width: min(600px,90vw); height: min(600px,90vw); top: -20%; left: -15%; background: radial-gradient(circle, rgba(30,111,255,.35) 0%, transparent 70%); }
+    .orb-2 { width: min(500px,70vw); height: min(500px,70vw); bottom: -15%; right: -10%; background: radial-gradient(circle, rgba(10,191,188,.3) 0%, transparent 70%); animation-delay: -4s; }
+    .orb-3 { width: min(400px,60vw); height: min(400px,60vw); top: 40%; left: 50%; background: radial-gradient(circle, rgba(59,130,246,.15) 0%, transparent 70%); animation-delay: -8s; }
+    @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(20px,30px) scale(1.05); } }
+
+    /* ─── PROGRESS BAR ─── */
+    .progress-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200; background: rgba(255,255,255,.06); }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--teal)); transition: width .4s ease; }
+
+    /* ─── LOGO BADGE ─── */
+    .logo-badge {
+      position: fixed; top: 12px; left: 12px; z-index: 150;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(10,22,40,.85);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      border-radius: 12px;
+      padding: 8px 14px;
+    }
+    .logo-icon {
+      width: 26px; height: 26px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .logo-text { font-size: 13px; font-weight: 700; }
+    .logo-sub  { font-size: 10px; color: var(--muted); display: none; }
+    @media (min-width: 640px) { .logo-sub { display: block; } }
+
+    /* ─── SLIDE COUNTER (top-right) ─── */
+    .slide-indicator {
+      position: fixed; top: 12px; right: 12px; z-index: 150;
+      background: rgba(10,22,40,.85);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 12px; font-weight: 600;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+    }
+    .slide-indicator .cur { color: var(--text); }
+
+    /* ─── SLIDES WRAPPER ─── */
+    .slides-wrapper { position: relative; z-index: 1; width: 100%; height: 100%; overflow: hidden; }
+
+    /* ─── INDIVIDUAL SLIDE ─── */
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 64px 16px calc(var(--nav-h) + 24px);
+      overflow-y: auto; overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .slide::-webkit-scrollbar { display: none; }
+    .slide.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+    .slide.exit    { opacity: 0; transform: translateX(-40px); }
+    .slide.enter-r { opacity: 0; transform: translateX(40px); }
+    .slide.enter-l { opacity: 0; transform: translateX(-40px); }
+    /* Center vertically on large screens where content fits */
+    @media (min-width: 768px) {
+      .slide { justify-content: center; padding: 80px 40px calc(var(--nav-h) + 32px); }
+    }
+    @media (min-width: 1100px) {
+      .slide { padding: 80px 80px calc(var(--nav-h) + 32px); }
+    }
+
+    /* ─── BOTTOM NAV ─── */
+    .nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      background: rgba(5,13,31,.9);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(24px);
+      padding: 0 20px;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--glass2);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s, transform .15s;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-btn:active { transform: scale(.93); background: var(--blue); border-color: var(--blue); }
+    @media (hover: hover) { .nav-btn:hover { background: var(--blue); border-color: var(--blue); } }
+    .nav-dots { display: flex; gap: 6px; align-items: center; overflow: hidden; max-width: calc(100vw - 180px); }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,.2); cursor: pointer;
+      transition: all .25s cubic-bezier(.4,0,.2,1); flex-shrink: 0;
+    }
+    .dot.active { width: 22px; border-radius: 4px; background: var(--blue); }
+    @media (max-width: 400px) { .dot { width: 6px; height: 6px; } .dot.active { width: 18px; } }
+
+    /* ─── SWIPE HINT (first load only) ─── */
+    .swipe-hint {
+      position: fixed; bottom: calc(var(--nav-h) + 12px); left: 50%;
+      transform: translateX(-50%);
+      z-index: 150;
+      background: rgba(10,22,40,.8);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 6px 14px;
+      font-size: 11px; color: var(--muted);
+      display: flex; align-items: center; gap: 6px;
+      animation: fadeInUp .5s ease 1.5s both, fadeOut .5s ease 4s both;
+    }
+    @keyframes fadeInUp { from { opacity:0; transform: translateX(-50%) translateY(10px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+    @keyframes fadeOut  { from { opacity:1; } to { opacity:0; pointer-events:none; } }
+    @media (min-width: 1024px) { .swipe-hint { display: none; } }
+
+    /* ─── UTILITIES ─── */
+    .tag {
+      display: inline-block; padding: 5px 14px; border-radius: 50px;
+      font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    }
+    .tag-blue { background: rgba(30,111,255,.2); color: #7ab4ff; border: 1px solid rgba(30,111,255,.3); }
+    .tag-teal { background: rgba(10,191,188,.2); color: #5de8e4; border: 1px solid rgba(10,191,188,.3); }
+    .tag-gold { background: rgba(255,209,102,.15); color: var(--accent); border: 1px solid rgba(255,209,102,.3); }
+    .gradient-text { background: linear-gradient(135deg,#fff,var(--teal2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .blue-text     { background: linear-gradient(135deg,var(--blue2),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .divider { width: 48px; height: 4px; background: linear-gradient(90deg,var(--blue),var(--teal)); border-radius: 2px; margin: 12px auto 20px; }
+    .center { text-align: center; }
+    .w-full { width: 100%; }
+
+    h1 { font-size: clamp(28px,7vw,64px); font-weight: 800; line-height: 1.08; }
+    h2 { font-size: clamp(22px,5vw,46px); font-weight: 700; line-height: 1.15; }
+    h3 { font-size: clamp(15px,3vw,22px); font-weight: 600; }
+    p  { font-size: clamp(13px,2vw,16px); line-height: 1.65; color: var(--muted); }
+
+    /* ─── RESPONSIVE GRID HELPERS (mobile-first) ─── */
+    /* grid-auto-2: 1 col → 2 col at 620px */
+    .grid-auto-2 { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
+    @media (min-width: 620px) { .grid-auto-2 { grid-template-columns: 1fr 1fr; gap: 16px; } }
+    /* grid-auto-3: 1 col → 2 col at 500px → 3 col at 860px */
+    .grid-auto-3 { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+    @media (min-width: 500px) { .grid-auto-3 { grid-template-columns: 1fr 1fr; gap: 14px; } }
+    @media (min-width: 860px) { .grid-auto-3 { grid-template-columns: 1fr 1fr 1fr; } }
+    /* grid-auto-4 */
+    .grid-auto-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    @media (min-width: 640px) { .grid-auto-4 { grid-template-columns: repeat(4,1fr); gap: 12px; } }
+
+    /* max-width containers */
+    .container { width: 100%; max-width: 960px; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 1 — TITLE
+    ═══════════════════════════════════════ */
+    #s1 { justify-content: center; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(10,191,188,.12); border: 1px solid rgba(10,191,188,.25);
+      border-radius: 50px; padding: 7px 18px;
+      font-size: 12px; font-weight: 600; color: var(--teal2);
+      margin-bottom: 20px;
+    }
+    .hero-pill .live-dot { width: 7px; height: 7px; background: var(--teal2); border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+    #s1 h1 { margin-bottom: 16px; }
+    .subtitle { font-size: clamp(14px,2.5vw,19px); color: var(--muted); max-width: 560px; text-align: center; margin-bottom: 28px; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 0; }
+    .btn-primary {
+      padding: 13px 28px;
+      background: linear-gradient(135deg,var(--blue),var(--teal));
+      border: none; border-radius: 12px;
+      color: white; font-weight: 700; font-size: 15px; font-family: 'Outfit', sans-serif;
+      cursor: pointer; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 6px 28px rgba(30,111,255,.4);
+    }
+    .btn-primary:active { transform: scale(.97); }
+    @media (hover:hover) { .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(30,111,255,.5); } }
+    .btn-outline {
+      padding: 13px 28px;
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text);
+      font-weight: 600; font-size: 15px; font-family: 'Outfit', sans-serif;
+      cursor: pointer; text-decoration: none; transition: all .2s;
+    }
+    .btn-outline:active { transform: scale(.97); }
+    @media (hover:hover) { .btn-outline:hover { border-color: var(--blue); color: #7ab4ff; } }
+    .stats-row {
+      display: flex; gap: clamp(16px,5vw,48px);
+      flex-wrap: wrap; justify-content: center;
+      margin-top: 32px; padding-top: 28px;
+      border-top: 1px solid var(--border); width: 100%; max-width: 560px;
+    }
+    .stat-item { text-align: center; }
+    .stat-num   { font-size: clamp(24px,5vw,34px); font-weight: 800; }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 2 — PROBLEM
+    ═══════════════════════════════════════ */
+    .pain-card {
+      background: var(--glass);
+      border: 1px solid rgba(255,80,80,.2);
+      border-radius: 18px; padding: 22px;
+      position: relative; overflow: hidden;
+    }
+    .pain-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#ff5050,#ff8c42); }
+    .pain-icon  { font-size: 32px; margin-bottom: 12px; }
+    .pain-title { font-size: clamp(15px,3vw,18px); font-weight: 700; margin-bottom: 8px; }
+    .pain-body  { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .pain-stat  { margin-top: 12px; font-size: clamp(22px,4vw,28px); font-weight: 800; background: linear-gradient(90deg,#ff5050,#ff8c42); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 3 — SOLUTION
+    ═══════════════════════════════════════ */
+    .solution-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px; width: 100%;
+    }
+    @media (min-width: 700px) { .solution-layout { grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; } }
+    .feat-item { display: flex; gap: 12px; align-items: flex-start; }
+    .feat-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 10px; background: linear-gradient(135deg,var(--blue),var(--teal));
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .feat-text h4 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+    .feat-text p  { font-size: 12px; color: var(--muted); }
+    .feature-list { display: flex; flex-direction: column; gap: 14px; }
+    .demo-frame { background: var(--glass); border: 1px solid var(--border); border-radius: 18px; padding: 16px; text-align: center; }
+    .demo-url {
+      display: inline-block;
+      background: rgba(30,111,255,.15); border: 1px solid rgba(30,111,255,.3);
+      padding: 6px 14px; border-radius: 8px;
+      font-size: 12px; color: #7ab4ff; font-family: 'Inter', monospace; margin-bottom: 12px;
+    }
+    .mock-screen { background: var(--navy2); border-radius: 10px; height: 220px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); }
+    .mock-bar { height: 32px; background: rgba(255,255,255,.03); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 12px; gap: 6px; }
+    .mock-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .mock-body { flex:1; padding: 12px; display:flex; flex-direction:column; gap:8px; overflow:hidden; }
+    .mock-msg { padding: 8px 12px; border-radius: 9px; font-size: 11px; max-width: 80%; }
+    .mock-msg.bot  { background: rgba(30,111,255,.2); align-self: flex-start; color: #c0d8ff; }
+    .mock-msg.user { background: rgba(10,191,188,.2); align-self: flex-end; color: #a0f0ee; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 4 — HOW IT WORKS
+    ═══════════════════════════════════════ */
+    /* Mobile: vertical timeline */
+    .steps-v { display: flex; flex-direction: column; gap: 0; width: 100%; position: relative; }
+    .steps-v::before { content:''; position: absolute; left: 27px; top: 27px; bottom: 27px; width: 2px; background: linear-gradient(180deg,var(--blue),var(--teal)); }
+    .step-v { display: flex; gap: 16px; align-items: flex-start; padding-bottom: 22px; position: relative; z-index: 1; }
+    .step-v:last-child { padding-bottom: 0; }
+    .step-v-num {
+      width: 54px; height: 54px; flex-shrink: 0; border-radius: 50%;
+      background: linear-gradient(135deg,var(--blue),var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800;
+      border: 3px solid var(--navy);
+      box-shadow: 0 0 0 5px rgba(30,111,255,.15);
+    }
+    .step-v-body { padding-top: 8px; }
+    .step-v-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .step-v-desc  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    /* Tablet+: horizontal steps — only at 920px to avoid landscape phone overflow */
+    .steps-h { display: none; }
+    @media (min-width: 920px) {
+      .steps-v { display: none; }
+      .steps-h {
+        display: flex; gap: 0; width: 100%; position: relative;
+      }
+      .steps-h::before { content:''; position:absolute; top: 36px; left: 8%; right: 8%; height: 2px; background: linear-gradient(90deg,var(--blue),var(--teal)); }
+      .step-h { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; z-index:1; padding: 0 8px; }
+      .step-h-num {
+        width: 72px; height: 72px; border-radius: 50%;
+        background: linear-gradient(135deg,var(--blue),var(--teal));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 26px; font-weight: 800;
+        border: 3px solid var(--navy);
+        margin-bottom: 16px;
+        box-shadow: 0 0 0 5px rgba(30,111,255,.15);
+      }
+      .step-h-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+      .step-h-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    }
+
+    /* ═══════════════════════════════════════
+       SLIDE 5 — LIVE DEMO
+    ═══════════════════════════════════════ */
+    .demo-showcase { width: 100%; }
+    .browser-chrome {
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      border-radius: 12px 12px 0 0; padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dot  { width: 11px; height: 11px; border-radius: 50%; }
+    .url-bar {
+      flex: 1; background: var(--glass2); border: 1px solid var(--border);
+      border-radius: 7px; padding: 5px 12px;
+      font-size: 12px; color: var(--muted); font-family: 'Inter', monospace;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .browser-body {
+      background: var(--navy2); border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 12px 12px;
+      height: clamp(240px, 40vh, 360px);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+      overflow: hidden; position: relative;
+    }
+    .mock-ui-bg {
+      position: absolute; inset: 0;
+      display: grid; grid-template-columns: 140px 1fr;
+      background: linear-gradient(180deg, rgba(5,13,31,0) 0%, rgba(5,13,31,.7) 100%);
+    }
+    @media (max-width: 480px) { .mock-ui-bg { grid-template-columns: 100px 1fr; } }
+    .mock-sidebar { background: rgba(255,255,255,.02); border-right: 1px solid var(--border); padding: 12px; }
+    .mock-sidebar-item { height: 26px; background: rgba(255,255,255,.04); border-radius: 6px; margin-bottom: 6px; }
+    .mock-sidebar-item.active { background: rgba(30,111,255,.2); }
+    .mock-main { padding: 12px; }
+    .mock-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+    .mock-card  { height: 44px; background: rgba(255,255,255,.04); border-radius: 6px; border: 1px solid var(--border); }
+    .mock-table-row { height: 22px; background: rgba(255,255,255,.03); border-radius: 3px; margin-bottom: 4px; }
+    .demo-overlay { text-align: center; z-index: 2; padding: 0 16px; }
+    .demo-big-link {
+      display: inline-block; padding: 14px 32px;
+      background: linear-gradient(135deg,var(--blue),var(--teal));
+      border-radius: 12px; color: white; font-weight: 700; font-size: 16px;
+      text-decoration: none; box-shadow: 0 6px 32px rgba(30,111,255,.45);
+      transition: transform .2s;
+    }
+    .demo-big-link:active { transform: scale(.97); }
+    @media (hover:hover) { .demo-big-link:hover { transform: translateY(-3px); } }
+    .demo-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 6 — OFFERS
+    ═══════════════════════════════════════ */
+    .offer-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 20px; padding: clamp(20px,4vw,30px);
+      position: relative; overflow: hidden;
+      transition: transform .2s, border-color .2s;
+    }
+    @media (hover:hover) { .offer-card:hover { transform: translateY(-4px); } }
+    .offer-card.featured { border-color: var(--teal); }
+    .offer-card.featured::before {
+      content: '⭐ POPULAR';
+      position: absolute; top: 12px; right: 12px;
+      font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--teal2);
+      background: rgba(10,191,188,.15); border: 1px solid rgba(10,191,188,.3);
+      padding: 4px 9px; border-radius: 50px;
+      white-space: nowrap;
+    }
+    .offer-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .offer-card:first-child::after { background: linear-gradient(90deg,var(--blue),var(--blue2)); }
+    .offer-card.featured::after  { background: linear-gradient(90deg,var(--teal),var(--teal2)); }
+    .offer-name     { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; padding-right: 70px; }
+    .offer-price    { font-size: clamp(28px,6vw,44px); font-weight: 800; margin-bottom: 3px; }
+    .offer-monthly  { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .offer-feat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .offer-feat-list li { font-size: 12px; display: flex; align-items: flex-start; gap: 7px; line-height: 1.4; }
+    .offer-feat-list li::before { content:'✓'; color: var(--teal2); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 7 — PRICING TABLE
+    ═══════════════════════════════════════ */
+    /* Mobile: card-based pricing */
+    .price-cards { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+    .price-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+    }
+    .price-card-header {
+      padding: 14px 18px; font-weight: 700; font-size: 13px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .price-card-header.o1 { background: rgba(30,111,255,.08); }
+    .price-card-header.o2 { background: rgba(10,191,188,.08); }
+    .price-card-header .price-badge { font-size: 20px; font-weight: 800; }
+    .price-card-header .price-badge.o1-c { color: #7ab4ff; }
+    .price-card-header .price-badge.o2-c { color: var(--teal2); }
+    .price-card-rows { padding: 4px 0; }
+    .pcr { display: flex; justify-content: space-between; padding: 9px 18px; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .pcr:last-child { border-bottom: none; }
+    .pcr .feat-name { color: var(--muted); }
+    .pcr .feat-val { font-weight: 600; }
+    .pcr .feat-val.yes { color: var(--teal2); }
+    .pcr .feat-val.no  { color: rgba(255,255,255,.25); }
+    /* Desktop: table */
+    .pricing-table-d { display: none; }
+    @media (min-width: 640px) {
+      .price-cards    { display: none; }
+      .pricing-table-d { display: block; width: 100%; }
+      .price-row-d {
+        display: grid; grid-template-columns: 2fr 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+      }
+      .price-row-d:first-child { border-bottom: 2px solid rgba(30,111,255,.3); }
+      .price-cell-d { padding: 13px 18px; font-size: 13px; }
+      .price-cell-d.hd { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing:.06em; }
+      .price-cell-d:not(:first-child) { text-align: center; }
+      .price-cell-d.c1 { background: rgba(30,111,255,.05); border-right: 1px solid var(--border); }
+      .price-cell-d.c2 { background: rgba(10,191,188,.05); }
+    }
+    .retainer-box {
+      margin-top: 16px;
+      background: rgba(255,209,102,.08); border: 1px solid rgba(255,209,102,.2);
+      border-radius: 14px; padding: 16px 20px;
+      display: flex; align-items: flex-start; gap: 12px; width: 100%;
+    }
+    .retainer-box .icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .retainer-box h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .retainer-box p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 8 — WHY US
+    ═══════════════════════════════════════ */
+    .why-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px;
+      text-align: center; transition: all .2s;
+    }
+    @media (hover:hover) { .why-card:hover { border-color: var(--blue); transform: translateY(-4px); } }
+    .why-icon  { font-size: 32px; margin-bottom: 10px; }
+    .why-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .why-desc  { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+    /* ═══════════════════════════════════════
+       SLIDE 9 — CTA
+    ═══════════════════════════════════════ */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(30,111,255,.12), rgba(10,191,188,.08));
+      border: 1px solid rgba(30,111,255,.25);
+      border-radius: 24px; padding: clamp(24px,5vw,48px);
+      text-align: center; width: 100%; max-width: 680px;
+    }
+    .steps-list { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; text-align: left; }
+    .next-step  { display: flex; align-items: center; gap: 12px; }
+    .step-badge {
+      width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px;
+      background: linear-gradient(135deg,var(--blue),var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+    }
+    .step-text { font-size: clamp(13px,2.5vw,15px); }
+
+    /* ═══════════════════════════════════════
+       SLIDE 10 — CONTACT
+    ═══════════════════════════════════════ */
+    .contact-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 24px; padding: clamp(24px,5vw,44px);
+      width: 100%; max-width: 600px; text-align: center;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--glass2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 13px 16px; text-align: left;
+    }
+    .contact-icon {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px;
+      background: linear-gradient(135deg,var(--blue),var(--teal));
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .contact-label { font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+    .contact-value { font-size: 14px; font-weight: 600; }
+    .contact-value a { color: var(--text); text-decoration: none; }
+    @media (hover:hover) { .contact-value a:hover { color: var(--teal2); } }
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Progress -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Logo -->
+<div class="logo-badge">
+  <div class="logo-icon">🦷</div>
+  <div>
+    <div class="logo-text">SmartDocSystem</div>
+    <div class="logo-sub">AI Growth for Dental Clinics</div>
+  </div>
+</div>
+
+<!-- Slide counter -->
+<div class="slide-indicator"><span class="cur" id="curSlide">1</span> / <span id="totSlide">10</span></div>
+
+<!-- Swipe hint (mobile only) -->
+<div class="swipe-hint">👆 Swipe to navigate</div>
+
+<!-- ═══ SLIDES ═══ -->
+<div class="slides-wrapper" id="slidesWrapper">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active center" id="s1">
+    <div class="hero-pill"><span class="live-dot"></span>Live Demo Presentation</div>
+    <h1>Turn Your Clinic Into a<br/><span class="gradient-text">24/7 Patient Machine</span></h1>
+    <p class="subtitle">DentalFlow AI — The complete AI Growth System for premium dental clinics. More leads. More bookings. Less manual work.</p>
+    <div class="cta-row">
+      <a href="https://dantal-flow.vercel.app/" target="_blank" class="btn-primary">🚀 View Live Demo</a>
+      <a href="https://smartdocsystems.vercel.app" target="_blank" class="btn-outline">🌐 Our Website</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num blue-text">24/7</div><div class="stat-label">Availability</div></div>
+      <div class="stat-item"><div class="stat-num blue-text">3×</div><div class="stat-label">More Bookings</div></div>
+      <div class="stat-item"><div class="stat-num blue-text">₹0</div><div class="stat-label">Missed Leads</div></div>
+      <div class="stat-item"><div class="stat-num blue-text">100%</div><div class="stat-label">Done For You</div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PROBLEM -->
+  <div class="slide" id="s2">
+    <div class="tag tag-blue" style="margin-bottom:14px;">THE PROBLEM</div>
+    <h2 class="center">Your Clinic Is <span style="color:#ff6b6b;">Losing Patients</span><br/>Every Single Day</h2>
+    <div class="divider"></div>
+    <div class="grid-auto-3 container" style="margin-top:8px;">
+      <div class="pain-card">
+        <div class="pain-icon">📵</div>
+        <div class="pain-title">No After-Hours Response</div>
+        <div class="pain-body">70% of patients search for dentists after 8 PM. If no one answers, they book your competitor.</div>
+        <div class="pain-stat">70% lost</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📋</div>
+        <div class="pain-title">Manual Booking Is Slow</div>
+        <div class="pain-body">Receptionists manually handle calls, WhatsApp, and appointments — missing leads constantly.</div>
+        <div class="pain-stat">3–5 hrs/day</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">😤</div>
+        <div class="pain-title">Staff Overwhelmed</div>
+        <div class="pain-body">Your team answers the same questions over and over instead of focusing on patient care.</div>
+        <div class="pain-stat">100s of repeat queries</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: SOLUTION -->
+  <div class="slide" id="s3">
+    <div class="tag tag-teal" style="margin-bottom:14px;">THE SOLUTION</div>
+    <h2 class="center" style="margin-bottom:20px;">Meet <span class="gradient-text">DentalFlow AI</span></h2>
+    <div class="solution-layout container">
+      <div class="feature-list">
+        <div class="feat-item"><div class="feat-icon">🤖</div><div class="feat-text"><h4>AI Chatbot Receptionist</h4><p>Answers questions, qualifies patients, and books appointments — automatically, 24/7.</p></div></div>
+        <div class="feat-item"><div class="feat-icon">💬</div><div class="feat-text"><h4>WhatsApp Patient Engine</h4><p>Captures leads on WhatsApp, sends reminders, and follows up automatically.</p></div></div>
+        <div class="feat-item"><div class="feat-icon">📊</div><div class="feat-text"><h4>Admin CRM Dashboard</h4><p>See all leads and appointments in real-time. Full visibility of your pipeline.</p></div></div>
+        <div class="feat-item"><div class="feat-icon">🌐</div><div class="feat-text"><h4>AI Growth Website</h4><p>A premium, conversion-focused clinic website built to turn visitors into patients.</p></div></div>
+      </div>
+      <div class="demo-frame">
+        <div class="demo-url">🔗 dantal-flow.vercel.app</div>
+        <div class="mock-screen">
+          <div class="mock-bar">
+            <div class="mock-dot" style="background:#ff5f57;"></div>
+            <div class="mock-dot" style="background:#ffbd2e;"></div>
+            <div class="mock-dot" style="background:#28ca41;"></div>
+          </div>
+          <div class="mock-body">
+            <div class="mock-msg bot">👋 Welcome! I'm your AI dental assistant. How can I help?</div>
+            <div class="mock-msg user">I want to book an implant consultation</div>
+            <div class="mock-msg bot">Great! Let me collect your details. What's your name?</div>
+            <div class="mock-msg user">Priya Sharma</div>
+            <div class="mock-msg bot">Perfect Priya! Choose your preferred date 📅</div>
+          </div>
+        </div>
+        <p style="font-size:11px;margin-top:10px;color:var(--muted);">Actual chatbot from the live demo</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: HOW IT WORKS -->
+  <div class="slide" id="s4">
+    <div class="tag tag-blue" style="margin-bottom:14px;">HOW IT WORKS</div>
+    <h2 class="center" style="margin-bottom:24px;">From Visitor to <span class="gradient-text">Booked Patient</span><br/>in 4 Steps</h2>
+
+    <!-- Mobile vertical timeline -->
+    <div class="steps-v container" style="max-width:480px;">
+      <div class="step-v">
+        <div class="step-v-num">1</div>
+        <div class="step-v-body"><div class="step-v-title">Patient Visits Site</div><div class="step-v-desc">They land on your premium AI-powered clinic website on mobile or desktop</div></div>
+      </div>
+      <div class="step-v">
+        <div class="step-v-num">2</div>
+        <div class="step-v-body"><div class="step-v-title">AI Greets Them</div><div class="step-v-desc">The AI receptionist instantly answers questions about treatments, timing &amp; pricing</div></div>
+      </div>
+      <div class="step-v">
+        <div class="step-v-num">3</div>
+        <div class="step-v-body"><div class="step-v-title">Booking Captured</div><div class="step-v-desc">Patient fills in name, phone, and preferred slot — all saved to your CRM automatically</div></div>
+      </div>
+      <div class="step-v">
+        <div class="step-v-num">4</div>
+        <div class="step-v-body"><div class="step-v-title">You Get Notified</div><div class="step-v-desc">Doctor and clinic get instant email and WhatsApp alerts. Patient gets a confirmation too</div></div>
+      </div>
+    </div>
+
+    <!-- Desktop horizontal steps -->
+    <div class="steps-h container" style="max-width:860px;">
+      <div class="step-h"><div class="step-h-num">1</div><div class="step-h-title">Patient Visits Site</div><div class="step-h-desc">They land on your premium AI-powered clinic website on mobile or desktop</div></div>
+      <div class="step-h"><div class="step-h-num">2</div><div class="step-h-title">AI Greets Them</div><div class="step-h-desc">The AI receptionist instantly answers questions about treatments, timing &amp; pricing</div></div>
+      <div class="step-h"><div class="step-h-num">3</div><div class="step-h-title">Booking Captured</div><div class="step-h-desc">Patient fills in name, phone, and preferred slot — all saved to your CRM automatically</div></div>
+      <div class="step-h"><div class="step-h-num">4</div><div class="step-h-title">You Get Notified</div><div class="step-h-desc">Doctor and clinic get instant email and WhatsApp alerts. Patient gets a confirmation too</div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: LIVE DEMO -->
+  <div class="slide" id="s5">
+    <div class="tag tag-teal" style="margin-bottom:14px;">LIVE DEMO</div>
+    <h2 class="center" style="margin-bottom:20px;">See It <span class="gradient-text">In Action</span></h2>
+    <div class="demo-showcase container">
+      <div class="browser-chrome">
+        <div class="browser-dots">
+          <div class="browser-dot" style="background:#ff5f57;"></div>
+          <div class="browser-dot" style="background:#ffbd2e;"></div>
+          <div class="browser-dot" style="background:#28ca41;"></div>
+        </div>
+        <div class="url-bar">🔒 dantal-flow.vercel.app</div>
+      </div>
+      <div class="browser-body">
+        <div class="mock-ui-bg">
+          <div class="mock-sidebar">
+            <div class="mock-sidebar-item active"></div>
+            <div class="mock-sidebar-item"></div>
+            <div class="mock-sidebar-item"></div>
+            <div class="mock-sidebar-item"></div>
+          </div>
+          <div class="mock-main">
+            <div class="mock-cards"><div class="mock-card"></div><div class="mock-card"></div><div class="mock-card"></div></div>
+            <div class="mock-table-row"></div><div class="mock-table-row"></div><div class="mock-table-row"></div><div class="mock-table-row"></div>
+          </div>
+        </div>
+        <div class="demo-overlay">
+          <a href="https://dantal-flow.vercel.app/" target="_blank" class="demo-big-link">🚀 Open Live Demo Now</a>
+          <p class="demo-note">Tap to open the actual DentalFlow AI system</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: OFFERS -->
+  <div class="slide" id="s6">
+    <div class="tag tag-gold" style="margin-bottom:14px;">OUR PACKAGES</div>
+    <h2 class="center" style="margin-bottom:20px;">Two Offers. <span class="gradient-text">One Clear Choice.</span></h2>
+    <div class="grid-auto-2 container">
+      <div class="offer-card">
+        <div class="offer-name">Offer #1 — Starter Growth</div>
+        <div class="offer-price blue-text">₹15,000</div>
+        <div class="offer-monthly">One-time setup · + ₹5,000–₹7,000/month</div>
+        <ul class="offer-feat-list">
+          <li>Premium AI Website (3–5 pages)</li>
+          <li>Online Booking System</li>
+          <li>Contact Forms</li>
+          <li>WhatsApp Integration</li>
+          <li>Mobile Responsive Design</li>
+          <li>Fast Loading &amp; SEO Ready</li>
+        </ul>
+      </div>
+      <div class="offer-card featured">
+        <div class="offer-name">Offer #2 — Complete AI System</div>
+        <div class="offer-price" style="background:linear-gradient(135deg,var(--teal),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">₹25,000</div>
+        <div class="offer-monthly">One-time setup · + ₹5,000–₹7,000/month</div>
+        <ul class="offer-feat-list">
+          <li>Everything in Offer #1</li>
+          <li>6–10 Page AI Website</li>
+          <li>AI Chatbot Receptionist</li>
+          <li>WhatsApp Automation</li>
+          <li>Admin CRM Dashboard</li>
+          <li>Google Analytics Setup</li>
+          <li>Email Automation</li>
+          <li>Monthly Strategy Sessions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: PRICING DETAIL -->
+  <div class="slide" id="s7">
+    <div class="tag tag-gold" style="margin-bottom:14px;">PRICING</div>
+    <h2 class="center" style="margin-bottom:18px;">Simple, Transparent <span class="gradient-text">Pricing</span></h2>
+
+    <!-- Mobile card view -->
+    <div class="price-cards container">
+      <div class="price-card">
+        <div class="price-card-header o1">Offer #1 <span class="price-badge o1-c">₹15,000</span></div>
+        <div class="price-card-rows">
+          <div class="pcr"><span class="feat-name">AI Website</span><span class="feat-val">3–5 pages</span></div>
+          <div class="pcr"><span class="feat-name">Online Booking</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">Contact Forms</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">WhatsApp Integration</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">AI Chatbot</span><span class="feat-val no">—</span></div>
+          <div class="pcr"><span class="feat-name">CRM Dashboard</span><span class="feat-val no">—</span></div>
+          <div class="pcr"><span class="feat-name">Email Automation</span><span class="feat-val no">—</span></div>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-card-header o2">Offer #2 <span class="price-badge o2-c">₹25,000</span></div>
+        <div class="price-card-rows">
+          <div class="pcr"><span class="feat-name">AI Website</span><span class="feat-val">6–10 pages</span></div>
+          <div class="pcr"><span class="feat-name">Online Booking</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">Contact Forms</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">WhatsApp Automation</span><span class="feat-val yes">✓ Auto</span></div>
+          <div class="pcr"><span class="feat-name">AI Chatbot 24/7</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">CRM Dashboard</span><span class="feat-val yes">✓</span></div>
+          <div class="pcr"><span class="feat-name">Email Automation</span><span class="feat-val yes">✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop table view -->
+    <div class="pricing-table-d container">
+      <div class="price-row-d"><div class="price-cell-d hd">What's Included</div><div class="price-cell-d hd c1">Offer #1 · ₹15,000</div><div class="price-cell-d hd c2">Offer #2 · ₹25,000</div></div>
+      <div class="price-row-d"><div class="price-cell-d">Premium AI Website</div><div class="price-cell-d c1">3–5 pages</div><div class="price-cell-d c2">6–10 pages</div></div>
+      <div class="price-row-d"><div class="price-cell-d">Online Booking System</div><div class="price-cell-d c1">✅</div><div class="price-cell-d c2">✅</div></div>
+      <div class="price-row-d"><div class="price-cell-d">Contact Forms</div><div class="price-cell-d c1">✅</div><div class="price-cell-d c2">✅</div></div>
+      <div class="price-row-d"><div class="price-cell-d">WhatsApp Integration</div><div class="price-cell-d c1">✅</div><div class="price-cell-d c2">✅ + Automation</div></div>
+      <div class="price-row-d"><div class="price-cell-d">AI Chatbot Receptionist</div><div class="price-cell-d c1" style="color:rgba(255,255,255,.25)">—</div><div class="price-cell-d c2">✅</div></div>
+      <div class="price-row-d"><div class="price-cell-d">Admin CRM Dashboard</div><div class="price-cell-d c1" style="color:rgba(255,255,255,.25)">—</div><div class="price-cell-d c2">✅</div></div>
+      <div class="price-row-d"><div class="price-cell-d">Google Analytics + Email</div><div class="price-cell-d c1" style="color:rgba(255,255,255,.25)">—</div><div class="price-cell-d c2">✅</div></div>
+      <div class="price-row-d"><div class="price-cell-d">Monthly Strategy Sessions</div><div class="price-cell-d c1" style="color:rgba(255,255,255,.25)">—</div><div class="price-cell-d c2">✅</div></div>
+    </div>
+
+    <div class="retainer-box container">
+      <div class="icon">🔄</div>
+      <div><h4>Monthly Retainer — ₹5,000–₹7,000/month</h4><p>Monthly reports · AI maintenance · Continuous optimization · Strategy sessions · Priority support</p></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: WHY US -->
+  <div class="slide" id="s8">
+    <div class="tag tag-teal" style="margin-bottom:14px;">WHY SMARTDOCSYSTEM</div>
+    <h2 class="center" style="margin-bottom:20px;">We Are Not Just a <span class="gradient-text">Web Agency</span></h2>
+    <div class="grid-auto-3 container">
+      <div class="why-card"><div class="why-icon">🏥</div><div class="why-title">Dental Specialists</div><div class="why-desc">We build exclusively for dental clinics. We understand your patients, your workflows, and your growth goals.</div></div>
+      <div class="why-card"><div class="why-icon">🤖</div><div class="why-title">AI-First Approach</div><div class="why-desc">Every system uses the latest AI to automate repetitive tasks so your team focuses on patients.</div></div>
+      <div class="why-card"><div class="why-icon">🔧</div><div class="why-title">100% Done For You</div><div class="why-desc">Setup, design, integration, launch — we handle everything. No tech knowledge needed from you.</div></div>
+      <div class="why-card"><div class="why-icon">📈</div><div class="why-title">Ongoing Optimization</div><div class="why-desc">Monthly retainer includes AI updates, performance reports, and strategy sessions to keep growing.</div></div>
+      <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">Fast Delivery</div><div class="why-desc">Your complete system is live within 7–14 days. No delays, no excuses — just results.</div></div>
+      <div class="why-card"><div class="why-icon">🤝</div><div class="why-title">Long-Term Partner</div><div class="why-desc">We don't disappear after launch. We stay as your technology partner month after month.</div></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: NEXT STEPS -->
+  <div class="slide center" id="s9">
+    <div class="cta-box">
+      <div class="tag tag-teal" style="margin-bottom:16px;">READY TO START?</div>
+      <h2>Getting Started Is <span class="gradient-text">Simple</span></h2>
+      <div class="steps-list">
+        <div class="next-step"><div class="step-badge">1</div><div class="step-text">Share this demo with your clinic owner via WhatsApp right now</div></div>
+        <div class="next-step"><div class="step-badge">2</div><div class="step-text">Book a free 15-minute discovery call with SmartDocSystem</div></div>
+        <div class="next-step"><div class="step-badge">3</div><div class="step-text">Confirm your package (Offer #1 or #2) and pay 50% advance</div></div>
+        <div class="next-step"><div class="step-badge">4</div><div class="step-text">Your full AI system goes live within 7–14 days. Done!</div></div>
+      </div>
+      <a href="https://smartdocsystems.vercel.app" target="_blank" class="btn-primary" style="display:inline-block;">🌐 Visit SmartDocSystem →</a>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: CONTACT -->
+  <div class="slide center" id="s10">
+    <div class="tag tag-blue" style="margin-bottom:14px;">CONTACT US</div>
+    <h2 class="center" style="margin-bottom:6px;">Let's <span class="gradient-text">Connect</span></h2>
+    <p style="text-align:center;margin-bottom:24px;">Ready to transform your clinic? Reach out today.</p>
+    <div class="contact-card">
+      <div style="font-size:44px;margin-bottom:12px;">🦷</div>
+      <h3 style="font-size:clamp(18px,4vw,24px);font-weight:800;margin-bottom:4px;">SmartDocSystem</h3>
+      <p style="font-size:13px;margin-bottom:4px;">AI Growth Systems for Premium Dental Clinics</p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <div><div class="contact-label">Website</div><div class="contact-value"><a href="https://smartdocsystems.vercel.app" target="_blank">smartdocsystems.vercel.app</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🚀</div>
+          <div><div class="contact-label">Live Demo</div><div class="contact-value"><a href="https://dantal-flow.vercel.app/" target="_blank">dantal-flow.vercel.app</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💬</div>
+          <div><div class="contact-label">WhatsApp</div><div class="contact-value">+[Your Number Here]</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div><div class="contact-label">Email</div><div class="contact-value">hello@smartdocsystem.com</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end slides-wrapper -->
+
+<!-- Bottom Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="prevBtn" aria-label="Previous slide">←</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Next slide">→</button>
+</nav>
+
+<script>
+(function () {
+  'use strict';
+
+  const slides   = Array.from(document.querySelectorAll('.slide'));
+  const total    = slides.length;
+  const dotsEl   = document.getElementById('navDots');
+  const fillEl   = document.getElementById('progressFill');
+  const curEl    = document.getElementById('curSlide');
+  const totEl    = document.getElementById('totSlide');
+  let   current  = 0;
+  let   isAnimating = false;
+
+  totEl.textContent = total;
+
+  /* ── Build dots ── */
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function updateUI () {
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    fillEl.style.width = ((current + 1) / total * 100) + '%';
+    curEl.textContent  = current + 1;
+  }
+
+  function goTo (idx, dir) {
+    if (isAnimating || idx === current) return;
+    isAnimating = true;
+
+    const prev = current;
+    current    = Math.max(0, Math.min(total - 1, idx));
+    const forward = (dir !== undefined) ? dir > 0 : current > prev;
+
+    /* exit current */
+    slides[prev].classList.add('exit');
+    slides[prev].classList.remove('active');
+
+    /* prepare new slide off-screen */
+    slides[current].classList.add(forward ? 'enter-r' : 'enter-l');
+    slides[current].style.display = '';
+
+    /* force repaint then animate in */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        slides[current].classList.remove('enter-r', 'enter-l');
+        slides[current].classList.add('active');
+        /* scroll slide to top when content overflows */
+        slides[current].scrollTop = 0;
+      });
+    });
+
+    setTimeout(() => {
+      slides[prev].classList.remove('exit');
+      isAnimating = false;
+    }, 480);
+
+    updateUI();
+  }
+
+  function changeSlide (dir) {
+    const next = current + dir;
+    if (next < 0 || next >= total) return;
+    goTo(next, dir);
+  }
+
+  /* ── Button events ── */
+  document.getElementById('prevBtn').addEventListener('click', () => changeSlide(-1));
+  document.getElementById('nextBtn').addEventListener('click', () => changeSlide(1));
+
+  /* ── Keyboard ── */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  changeSlide(-1);
+  });
+
+  /* ── Touch / Swipe ── */
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+
+  document.getElementById('slidesWrapper').addEventListener('touchstart', e => {
+    touchStartX    = e.touches[0].clientX;
+    touchStartY    = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+
+  document.getElementById('slidesWrapper').addEventListener('touchend', e => {
+    const dx   = e.changedTouches[0].clientX - touchStartX;
+    const dy   = e.changedTouches[0].clientY - touchStartY;
+    const dt   = Date.now() - touchStartTime;
+
+    /* Only trigger if primarily horizontal and fast enough */
+    if (Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) > 40 && dt < 400) {
+      changeSlide(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+
+  /* ── Mouse drag (desktop) ── */
+  let mouseStartX = 0, isDragging = false;
+  const wrapper = document.getElementById('slidesWrapper');
+
+  wrapper.addEventListener('mousedown', e => {
+    /* Don't capture on links/buttons */
+    if (e.target.closest('a, button')) return;
+    mouseStartX = e.clientX;
+    isDragging  = true;
+  });
+
+  window.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dx = e.clientX - mouseStartX;
+    if (Math.abs(dx) > 60) changeSlide(dx < 0 ? 1 : -1);
+  });
+
+  updateUI();
+})();
+</script>
+</body>
+</html>

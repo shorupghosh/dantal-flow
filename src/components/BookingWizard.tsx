@@ -334,9 +334,10 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
 
           <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleNext(); }}>
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground/80">Full Name *</label>
+              <label htmlFor="patient-name" className="text-xs font-bold text-foreground/80">Full Name *</label>
               <input
                 type="text"
+                id="patient-name"
                 required
                 value={patientDetails.name}
                 onChange={e => setPatientDetails({ ...patientDetails, name: e.target.value })}
@@ -345,9 +346,10 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground/80">Phone Number *</label>
+              <label htmlFor="patient-phone" className="text-xs font-bold text-foreground/80">Phone Number *</label>
               <input
                 type="tel"
+                id="patient-phone"
                 required
                 value={patientDetails.phone}
                 onChange={e => setPatientDetails({ ...patientDetails, phone: e.target.value })}
@@ -356,9 +358,10 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground/80">Email Address</label>
+              <label htmlFor="patient-email" className="text-xs font-bold text-foreground/80">Email Address</label>
               <input
                 type="email"
+                id="patient-email"
                 value={patientDetails.email}
                 onChange={e => setPatientDetails({ ...patientDetails, email: e.target.value })}
                 className="w-full bg-background border border-border px-4 py-3 rounded-xl text-sm focus:outline-none focus:border-primary"
@@ -366,8 +369,9 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground/80">Notes / Symptoms (Optional)</label>
+              <label htmlFor="patient-notes" className="text-xs font-bold text-foreground/80">Notes / Symptoms (Optional)</label>
               <textarea
+                id="patient-notes"
                 value={patientDetails.notes}
                 onChange={e => setPatientDetails({ ...patientDetails, notes: e.target.value })}
                 rows={3}

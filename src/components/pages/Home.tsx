@@ -53,7 +53,7 @@ export const Home: React.FC<HomeProps> = ({
     { icon: <Activity className="h-6 w-6" />, title: "Modern Equipment", desc: "State-of-the-art diagnostic and surgical tools." },
     { icon: <Shield className="h-6 w-6" />, title: "Pain Free Dentistry", desc: "Advanced anesthesia and microsurgical techniques." },
     { icon: <Award className="h-6 w-6" />, title: "Experienced Doctors", desc: "Specialists with over 15 years of clinical excellence." },
-    { icon: <CheckCircle2 className="h-6 w-6" />, title: "Flexible EMI", desc: "0% interest financing for major treatments." },
+    { icon: <CheckCircle2 className="h-6 w-6" />, title: "Bajaj Finserv EMI", desc: "0% interest payment plans starting from ₹3,000/month." },
     { icon: <Clock className="h-6 w-6" />, title: "Same Day Consultation", desc: "Book instantly using our AI receptionist 24/7." },
     { icon: <Star className="h-6 w-6" />, title: "Digital Smile Design", desc: "Visualize your final results before starting." }
   ];
@@ -244,7 +244,7 @@ export const Home: React.FC<HomeProps> = ({
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border border-border group select-none">
               {/* After Image (Background) */}
               <img 
-                src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=1200" 
+                src="/images/teeth_after_aligners.png" 
                 alt="After" 
                 className="absolute inset-0 w-full h-full object-cover"
                 draggable={false}
@@ -259,7 +259,7 @@ export const Home: React.FC<HomeProps> = ({
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=1200" 
+                  src="/images/teeth_before_aligners.png" 
                   alt="Before" 
                   className="absolute inset-0 w-[100vw] max-w-[48rem] h-full object-cover"
                   style={{ width: '100%', maxWidth: '100%' }}

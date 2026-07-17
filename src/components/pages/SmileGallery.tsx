@@ -24,8 +24,8 @@ const GALLERY_DATA: GalleryItem[] = [
     category: 'Smile Design',
     title: 'Complete Smile Makeover',
     description: 'A full redesign focusing on symmetry and brightness to restore natural aesthetics.',
-    before: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=800&h=600',
-    after: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=800&h=600'
+    before: '/images/teeth_before_aligners.png',
+    after: '/images/teeth_after_aligners.png'
   },
   {
     id: '2',

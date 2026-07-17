@@ -191,6 +191,18 @@ export const Treatments: React.FC<TreatmentsProps> = ({
                     </div>
                   </div>
 
+                  {/* Financing for major treatments */}
+                  {(treatment.id === 'implants' || treatment.id === 'smile-design' || treatment.id === 'braces' || treatment.id === 'aligners') && (
+                    <div className="bg-primary/5 border border-primary/10 rounded-2xl p-4 flex items-center justify-between gap-4">
+                      <div>
+                        <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">Special Finance Offer</span>
+                        <p className="text-xs font-bold mt-0.5">0% Interest EMI Plans Available</p>
+                        <p className="text-[11px] text-muted-foreground">Easy finance options via Bajaj Finserv, HDFC, and all major credit cards.</p>
+                      </div>
+                      <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded">₹3,000/mo min</span>
+                    </div>
+                  )}
+
                   {/* FAQ & CTA */}
                   <div className="pt-6 border-t border-border">
                     <div className="mb-6">

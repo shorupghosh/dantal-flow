@@ -16,10 +16,10 @@ declare
 begin
   -- Get the edge function URL from the environment (or hardcode your project URL)
   -- Replace [PROJECT_REF] with your actual Supabase project reference
-  webhook_url := 'https://[PROJECT_REF].supabase.co/functions/v1/process-lead';
+  webhook_url := 'https://gytottzymosgtsirugle.supabase.co/functions/v1/process-lead';
   
   -- Replace [ANON_KEY] with your actual Supabase Anon Key
-  anon_key := '[ANON_KEY]';
+  anon_key := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5dG90dHp5bW9zZ3RzaXJ1Z2xlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwOTc3NTMsImV4cCI6MjA5OTY3Mzc1M30.v9UpXpm9mOKT50eAkZy2bhMU4rARanG-mkIN06AicM0';
 
   -- Call the Edge Function asynchronously using pg_net
   perform net.http_post(

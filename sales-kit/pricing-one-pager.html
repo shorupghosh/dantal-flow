@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartDocSystem — Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050d1f;
+      --navy2: #0a1628;
+      --blue: #1e6fff;
+      --teal: #0abfbc;
+      --teal2: #06d6d6;
+      --text: #f0f4ff;
+      --muted: #7a8fba;
+      --border: rgba(255,255,255,0.1);
+      --gold: #ffd166;
+    }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 32px;
+    }
+    /* BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 600px 500px at -100px -100px, rgba(30,111,255,.25) 0%, transparent 60%),
+        radial-gradient(ellipse 500px 400px at 110% 110%, rgba(10,191,188,.2) 0%, transparent 60%);
+    }
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    /* HEADER */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .brand-name { font-size: 20px; font-weight: 700; }
+    .brand-tagline { font-size: 12px; color: var(--muted); }
+    .header-right { text-align: right; }
+    .header-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .header-title { font-size: 28px; font-weight: 800; background: linear-gradient(135deg,#fff,var(--teal2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+    /* HERO */
+    .hero { text-align: center; margin-bottom: 48px; }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(10,191,188,.15);
+      border: 1px solid rgba(10,191,188,.25);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 12px; font-weight: 600;
+      color: var(--teal2);
+      text-transform: uppercase; letter-spacing: .08em;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .hero p { font-size: 16px; color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+    /* OFFER CARDS */
+    .offers { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+    .offer-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px 32px;
+      position: relative; overflow: hidden;
+    }
+    .offer-card.featured { border-color: var(--teal); }
+    .offer-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    }
+    .offer-card:first-child::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+    .offer-card.featured::before { background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+    .featured-badge {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(10,191,188,.15);
+      border: 1px solid rgba(10,191,188,.3);
+      border-radius: 50px;
+      padding: 4px 12px;
+      font-size: 10px; font-weight: 700;
+      color: var(--teal2); text-transform: uppercase; letter-spacing: .08em;
+    }
+    .offer-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 10px; }
+    .offer-name { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+    .offer-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+    .offer-price {
+      font-size: 52px; font-weight: 900; line-height: 1;
+    }
+    .offer-1-price { background: linear-gradient(135deg,var(--blue),#60a5fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .offer-2-price { background: linear-gradient(135deg,var(--teal),var(--teal2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .offer-price-type { font-size: 14px; color: var(--muted); }
+    .offer-monthly {
+      font-size: 14px; color: var(--muted);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .offer-monthly strong { color: var(--gold); }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .feat-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; line-height: 1.4;
+    }
+    .feat-list li .check { color: var(--teal2); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .feat-list li .label { font-weight: 600; }
+    .feat-list li .desc { color: var(--muted); font-size: 12px; }
+
+    /* RETAINER */
+    .retainer {
+      background: rgba(255,209,102,.07);
+      border: 1px solid rgba(255,209,102,.2);
+      border-radius: 20px; padding: 28px 32px;
+      margin-bottom: 32px;
+      display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;
+    }
+    .retainer-icon { font-size: 44px; }
+    .retainer-content h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .retainer-content .price-range {
+      font-size: 28px; font-weight: 800;
+      background: linear-gradient(135deg, var(--gold), #f59e0b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 12px;
+    }
+    .retainer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .retainer-feat { font-size: 13px; display: flex; gap: 6px; align-items: center; }
+    .retainer-feat::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+    /* COMPARISON */
+    .compare { margin-bottom: 32px; }
+    .compare h2 { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 20px; }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .compare-table th {
+      padding: 14px 20px; font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      background: rgba(255,255,255,.04);
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table td {
+      padding: 12px 20px; font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      text-align: center;
+    }
+    .compare-table td:first-child { text-align: left; color: var(--text); font-weight: 500; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .col-1 { color: #7ab4ff; }
+    .compare-table .col-2 { color: var(--teal2); }
+    .compare-table .x { color: rgba(255,255,255,.3); }
+
+    /* FOOTER */
+    .footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-brand { font-size: 16px; font-weight: 700; }
+    .footer-links { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); text-align: right; }
+    .footer-links a { color: var(--teal2); text-decoration: none; }
+    .footer-note { font-size: 12px; color: var(--muted); }
+    .footer-cta {
+      display: inline-block;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      border-radius: 12px;
+      color: white; font-weight: 700; font-size: 14px;
+      text-decoration: none;
+      box-shadow: 0 6px 24px rgba(30,111,255,.35);
+    }
+
+    /* PRINT BTN */
+    .print-btn {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      border: none; border-radius: 50px;
+      color: white; font-weight: 700; font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(30,111,255,.4);
+      z-index: 100;
+      font-family: 'Outfit', sans-serif;
+    }
+    .print-btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">🦷</div>
+      <div>
+        <div class="brand-name">SmartDocSystem</div>
+        <div class="brand-tagline">AI Growth for Dental Clinics · smartdocsystems.vercel.app</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-label">Service Pricing</div>
+      <div class="header-title">DentalFlow AI</div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">🚀 Official Pricing — 2026</div>
+    <h1>Simple Pricing for<br/><span style="background:linear-gradient(135deg,#fff,#06d6d6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Complete AI Growth Systems</span></h1>
+    <p>Two clear packages. No hidden fees. Everything done for you from day one.</p>
+  </div>
+
+  <!-- OFFER CARDS -->
+  <div class="offers">
+    <!-- OFFER 1 -->
+    <div class="offer-card">
+      <div class="offer-tag">Offer #1</div>
+      <div class="offer-name">Starter Growth Package</div>
+      <div class="offer-price-row">
+        <div class="offer-price offer-1-price">₹15,000</div>
+        <div class="offer-price-type">one-time setup</div>
+      </div>
+      <div class="offer-monthly">Then <strong>₹5,000–₹7,000/month</strong> for ongoing support</div>
+      <ul class="feat-list">
+        <li><span class="check">✓</span><div><span class="label">Premium AI Website</span><br/><span class="desc">3 to 5 professionally designed pages</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Online Booking System</span><br/><span class="desc">Patients book appointments directly from the site</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Contact Forms</span><br/><span class="desc">Inquiry forms that send leads to your inbox</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">WhatsApp Integration</span><br/><span class="desc">One-click WhatsApp button for instant contact</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Mobile Responsive Design</span><br/><span class="desc">Looks perfect on all phones, tablets, and desktops</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">SEO Foundation Setup</span><br/><span class="desc">Ready to rank on Google from day one</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Live Within 7–10 Days</span><br/><span class="desc">Fast delivery, no waiting months</span></div></li>
+      </ul>
+    </div>
+
+    <!-- OFFER 2 -->
+    <div class="offer-card featured">
+      <div class="featured-badge">⭐ Most Popular</div>
+      <div class="offer-tag">Offer #2</div>
+      <div class="offer-name">Complete AI System</div>
+      <div class="offer-price-row">
+        <div class="offer-price offer-2-price">₹25,000</div>
+        <div class="offer-price-type">one-time setup</div>
+      </div>
+      <div class="offer-monthly">Then <strong>₹5,000–₹7,000/month</strong> for ongoing support</div>
+      <ul class="feat-list">
+        <li><span class="check">✓</span><div><span class="label">Everything in Offer #1</span><br/><span class="desc">All Starter features included</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Larger AI Website</span><br/><span class="desc">6 to 10 pages — services, gallery, team, blog & more</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">AI Chatbot Receptionist</span><br/><span class="desc">24/7 AI that answers questions and books appointments</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">WhatsApp Automation</span><br/><span class="desc">Auto-replies, appointment reminders, follow-ups</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Admin CRM Dashboard</span><br/><span class="desc">See all leads and appointments in real-time</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Google Analytics</span><br/><span class="desc">Full tracking of website visitors and conversions</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Email Automation</span><br/><span class="desc">Booking confirmations and patient reminders via email</span></div></li>
+        <li><span class="check">✓</span><div><span class="label">Monthly Strategy Sessions</span><br/><span class="desc">Regular calls to review performance and optimize</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MONTHLY RETAINER -->
+  <div class="retainer">
+    <div class="retainer-icon">🔄</div>
+    <div class="retainer-content">
+      <h3>Monthly Retainer — What's Included</h3>
+      <div class="price-range">₹5,000 – ₹7,000 / month</div>
+      <div class="retainer-grid">
+        <div class="retainer-feat">Monthly performance reports</div>
+        <div class="retainer-feat">Continuous AI optimization</div>
+        <div class="retainer-feat">AI & automation maintenance</div>
+        <div class="retainer-feat">Monthly strategy sessions</div>
+        <div class="retainer-feat">Priority WhatsApp support</div>
+        <div class="retainer-feat">Regular AI model updates</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="compare">
+    <h2>Side-by-Side Comparison</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="text-align:left;">Feature</th>
+          <th class="col-1">Offer #1 — ₹15,000</th>
+          <th class="col-2">Offer #2 — ₹25,000</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Premium AI Website</td><td class="col-1">3–5 pages</td><td class="col-2">6–10 pages</td></tr>
+        <tr><td>Online Booking System</td><td class="col-1">✓</td><td class="col-2">✓</td></tr>
+        <tr><td>Contact Forms</td><td class="col-1">✓</td><td class="col-2">✓</td></tr>
+        <tr><td>WhatsApp Integration</td><td class="col-1">✓ Button</td><td class="col-2">✓ + Full Automation</td></tr>
+        <tr><td>AI Chatbot Receptionist</td><td class="x">—</td><td class="col-2">✓ 24/7</td></tr>
+        <tr><td>Admin CRM Dashboard</td><td class="x">—</td><td class="col-2">✓</td></tr>
+        <tr><td>Google Analytics</td><td class="x">—</td><td class="col-2">✓</td></tr>
+        <tr><td>Email Automation</td><td class="x">—</td><td class="col-2">✓</td></tr>
+        <tr><td>Monthly Strategy Sessions</td><td class="x">—</td><td class="col-2">✓</td></tr>
+        <tr><td>Delivery Time</td><td class="col-1">7–10 days</td><td class="col-2">10–14 days</td></tr>
+        <tr><td>Monthly Retainer</td><td class="col-1">₹5,000–₹7,000</td><td class="col-2">₹5,000–₹7,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-brand">🦷 SmartDocSystem</div>
+      <div class="footer-note" style="margin-top:4px;">AI Growth Systems for Premium Dental Clinics · India</div>
+    </div>
+    <div style="text-align:center;">
+      <a href="https://dantal-flow.vercel.app/" target="_blank" class="footer-cta no-print">🚀 View Live Demo</a>
+    </div>
+    <div class="footer-links">
+      <div>🌐 <a href="https://smartdocsystems.vercel.app">smartdocsystems.vercel.app</a></div>
+      <div>💬 WhatsApp: +[Your Number]</div>
+      <div>📧 hello@smartdocsystem.com</div>
+    </div>
+  </div>
+
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF</button>
+</body>
+</html>
