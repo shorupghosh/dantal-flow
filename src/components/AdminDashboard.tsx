@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calendar, Users, DollarSign, Award, Target, MessageSquare, Bot, AlertTriangle, Send, Sparkles, RefreshCw, Star, CheckCircle, Clock } from 'lucide-react';
+import { Calendar, Users, DollarSign, Award, Target, MessageSquare, Bot, AlertTriangle, Send, Sparkles, RefreshCw, Star, Clock, Stethoscope } from 'lucide-react';
+import { WhatsAppEngine } from './WhatsAppEngine/WhatsAppEngine';
 import { useDatabase } from '../context/DatabaseContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -15,11 +16,15 @@ export const AdminDashboard: React.FC = () => {
     leads, 
     updateAppointmentStatus, 
     updateLeadStatus,
-    updateReviewResponse 
+    updateReviewResponse,
+    isAuthenticated,
+    loginAdmin
   } = useDatabase();
 
+  const [pin, setPin] = useState('');
+  const [pinError, setPinError] = useState(false);
   const [role, setRole] = useState<'admin' | 'doctor'>('admin');
-  const [activeAdminSubTab, setActiveAdminSubTab] = useState<'kpis' | 'crm' | 'leads' | 'reviews' | 'whatsapp'>('kpis');
+  const [activeAdminSubTab, setActiveAdminSubTab] = useState<'kpis' | 'crm' | 'leads' | 'reviews' | 'whatsapp' | 'doctors'>('kpis');
   
   // AI State
   const [selectedLeadForAI, setSelectedLeadForAI] = useState<any | null>(null);
@@ -175,30 +180,43 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
     setAiReviewReply('');
   };
 
-  // Simulated WhatsApp Automations Logger
-  const getWhatsAppAutomationsLog = () => {
-    return appointments.slice(0, 8).map((appt, idx) => {
-      const timeStr = new Date(appt.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const actions = [
-        { type: "Booking Confirmation Sent", status: "Success", node: "WhatsApp Node #1" },
-        { type: "24-Hour Recall Reminder Queued", status: "Active", node: "WhatsApp Node #2" },
-        { type: "2-Hour Alert Prepared", status: "Active", node: "WhatsApp Node #3" },
-        { type: "Follow-up Feedback Request Sent", status: "Success", node: "WhatsApp Node #4" }
-      ];
-      const action = actions[idx % actions.length];
-      return {
-        id: `WA-${1000 + idx}`,
-        patientName: appt.patientName,
-        phone: appt.patientPhone,
-        type: action.type,
-        status: action.status,
-        node: action.node,
-        time: timeStr
-      };
-    });
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const success = await loginAdmin(pin);
+    if (!success) {
+      setPinError(true);
+      setTimeout(() => setPinError(false), 2000);
+    }
   };
 
-  const waLogs = getWhatsAppAutomationsLog();
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <form onSubmit={handleLogin} className="bg-card border border-border p-8 rounded-2xl shadow-sm text-center space-y-4 max-w-sm w-full">
+          <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mx-auto mb-4">
+            <Users className="h-6 w-6" />
+          </div>
+          <h2 className="text-xl font-bold text-foreground">Admin Portal</h2>
+          <p className="text-sm text-muted-foreground">Please enter your 4-digit PIN to access sensitive CRM data.</p>
+          <div className="pt-2">
+            <input 
+              type="password" 
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              placeholder="Enter PIN (1234)"
+              className="w-full text-center tracking-widest text-lg bg-background border border-border p-3 rounded-xl focus:outline-none focus:border-primary"
+              maxLength={4}
+            />
+          </div>
+          {pinError && <p className="text-xs text-red-500 font-bold">Invalid PIN code</p>}
+          <button type="submit" className="w-full py-3 bg-primary text-primary-foreground font-bold rounded-xl mt-4">
+            Unlock Dashboard
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 text-left space-y-8">
@@ -234,8 +252,8 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
           <div className="lg:col-span-8 space-y-4">
             <h3 className="text-lg font-bold">Today's Appointment Board ({todayAppointments.length})</h3>
             
-            <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
-              <table className="w-full text-xs">
+            <div className="bg-card border border-border rounded-2xl overflow-x-auto shadow-sm">
+              <table className="w-full text-xs min-w-[600px]">
                 <thead>
                   <tr className="bg-muted border-b border-border font-bold text-muted-foreground text-left">
                     <th className="p-4">Time</th>
@@ -319,7 +337,7 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
         <div className="space-y-6">
           
           {/* Sub Navigation */}
-          <div className="flex border-b border-border gap-2">
+          <div className="flex border-b border-border gap-2 overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
             <button
               onClick={() => setActiveAdminSubTab('kpis')}
               className={`px-4 py-2.5 text-xs font-bold border-b-2 flex items-center gap-1.5 ${activeAdminSubTab === 'kpis' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
@@ -350,10 +368,17 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
             </button>
             <button
               onClick={() => setActiveAdminSubTab('whatsapp')}
-              className={`px-4 py-2.5 text-xs font-bold border-b-2 flex items-center gap-1.5 ${activeAdminSubTab === 'whatsapp' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
+              className={`px-4 py-2.5 text-xs font-bold border-b-2 flex items-center gap-1.5 ${activeAdminSubTab === 'whatsapp' ? 'border-[#25D366] text-[#25D366]' : 'border-transparent text-muted-foreground'}`}
             >
-              <CheckCircle className="h-4 w-4" />
-              WhatsApp Sequences
+              <MessageSquare className="h-4 w-4" />
+              WhatsApp Engine
+            </button>
+            <button
+              onClick={() => setActiveAdminSubTab('doctors')}
+              className={`px-4 py-2.5 text-xs font-bold border-b-2 flex items-center gap-1.5 ${activeAdminSubTab === 'doctors' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'}`}
+            >
+              <Stethoscope className="h-4 w-4" />
+              Manage Doctors
             </button>
           </div>
 
@@ -625,45 +650,46 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
               </div>
             )}
 
-            {/* SUBTAB: WHATSAPP AUTOMATION LOG */}
+            {/* SUBTAB: WHATSAPP ENGINE */}
             {activeAdminSubTab === 'whatsapp' && (
-              <div className="space-y-4">
-                <h3 className="text-base font-bold">Simulated WhatsApp Automation Engine Logs</h3>
+              <WhatsAppEngine />
+            )}
+
+            {/* SUBTAB: MANAGE DOCTORS */}
+            {activeAdminSubTab === 'doctors' && (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-bold">Doctor Management</h3>
+                  <button className="px-4 py-2 bg-primary text-primary-foreground text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">
+                    + Add New Doctor
+                  </button>
+                </div>
                 
-                <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="bg-muted border-b border-border font-bold text-muted-foreground text-left">
-                        <th className="p-4">Action ID</th>
-                        <th className="p-4">Patient</th>
-                        <th className="p-4">WhatsApp Node</th>
-                        <th className="p-4">Action Type</th>
-                        <th className="p-4">Trigger Time</th>
-                        <th className="p-4">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {waLogs.map((log) => (
-                        <tr key={log.id} className="hover:bg-muted/30">
-                          <td className="p-4 font-mono font-bold text-muted-foreground">{log.id}</td>
-                          <td className="p-4">
-                            <span className="font-bold block">{log.patientName}</span>
-                            <span className="text-[10px] text-muted-foreground block">{log.phone}</span>
-                          </td>
-                          <td className="p-4 font-mono text-[10px] text-primary">{log.node}</td>
-                          <td className="p-4 font-semibold">{log.type}</td>
-                          <td className="p-4 font-mono">{log.time}</td>
-                          <td className="p-4">
-                            <span className={`px-2 py-0.5 rounded-full font-bold text-[9px] ${
-                              log.status === 'Success' ? 'bg-green-500/10 text-green-600' : 'bg-blue-500/10 text-blue-600'
-                            }`}>
-                              {log.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {doctors.map(doc => (
+                    <div key={doc.id} className="bg-card border border-border p-5 rounded-2xl shadow-sm space-y-4">
+                      <div className="flex items-start gap-4">
+                        <img src={doc.imageUrl} alt={doc.name} className="w-16 h-16 rounded-xl object-cover" />
+                        <div>
+                          <h4 className="font-bold text-sm">{doc.name}</h4>
+                          <p className="text-xs text-primary font-semibold">{doc.specialization}</p>
+                          <div className="flex items-center text-yellow-500 text-xs font-semibold mt-1">
+                            <Star className="h-3 w-3 fill-yellow-500 mr-0.5" />
+                            {doc.rating}
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{doc.bio}</p>
+                      <div className="flex gap-2 pt-2">
+                        <button className="flex-1 py-1.5 bg-muted text-foreground text-xs font-bold rounded-lg hover:bg-muted/80 transition-colors">
+                          Edit
+                        </button>
+                        <button className="flex-1 py-1.5 bg-red-500/10 text-red-600 text-xs font-bold rounded-lg hover:bg-red-500/20 transition-colors">
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

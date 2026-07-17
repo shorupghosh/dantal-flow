@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, CheckCircle2, User, Activity, AlertCircle, ArrowLeft, ArrowRight, MessageSquare, Smartphone, Mail, MessageCircle, CalendarDays, Server } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, CheckCircle2, User, Activity, AlertCircle, ArrowLeft, ArrowRight, MessageSquare, Smartphone, Mail, MessageCircle, CalendarDays, Server, Sparkles, Droplets, Syringe, Shield, Smile } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDatabase } from '../context/DatabaseContext';
 
@@ -7,6 +7,7 @@ interface BookingWizardProps {
   initialTreatment?: string;
   initialDoctorId?: string;
   onSuccess: () => void;
+  onCancel?: () => void;
 }
 
 const treatmentPrices: Record<string, number> = {
@@ -20,10 +21,22 @@ const treatmentPrices: Record<string, number> = {
   "Pediatric Dental Care": 2000
 };
 
+const treatmentIcons: Record<string, any> = {
+  "Routine Clean & Check": Sparkles,
+  "Teeth Whitening": Droplets,
+  "Tooth Extraction": Syringe,
+  "Root Canal Therapy": Activity,
+  "Dental Crowns": Shield,
+  "Dental Implants": Activity,
+  "Orthodontic Braces": Smile,
+  "Pediatric Dental Care": User
+};
+
 export const BookingWizard: React.FC<BookingWizardProps> = ({ 
   initialTreatment = '', 
   initialDoctorId = '', 
-  onSuccess 
+  onSuccess,
+  onCancel
 }) => {
   const { doctors, createAppointment } = useDatabase();
 
@@ -143,7 +156,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
       {/* Steps Header */}
       {step < 6 && (
         <div className="mb-8">
-          <div className="flex justify-between items-center text-xs font-semibold text-muted-foreground">
+          <div className="flex justify-between items-center text-[10px] sm:text-xs font-semibold text-muted-foreground overflow-x-auto whitespace-nowrap gap-3 sm:gap-0 pb-1 scrollbar-hide">
             <span className={step === 1 ? 'text-primary font-bold' : ''}>1. Treatment</span>
             <span className={step === 2 ? 'text-primary font-bold' : ''}>2. Doctor</span>
             <span className={step === 3 ? 'text-primary font-bold' : ''}>3. Slot</span>
@@ -174,30 +187,52 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             <p className="text-sm text-muted-foreground mt-1">Select the dental therapy you are seeking. Prices are indicative.</p>
           </div>
           
-          <div className="grid grid-cols-1 gap-3">
-            {Object.keys(treatmentPrices).map((name) => (
-              <button
-                key={name}
-                onClick={() => { setTreatment(name); setError(''); }}
-                className={`p-4 border rounded-xl flex justify-between items-center transition-all ${
-                  treatment === name 
-                    ? 'border-primary bg-primary/5 text-foreground shadow-md' 
-                    : 'border-border bg-card text-foreground hover:bg-muted/50'
-                }`}
-              >
-                <div>
-                  <span className="font-semibold text-sm block">{name}</span>
-                  <span className="text-xs text-muted-foreground block mt-0.5">Indicative duration: 45 Mins</span>
-                </div>
-                <span className="text-sm font-bold text-primary">INR {treatmentPrices[name]}</span>
-              </button>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {Object.keys(treatmentPrices).map((name, idx) => {
+              const Icon = treatmentIcons[name] || Activity;
+              return (
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  key={name}
+                  onClick={() => { setTreatment(name); setError(''); }}
+                  className={`p-4 rounded-xl flex items-start gap-4 text-left transition-all border ${
+                    treatment === name 
+                      ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20 ring-1 ring-primary/50' 
+                      : 'border-border bg-card hover:border-primary/50 hover:shadow-md'
+                  }`}
+                >
+                  <div className={`p-3 rounded-xl shrink-0 transition-colors ${treatment === name ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-muted/80 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'}`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <span className={`font-bold text-sm block transition-colors ${treatment === name ? 'text-primary' : 'text-foreground'}`}>{name}</span>
+                    <span className="text-xs text-muted-foreground block mt-1">Duration: ~45 Mins</span>
+                    <span className="text-sm font-extrabold text-primary block mt-2">INR {treatmentPrices[name]}</span>
+                  </div>
+                </motion.button>
+              );
+            })}
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-between pt-6">
+            {onCancel ? (
+              <button
+                onClick={onCancel}
+                className="px-5 py-3 border border-border text-foreground font-semibold rounded-xl hover:bg-muted text-sm flex items-center gap-1"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </button>
+            ) : (
+              <div></div>
+            )}
             <button
               onClick={handleNext}
-              className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/95 flex items-center gap-1.5 text-sm"
+              className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/95 flex items-center gap-1.5 text-sm shadow-md"
             >
               Continue
               <ArrowRight className="h-4 w-4" />
@@ -286,7 +321,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             {selectedDate && (
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block mb-2">2. Available Time Slots</span>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {slots.map((time) => (
                     <button
                       key={time}

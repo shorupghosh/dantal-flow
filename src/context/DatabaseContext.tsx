@@ -24,6 +24,8 @@ interface DatabaseContextType {
   updateLeadStatus: (id: string, status: Lead['status']) => Promise<void>;
   addReview: (review: Omit<Review, 'id' | 'createdAt' | 'patientName' | 'doctorName'>) => Promise<Review>;
   updateReviewResponse: (id: string, response: string) => Promise<void>;
+  isAuthenticated: boolean;
+  loginAdmin: (pin: string) => Promise<boolean>;
 }
 
 const DatabaseContext = createContext<DatabaseContextType | undefined>(undefined);
@@ -36,6 +38,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Initialize data
   useEffect(() => {
@@ -161,6 +164,52 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       loadFallbackData();
     }
   }, []);
+
+  const loginAdmin = async (pin: string) => {
+    if (pin === '1234') {
+      setIsAuthenticated(true);
+      if (supabase && !isLocalMock) {
+        try {
+          const { data: staffData } = await supabase.from('staff').select('*');
+          const { data: patData } = await supabase.from('patients').select('*');
+          const { data: apptData } = await supabase.from('appointments').select('*');
+          const { data: leadData } = await supabase.from('leads').select('*');
+
+          if (staffData) setStaff(staffData);
+          if (patData) setPatients(patData);
+          if (leadData) {
+            setLeads(leadData.map(l => ({
+              id: l.id, name: l.name, email: l.email || '', phone: l.phone || '',
+              source: l.source || 'Website', status: l.status || 'New Lead',
+              aiScore: l.ai_score || 5, aiNotes: l.ai_notes || '', message: l.message || '',
+              createdAt: l.created_at
+            })));
+          }
+          if (apptData) {
+            setAppointments(apptData.map(a => {
+              const doc = doctors.find(d => d.id === a.doctor_id);
+              const pat = patData?.find(p => p.id === a.patient_id);
+              return {
+                id: a.id, patientId: a.patient_id, patientName: pat?.name || 'Unknown',
+                patientPhone: pat?.phone || '', doctorId: a.doctor_id, doctorName: doc?.name || 'Unknown',
+                treatmentName: a.treatment_name, scheduledAt: a.scheduled_at, status: a.status,
+                notes: a.notes || '', price: Number(a.price || 0), createdAt: a.created_at
+              };
+            }));
+          }
+        } catch (err) {
+          console.error("Failed to fetch admin data", err);
+        }
+      } else {
+        setStaff(mockStaff);
+        setPatients(mockPatients);
+        setAppointments(mockAppointments);
+        setLeads(mockLeads);
+      }
+      return true;
+    }
+    return false;
+  };
 
   const createAppointment = async (appt: Omit<Appointment, 'id' | 'createdAt' | 'doctorName'>): Promise<Appointment> => {
     const doc = doctors.find(d => d.id === appt.doctorId);
@@ -421,7 +470,9 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       addLead,
       updateLeadStatus,
       addReview,
-      updateReviewResponse
+      updateReviewResponse,
+      isAuthenticated,
+      loginAdmin
     }}>
       {children}
     </DatabaseContext.Provider>

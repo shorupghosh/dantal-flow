@@ -36,7 +36,7 @@ function DemoController({ currentView, setCurrentView }: { currentView: string; 
 
       {/* 2. Expanded Controller Card */}
       {isOpen && (
-        <div className="w-80 bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-left">
+        <div className="w-[calc(100vw-3rem)] sm:w-80 max-w-sm bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-left">
           {/* Header */}
           <div className="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center text-white">
             <div className="flex items-center gap-2">
@@ -227,6 +227,11 @@ function AppContent() {
             initialTreatment={selectedTreatment}
             initialDoctorId={selectedDoctorId}
             onSuccess={() => {
+              setSelectedTreatment('');
+              setSelectedDoctorId('');
+              setCurrentView('home');
+            }}
+            onCancel={() => {
               setSelectedTreatment('');
               setSelectedDoctorId('');
               setCurrentView('home');

@@ -67,7 +67,33 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView, dar
               Contact & Book
             </button>
 
-
+            {/* Dashboard / Login Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setPortalDropdownOpen(!portalDropdownOpen)}
+                className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary ${(currentView === 'patient' || currentView === 'admin' || currentView === 'doctor') ? 'text-primary' : 'text-foreground/70'}`}
+              >
+                Dashboard
+                <ChevronDown className={`h-4 w-4 transition-transform ${portalDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {portalDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-xl py-2 z-50">
+                  <button
+                    onClick={() => handleNavClick('doctor')}
+                    className="block w-full text-left px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
+                  >
+                    Doctor Panel
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('admin')}
+                    className="block w-full text-left px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
+                  >
+                    Admin Dashboard
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Dark Mode toggle */}
             <button
@@ -102,35 +128,51 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView, dar
         <div className="md:hidden border-b border-border bg-background px-4 pt-2 pb-4 space-y-2 max-h-[80vh] overflow-y-auto">
           <button
             onClick={() => handleNavClick('home')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'home' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'home' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
           >
             Home
           </button>
           <button
             onClick={() => handleNavClick('treatments')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'treatments' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'treatments' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
           >
             Treatments
           </button>
           <button
             onClick={() => handleNavClick('about')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'about' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'about' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
           >
             About
           </button>
           <button
             onClick={() => handleNavClick('gallery')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'gallery' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'gallery' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
           >
             Smile Gallery
           </button>
           <button
             onClick={() => handleNavClick('contact')}
-            className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${currentView === 'contact' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'contact' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
           >
             Contact & Book
           </button>
 
+          {/* Mobile Dashboard Links */}
+          <div className="border-t border-border mt-2 pt-2">
+            <p className="px-3 py-2 text-xs font-semibold text-foreground/50 uppercase tracking-wider">Dashboards</p>
+            <button
+              onClick={() => handleNavClick('doctor')}
+              className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'doctor' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            >
+              Doctor Panel
+            </button>
+            <button
+              onClick={() => handleNavClick('admin')}
+              className={`block w-full text-left px-3 py-3 rounded-md text-base font-medium ${currentView === 'admin' ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'}`}
+            >
+              Admin Dashboard
+            </button>
+          </div>
         </div>
       )}
     </nav>

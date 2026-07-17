@@ -126,7 +126,7 @@ export const PatientPortal: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-border mt-6">
+      <div className="flex border-b border-border mt-6 overflow-x-auto whitespace-nowrap scrollbar-hide">
         <button
           onClick={() => setActiveTab('appointments')}
           className={`px-4 py-3 text-xs font-bold border-b-2 flex items-center gap-2 ${
@@ -253,8 +253,8 @@ export const PatientPortal: React.FC = () => {
           <div className="space-y-6">
             <h3 className="text-lg font-bold">Invoices & Statements</h3>
             
-            <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
-              <table className="w-full text-xs">
+            <div className="bg-card border border-border rounded-2xl overflow-x-auto shadow-sm">
+              <table className="w-full text-xs min-w-[600px]">
                 <thead>
                   <tr className="bg-muted border-b border-border font-bold text-muted-foreground text-left">
                     <th className="p-4">Invoice ID</th>

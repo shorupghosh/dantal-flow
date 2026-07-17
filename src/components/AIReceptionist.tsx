@@ -9,7 +9,7 @@ import { useDatabase } from '../context/DatabaseContext';
 const geminiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
 const isGeminiConfigured = Boolean(geminiKey);
 
-const systemPrompt = `You are a helpful, professional, and friendly AI receptionist for "DentalFlow AI" clinic in Mumbai, India (Bandra).
+const systemPrompt = `You are a helpful, professional, and friendly AI receptionist for "DentalFlow AI" clinic in Gurugram, India (Golf Course Road).
 Our clinic hours are 9:00 AM to 8:00 PM, Sunday to Saturday.
 Our list of specialists includes:
 - Dr. Sameer Sharma (Orthodontist, braces)
@@ -438,11 +438,11 @@ export const AIReceptionist: React.FC = () => {
     }
 
     if (text.includes('doctor') || text.includes('specialist') || text.includes('dentist') || text.includes('appointment')) {
-      return "We have 8 specialists at our Bandra clinic, including Dr. Sameer Sharma (Orthodontist), Dr. Tanvi Desai (Root Canal Specialist), and Dr. Sarah Patel (Pediatric Dentistry).\n\nWould you like me to open the appointment booking form for you?";
+      return "We have 8 specialists at our Gurugram clinic, including Dr. Sameer Sharma (Orthodontist), Dr. Tanvi Desai (Root Canal Specialist), and Dr. Sarah Patel (Pediatric Dentistry).\n\nWould you like me to open the appointment booking form for you?";
     }
 
-    if (text.includes('location') || text.includes('where') || text.includes('address') || text.includes('bandra')) {
-      return "DentalFlow AI is located at Linking Road, Bandra, Mumbai, India. We are near the main SV Road intersection. We have dedicated parking space available.";
+    if (text.includes('location') || text.includes('where') || text.includes('address') || text.includes('gurugram') || text.includes('gurgaon') || text.includes('golf course road')) {
+      return "DentalFlow AI is located at Golf Course Road, Sector 54, Gurugram, India. We have dedicated parking space available.";
     }
 
     if (text.includes('hour') || text.includes('time') || text.includes('open') || text.includes('close') || text.includes('schedule')) {
@@ -620,7 +620,7 @@ export const AIReceptionist: React.FC = () => {
 
       {/* 2. Expanded Chat Box */}
       {isOpen && (
-        <div className="w-80 sm:w-96 h-[520px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col justify-between overflow-hidden">
+        <div className="w-[calc(100vw-3rem)] sm:w-96 h-[75vh] max-h-[520px] sm:h-[520px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col justify-between overflow-hidden">
           
           {/* Header */}
           <div className="p-4 bg-gradient-to-r from-primary to-secondary text-primary-foreground flex justify-between items-center">

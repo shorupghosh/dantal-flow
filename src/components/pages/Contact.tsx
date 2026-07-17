@@ -44,7 +44,7 @@ export const Contact: React.FC = () => {
             Contact & <span className="text-primary">Book Consultation</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Schedule your appointment or reach out to our team. We're here to provide you with the best dental care in Mumbai.
+            Schedule your appointment or reach out to our team. We're here to provide you with the best dental care in Gurugram.
           </p>
         </div>
       </section>
@@ -61,7 +61,7 @@ export const Contact: React.FC = () => {
                   Clinic Information
                 </h2>
                 <p className="text-muted-foreground mb-8">
-                  Our state-of-the-art clinic is conveniently located in the heart of Bandra. We offer flexible hours to accommodate your busy schedule.
+                  Our state-of-the-art clinic is conveniently located in Golf Course Road, Gurugram. We offer flexible hours to accommodate your schedule.
                 </p>
                 
                 <div className="space-y-6">
@@ -264,16 +264,16 @@ export const Contact: React.FC = () => {
               <div>
                 <h4 className="font-bold text-foreground">DentalFlow Clinic</h4>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Linking Road, Bandra<br/>
-                  Mumbai 400050, India
+                  Golf Course Road, Sector 54<br/>
+                  Gurugram 122011, India
                 </p>
                 <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-primary mt-2 inline-block hover:underline">Get Directions →</a>
               </div>
             </div>
           </div>
-          {/* Placeholder for Google Map - using an iframe of Mumbai */}
+          {/* Placeholder for Google Map - using an iframe of Gurugram */}
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30165.753361132623!2d72.8130835824967!3d19.076594247754652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c913506cbdf1%3A0xc665796a567c9f80!2sBandra%20West%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1705664400000!5m2!1sen!2sin" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14013.918844321356!2d77.09886365!3d28.44857755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d19641773a4b9%3A0x868b446101967265!2sSector%2054%2C%20Gurugram%2C%20Haryana!5e0!3m2!1sen!2sin!4v1721245000000!5m2!1sen!2sin" 
             width="100%" 
             height="100%" 
             style={{ border: 0 }} 

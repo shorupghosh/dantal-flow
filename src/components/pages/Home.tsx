@@ -261,7 +261,7 @@ export const Home: React.FC<HomeProps> = ({
                 <img 
                   src="/images/teeth_before_aligners.png" 
                   alt="Before" 
-                  className="absolute inset-0 w-[100vw] max-w-[48rem] h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   style={{ width: '100%', maxWidth: '100%' }}
                   draggable={false}
                 />
