@@ -646,8 +646,8 @@ export const AIReceptionist: React.FC = () => {
             </button>
           </div>
 
-          {/* Warning banner if not configured */}
-          {!isGeminiConfigured && (
+          {/* Warning banner if not configured - only show in dev mode */}
+          {!isGeminiConfigured && import.meta.env.DEV && (
             <div className="px-4 py-2 bg-yellow-500/10 border-b border-yellow-500/20 text-yellow-600 dark:text-yellow-500 flex items-center gap-1.5 text-[10px] text-left">
               <AlertTriangle className="h-3 w-3 shrink-0" />
               <span>VITE_GEMINI_API_KEY missing. Running local assistant engine.</span>
