@@ -30,7 +30,6 @@ export const Contact: React.FC = () => {
 
     setSubmittedContact(true);
     setContactForm({ name: '', email: '', phone: '', treatment: '', preferredDate: '', preferredTime: '', message: '' });
-    setTimeout(() => setSubmittedContact(false), 5000);
   };
 
   return (
@@ -126,6 +125,12 @@ export const Contact: React.FC = () => {
                     <p className="text-base text-muted-foreground max-w-md mx-auto">
                       Thank you for choosing DentalFlow. Our reception team will contact you shortly to confirm your booking date and time.
                     </p>
+                    <button 
+                      onClick={() => setSubmittedContact(false)}
+                      className="mt-6 px-6 py-2 bg-primary/10 text-primary font-semibold rounded-lg hover:bg-primary/20 transition-colors"
+                    >
+                      Submit Another Request
+                    </button>
                   </div>
                 ) : (
                   <>
@@ -241,7 +246,7 @@ export const Contact: React.FC = () => {
                         type="submit"
                         className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl hover:bg-primary/95 transition-all text-base shadow-lg shadow-primary/25 hover:shadow-primary/40"
                       >
-                        Book Consultation
+                        Submit Request
                       </button>
                     </form>
                   </>
@@ -290,7 +295,7 @@ export const Contact: React.FC = () => {
         href="https://wa.me/919820022334" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 p-4 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 hover:shadow-[#25D366]/40 transition-all duration-300 group flex items-center justify-center"
+        className="fixed bottom-[5.5rem] right-6 z-50 p-4 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 hover:shadow-[#25D366]/40 transition-all duration-300 group flex items-center justify-center"
         aria-label="Chat on WhatsApp"
       >
         <MessageCircle className="h-7 w-7" />

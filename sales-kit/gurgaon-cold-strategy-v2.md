@@ -1,7 +1,7 @@
-# 🧠 SmartDocSystem — Cold Strategy Intelligence Report
+﻿# 🧠 autobuildbuddy — Cold Strategy Intelligence Report
 ## Gurgaon Dental Market Analysis + Creative Cold Script v2.0
 
-**Prepared by:** SmartDocSystem Sales Intelligence
+**Prepared by:** autobuildbuddy Sales Intelligence
 **Target Market:** Premium Dental Clinics — Gurgaon (Gurugram), Haryana
 **Date:** July 2026
 
@@ -165,7 +165,7 @@ The receptionist is not your enemy. She is your first client.
 She will say: "Doctor is busy. Can you call back later?" And later never comes.
 
 **The Right Way:**
-> "Hi, good morning. I'm [Name] from SmartDocSystem — we work with dental clinics in Gurgaon. I actually have a quick question for you first — are you the one who manages patient inquiries and bookings here?"
+> "Hi, good morning. I'm [Name] from autobuildbuddy — we work with dental clinics in Gurgaon. I actually have a quick question for you first — are you the one who manages patient inquiries and bookings here?"
 
 If she says yes — you now have a conversation. She's the one you need anyway.
 
@@ -227,7 +227,7 @@ This creates three psychological shifts:
 *(Speak with calm confidence. Not fast. Not desperate.)*
 
 **IF RECEPTIONIST ANSWERS:**
-> *"Good morning. Is this [Clinic Name]? Hi — I'm [Your Name] calling from SmartDocSystem. Quick question — are you the one who usually handles patient bookings and inquiries at the clinic?"*
+> *"Good morning. Is this [Clinic Name]? Hi — I'm [Your Name] calling from autobuildbuddy. Quick question — are you the one who usually handles patient bookings and inquiries at the clinic?"*
 
 *[Let her answer]*
 
@@ -237,7 +237,7 @@ This creates three psychological shifts:
 ---
 
 **IF DOCTOR ANSWERS DIRECTLY:**
-> *"Dr. [Name]? Good morning. My name is [Your Name] from SmartDocSystem. I'll be very brief — I promise this will take 90 seconds and I think you'll find it genuinely interesting. Is this an okay moment?"*
+> *"Dr. [Name]? Good morning. My name is [Your Name] from autobuildbuddy. I'll be very brief — I promise this will take 90 seconds and I think you'll find it genuinely interesting. Is this an okay moment?"*
 
 *[Wait for their response. If yes, continue.]*
 
@@ -420,7 +420,7 @@ This is a slightly different, more peer-level version when **you** call. You're 
 
 ---
 
-> *"Dr. [Name], my name is Shorup — I'm a systems builder and I founded SmartDocSystem. I'm calling myself today because I genuinely think what I'm building could be valuable for your clinic — and I only call doctors personally when I believe that.*
+> *"Dr. [Name], my name is Shorup — I'm a systems builder and I founded autobuildbuddy. I'm calling myself today because I genuinely think what I'm building could be valuable for your clinic — and I only call doctors personally when I believe that.*
 >
 > *I don't want 20 minutes of your time. I want 90 seconds. Can I tell you one thing we've built and show you on your phone — right now — and you can tell me if it's interesting or not?"*
 
@@ -486,5 +486,5 @@ Track these every week:
 
 ---
 
-*SmartDocSystem — AI Growth Systems for Premium Dental Clinics*
-*smartdocsystems.vercel.app · dantal-flow.vercel.app*
+*autobuildbuddy — AI Growth Systems for Premium Dental Clinics*
+*autobuildbuddy.vercel.app · dantal-flow.vercel.app*

@@ -90,3 +90,44 @@ CREATE TABLE reviews (
   ai_response TEXT, -- Automatically generated response by Gemini
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ============================================================
+-- ROW LEVEL SECURITY (RLS) & ACCESS CONTROL POLICIES
+-- ============================================================
+
+-- Enable RLS on all tables
+ALTER TABLE clinics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE doctors ENABLE ROW LEVEL SECURITY;
+ALTER TABLE patients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE staff ENABLE ROW LEVEL SECURITY;
+ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+
+-- 1. Clinics Policies (Public read, authenticated write)
+CREATE POLICY "Public clinics are viewable by everyone" ON clinics FOR SELECT USING (true);
+CREATE POLICY "Staff can manage clinics" ON clinics FOR ALL TO authenticated USING (true);
+
+-- 2. Doctors Policies (Public read, authenticated write)
+CREATE POLICY "Doctors directory viewable by everyone" ON doctors FOR SELECT USING (true);
+CREATE POLICY "Staff can manage doctors" ON doctors FOR ALL TO authenticated USING (true);
+
+-- 3. Patients Policies (Restricted to authenticated staff/service role)
+CREATE POLICY "Authenticated staff can manage patients" ON patients FOR ALL TO authenticated USING (true);
+
+-- 4. Appointments Policies (Public insert for booking, authenticated management)
+CREATE POLICY "Public patient booking insert" ON appointments FOR INSERT WITH CHECK (true);
+CREATE POLICY "Authenticated staff can view and update appointments" ON appointments FOR ALL TO authenticated USING (true);
+
+-- 5. Staff Policies (Restricted to authenticated users)
+CREATE POLICY "Staff directory viewable by authenticated users" ON staff FOR ALL TO authenticated USING (true);
+
+-- 6. Leads Policies (Public lead capture insert, authenticated CRM management)
+CREATE POLICY "Public lead form submission" ON leads FOR INSERT WITH CHECK (true);
+CREATE POLICY "Authenticated staff can view and manage leads" ON leads FOR ALL TO authenticated USING (true);
+
+-- 7. Reviews Policies (Public read, public submission, authenticated management)
+CREATE POLICY "Reviews viewable by everyone" ON reviews FOR SELECT USING (true);
+CREATE POLICY "Public review submission" ON reviews FOR INSERT WITH CHECK (true);
+CREATE POLICY "Staff can manage reviews" ON reviews FOR ALL TO authenticated USING (true);
+

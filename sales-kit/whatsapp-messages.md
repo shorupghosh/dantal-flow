@@ -1,4 +1,4 @@
-# 💬 WhatsApp Message Templates — SmartDocSystem Sales
+﻿# 💬 WhatsApp Message Templates — autobuildbuddy Sales
 ### 3-Part Sequence: Cold → Follow-Up → PDF Share
 
 ---
@@ -21,7 +21,7 @@ Hello [Dr./Name] 👋
 
 I hope you're doing well!
 
-My name is [Your Name] from *SmartDocSystem* — we help dental clinics in India get more patients using AI technology.
+My name is [Your Name] from *autobuildbuddy* — we help dental clinics in India get more patients using AI technology.
 
 I wanted to share something with you quickly.
 
@@ -58,7 +58,7 @@ Following up on our conversation about the AI system for your clinic.
 
 Just to recap what we discussed:
 
-✅ *DentalFlow AI by SmartDocSystem*
+✅ *DentalFlow AI by autobuildbuddy*
 → A complete AI-powered system for your clinic
 → 24/7 AI chatbot that books patients automatically
 → WhatsApp integration + CRM dashboard
@@ -96,11 +96,11 @@ Hello [Name] 👋
 
 As promised — here are all the details about DentalFlow AI 📎
 
-*Attached: SmartDocSystem Pricing.pdf*
+*Attached: autobuildbuddy Pricing.pdf*
 (Full breakdown of Offer #1 and Offer #2 with all features)
 
 🔗 *Live Demo:* dantal-flow.vercel.app
-🌐 *Our Website:* smartdocsystems.vercel.app
+🌐 *Our Website:* autobuildbuddy.vercel.app
 
 *Quick Summary:*
 → Offer #1: ₹15,000 setup — website, booking, contact forms, WhatsApp
@@ -117,7 +117,7 @@ Let me know if you have any questions. I'm here to help 😊
 Looking forward to working with you!
 
 — [Your Name]
-SmartDocSystem
+autobuildbuddy
 ```
 
 ---
@@ -180,5 +180,5 @@ Would love to hear your thoughts! Happy to answer any questions anytime 😊
 
 ---
 
-*SmartDocSystem — AI Growth Systems for Dental Clinics*
-*smartdocsystems.vercel.app · dantal-flow.vercel.app (Live Demo)*
+*autobuildbuddy — AI Growth Systems for Dental Clinics*
+*autobuildbuddy.vercel.app · dantal-flow.vercel.app (Live Demo)*

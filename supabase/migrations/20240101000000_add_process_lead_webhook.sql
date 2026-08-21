@@ -12,21 +12,25 @@ create or replace function public.trigger_process_lead()
 returns trigger as $$
 declare
   webhook_url text;
-  anon_key text;
+  auth_secret text;
 begin
-  -- Get the edge function URL from the environment (or hardcode your project URL)
-  -- Replace [PROJECT_REF] with your actual Supabase project reference
-  webhook_url := 'https://gytottzymosgtsirugle.supabase.co/functions/v1/process-lead';
+  -- Get the edge function URL and auth secret from database settings or environment placeholders
+  webhook_url := coalesce(
+    nullif(current_setting('app.settings.webhook_url', true), ''),
+    'https://[PROJECT_REF].supabase.co/functions/v1/process-lead'
+  );
   
-  -- Replace [ANON_KEY] with your actual Supabase Anon Key
-  anon_key := 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5dG90dHp5bW9zZ3RzaXJ1Z2xlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwOTc3NTMsImV4cCI6MjA5OTY3Mzc1M30.v9UpXpm9mOKT50eAkZy2bhMU4rARanG-mkIN06AicM0';
+  auth_secret := coalesce(
+    nullif(current_setting('app.settings.webhook_secret', true), ''),
+    '[WEBHOOK_SECRET_PLACEHOLDER]'
+  );
 
   -- Call the Edge Function asynchronously using pg_net
   perform net.http_post(
       url := webhook_url,
       headers := jsonb_build_object(
           'Content-Type', 'application/json',
-          'Authorization', 'Bearer ' || anon_key
+          'Authorization', 'Bearer ' || auth_secret
       ),
       body := jsonb_build_object(
           'type', 'INSERT',

@@ -1,4 +1,4 @@
-# ❓ FAQ — DentalFlow AI by SmartDocSystem
+﻿# ❓ FAQ — DentalFlow AI by autobuildbuddy
 ### Answers to Common Questions from Dental Clinic Owners
 
 ---
@@ -66,7 +66,7 @@ You only need to provide:
 - A list of your treatments and prices (we can help you write this)
 - Any photos of your clinic (optional — we can use professional stock images)
 
-SmartDocSystem handles **100% of the technical work**: design, development, AI setup, integrations, and launch.
+autobuildbuddy handles **100% of the technical work**: design, development, AI setup, integrations, and launch.
 
 After launch, you log into a simple dashboard to see your leads and appointments. No coding required — ever.
 
@@ -205,12 +205,12 @@ We are a long-term technology partner — not a one-time vendor.
 **Ready to get started? Here's how:**
 
 1. View the live demo: `https://dantal-flow.vercel.app/`
-2. Visit our website: `https://smartdocsystems.vercel.app`
+2. Visit our website: `https://autobuildbuddy.vercel.app`
 3. WhatsApp us or call to confirm your package
 4. We collect 50% advance and start building within 24 hours
 5. Your system goes live in 7–14 days
 
 ---
 
-*SmartDocSystem — AI Growth Systems for Dental Clinics*
-*smartdocsystems.vercel.app · hello@smartdocsystem.com*
+*autobuildbuddy — AI Growth Systems for Dental Clinics*
+*autobuildbuddy.vercel.app · hello@autobuildbuddy.com*

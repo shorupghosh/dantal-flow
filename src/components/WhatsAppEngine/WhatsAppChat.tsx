@@ -6,7 +6,7 @@ import {
 import type { WaConversation, WaMessage } from './types';
 
 interface WhatsAppChatProps {
-  conversation: WaConversation;
+  conversation: WaConversation | null;
   onApprove: (conversationId: string, text: string) => void;
 }
 
@@ -33,11 +33,11 @@ const intentColors: Record<string, string> = {
 };
 
 const reminderTypeLabels: Record<string, string> = {
-  confirmation: '✅ Booking Confirmed',
-  '24hr': '⏰ 24-Hour Reminder',
-  '2hr': '🔔 2-Hour Alert',
-  no_show: '🔁 No-Show Follow-up',
-  post_treatment: '⭐ Post-Treatment Review',
+  confirmation: 'Booking Confirmed',
+  '24hr': '24-Hour Reminder',
+  '2hr': '2-Hour Alert',
+  no_show: 'No-Show Follow-up',
+  post_treatment: 'Post-Treatment Review',
 };
 
 const MessageBubble: React.FC<{ message: WaMessage }> = ({ message }) => {
@@ -70,20 +70,32 @@ const MessageBubble: React.FC<{ message: WaMessage }> = ({ message }) => {
 };
 
 export const WhatsAppChat: React.FC<WhatsAppChatProps> = ({ conversation, onApprove }) => {
-  const [draftText, setDraftText] = useState(conversation.aiDraft);
+  const [draftText, setDraftText] = useState(conversation?.aiDraft || '');
   const [editingDraft, setEditingDraft] = useState(false);
   const [sent, setSent] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setDraftText(conversation.aiDraft);
-    setSent(false);
-    setEditingDraft(false);
-  }, [conversation.id, conversation.aiDraft]);
+    if (conversation) {
+      setDraftText(conversation.aiDraft);
+      setSent(false);
+      setEditingDraft(false);
+    }
+  }, [conversation?.id, conversation?.aiDraft]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [conversation.messages]);
+  }, [conversation?.messages]);
+
+  if (!conversation) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
+        <MessageCircle className="h-10 w-10 text-muted-foreground/40 mb-2" />
+        <p className="font-semibold text-foreground text-sm">No Active Conversation Selected</p>
+        <p className="text-xs text-muted-foreground mt-1">Select a patient lead from the inbox to manage WhatsApp communications.</p>
+      </div>
+    );
+  }
 
   const handleApprove = () => {
     setSent(true);

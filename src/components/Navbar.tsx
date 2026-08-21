@@ -12,7 +12,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView, darkMode, setDarkMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [portalDropdownOpen, setPortalDropdownOpen] = useState(false);
-  const { isLocalMock } = useDatabase();
+  const { isLoading } = useDatabase();
 
   const handleNavClick = (view: string) => {
     setCurrentView(view);

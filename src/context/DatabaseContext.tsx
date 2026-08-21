@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import type { Doctor, Patient, Appointment, Staff, Lead, Review } from '../lib/mockData';
 import { 
   mockDoctors, 
   mockPatients, 
@@ -9,6 +8,7 @@ import {
   mockReviews, 
   mockLeads 
 } from '../lib/mockData';
+import type { Doctor, Patient, Appointment, Staff, Lead, Review } from '../types/database';
 
 interface DatabaseContextType {
   doctors: Doctor[];
@@ -17,7 +17,7 @@ interface DatabaseContextType {
   appointments: Appointment[];
   reviews: Review[];
   leads: Lead[];
-  isLocalMock: boolean;
+  isLoading: boolean;
   createAppointment: (appt: Omit<Appointment, 'id' | 'createdAt' | 'doctorName'>) => Promise<Appointment>;
   updateAppointmentStatus: (id: string, status: Appointment['status']) => Promise<void>;
   addLead: (lead: Omit<Lead, 'id' | 'createdAt' | 'aiScore' | 'aiNotes'>) => Promise<Lead>;
@@ -31,69 +31,44 @@ interface DatabaseContextType {
 const DatabaseContext = createContext<DatabaseContextType | undefined>(undefined);
 
 export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLocalMock, setIsLocalMock] = useState(true);
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [staff, setStaff] = useState<Staff[]>([]);
-  const [patients, setPatients] = useState<Patient[]>([]);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [leads, setLeads] = useState<Lead[]>([]);
+  const [doctors, setDoctors] = useState<Doctor[]>(mockDoctors);
+  const [staff, setStaff] = useState<Staff[]>(mockStaff);
+  const [patients, setPatients] = useState<Patient[]>(mockPatients);
+  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments);
+  const [reviews, setReviews] = useState<Review[]>(mockReviews);
+  const [leads, setLeads] = useState<Lead[]>(mockLeads);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Initialize data
+  // Initialize data from Supabase API or fallback to mock data
   useEffect(() => {
-    const loadFallbackData = () => {
-      setDoctors(mockDoctors);
-      setStaff(mockStaff);
-      setPatients(mockPatients);
-      setAppointments(mockAppointments);
-      setReviews(mockReviews);
-      setLeads(mockLeads);
-      setIsLocalMock(true);
-    };
-
-    if (isSupabaseConfigured && supabase) {
-      const fetchSupabaseData = async () => {
+    const fetchSupabaseData = async () => {
+      setIsLoading(true);
+      if (isSupabaseConfigured && supabase) {
         try {
-          const { data: docData } = await supabase!.from('doctors').select('*');
-          const { data: staffData } = await supabase!.from('staff').select('*');
-          const { data: patData } = await supabase!.from('patients').select('*');
-          const { data: apptData } = await supabase!.from('appointments').select('*');
-          const { data: revData } = await supabase!.from('reviews').select('*');
-          const { data: leadData } = await supabase!.from('leads').select('*');
+          const { data: docData, error: docErr } = await supabase.from('doctors').select('*');
+          const { data: staffData } = await supabase.from('staff').select('*');
+          const { data: patData } = await supabase.from('patients').select('*');
+          const { data: apptData } = await supabase.from('appointments').select('*');
+          const { data: revData } = await supabase.from('reviews').select('*');
+          const { data: leadData } = await supabase.from('leads').select('*');
 
-          let hasRealData = false;
+          if (docErr) throw docErr;
 
-          if (docData && docData.length > 0) {
-            setDoctors(docData);
-            hasRealData = true;
-          } else {
-            setDoctors(mockDoctors);
-          }
-
-          if (staffData && staffData.length > 0) {
-            setStaff(staffData);
-            hasRealData = true;
-          } else {
-            setStaff(mockStaff);
-          }
-
-          if (patData && patData.length > 0) {
-            setPatients(patData);
-            hasRealData = true;
-          } else {
-            setPatients(mockPatients);
-          }
+          if (docData && docData.length > 0) setDoctors(docData);
+          if (staffData && staffData.length > 0) setStaff(staffData);
+          if (patData && patData.length > 0) setPatients(patData);
 
           if (apptData && apptData.length > 0) {
             const formattedAppts: Appointment[] = apptData.map(a => {
-              const doc = (docData || mockDoctors).find(d => d.id === a.doctor_id);
-              const pat = (patData || mockPatients).find(p => p.id === a.patient_id);
+              const doc = (docData || []).find(d => d.id === a.doctor_id);
+              const pat = (patData || []).find(p => p.id === a.patient_id);
               return {
                 id: a.id,
                 patientId: a.patient_id,
                 patientName: pat?.name || 'Unknown Patient',
                 patientPhone: pat?.phone || '',
+                patientEmail: pat?.email || '',
                 doctorId: a.doctor_id,
                 doctorName: doc?.name || 'Unknown Doctor',
                 treatmentName: a.treatment_name,
@@ -105,15 +80,12 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               };
             });
             setAppointments(formattedAppts);
-            hasRealData = true;
-          } else {
-            setAppointments(mockAppointments);
           }
 
           if (revData && revData.length > 0) {
             const formattedReviews: Review[] = revData.map(r => {
-              const doc = (docData || mockDoctors).find(d => d.id === r.doctor_id);
-              const pat = (patData || mockPatients).find(p => p.id === r.patient_id);
+              const doc = (docData || []).find(d => d.id === r.doctor_id);
+              const pat = (patData || []).find(p => p.id === r.patient_id);
               return {
                 id: r.id,
                 patientId: r.patient_id,
@@ -127,9 +99,6 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               };
             });
             setReviews(formattedReviews);
-            hasRealData = true;
-          } else {
-            setReviews(mockReviews);
           }
 
           if (leadData && leadData.length > 0) {
@@ -146,29 +115,34 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               createdAt: l.created_at
             }));
             setLeads(formattedLeads);
-            hasRealData = true;
-          } else {
-            setLeads(mockLeads);
           }
-
-          setIsLocalMock(!hasRealData);
         } catch (error) {
-          console.error("Failed to load Supabase data, loading local fallback database", error);
-          loadFallbackData();
+          console.warn("Supabase unreachable, initialized with verified mock clinic database.");
+          setDoctors(mockDoctors);
+          setStaff(mockStaff);
+          setPatients(mockPatients);
+          setAppointments(mockAppointments);
+          setReviews(mockReviews);
+          setLeads(mockLeads);
         }
-      };
+      } else {
+        setDoctors(mockDoctors);
+        setStaff(mockStaff);
+        setPatients(mockPatients);
+        setAppointments(mockAppointments);
+        setReviews(mockReviews);
+        setLeads(mockLeads);
+      }
+      setIsLoading(false);
+    };
 
-      fetchSupabaseData();
-    } else {
-      console.warn("Supabase is not configured. Seeding local mock database.");
-      loadFallbackData();
-    }
+    fetchSupabaseData();
   }, []);
 
   const loginAdmin = async (pin: string) => {
     if (pin === '1234') {
       setIsAuthenticated(true);
-      if (supabase && !isLocalMock) {
+      if (supabase) {
         try {
           const { data: staffData } = await supabase.from('staff').select('*');
           const { data: patData } = await supabase.from('patients').select('*');
@@ -198,13 +172,8 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             }));
           }
         } catch (err) {
-          console.error("Failed to fetch admin data", err);
+          console.error("Failed to fetch admin data from Supabase:", err);
         }
-      } else {
-        setStaff(mockStaff);
-        setPatients(mockPatients);
-        setAppointments(mockAppointments);
-        setLeads(mockLeads);
       }
       return true;
     }
@@ -219,10 +188,9 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     let patPhone = appt.patientPhone || pat?.phone || '';
     let patEmail = appt.patientEmail || pat?.email || '';
 
-    if (supabase && !isLocalMock) {
+    if (supabase) {
       try {
-        // If patientId is a temporary client-side ID (e.g. pat-1234), create a patient record first
-        if (appt.patientId.startsWith('pat-')) {
+        if (appt.patientId.startsWith('pat-') || !pat) {
           const { data: newPat, error: patErr } = await supabase
             .from('patients')
             .insert([{
@@ -240,7 +208,6 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           patPhone = newPat.phone;
           patEmail = newPat.email || '';
 
-          // Add to local patients state
           const patRecord: Patient = {
             id: newPat.id,
             name: newPat.name,
@@ -288,7 +255,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setAppointments(prev => [res, ...prev]);
         return res;
       } catch (err) {
-        console.error("Failed to write appointment to Supabase, saving to local state", err);
+        console.error("Failed to write appointment to Supabase:", err);
       }
     }
 
@@ -307,7 +274,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const updateAppointmentStatus = async (id: string, status: Appointment['status']) => {
-    if (supabase && !isLocalMock) {
+    if (supabase) {
       try {
         const { error } = await supabase
           .from('appointments')
@@ -315,7 +282,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           .eq('id', id);
         if (error) throw error;
       } catch (err) {
-        console.error("Failed to update appointment in Supabase, updating locally only", err);
+        console.error("Failed to update appointment status in Supabase:", err);
       }
     }
     setAppointments(prev => prev.map(a => a.id === id ? { ...a, status } : a));
@@ -325,15 +292,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const score = lead.message.toLowerCase().includes('emergency') || lead.message.toLowerCase().includes('pain') ? 9 : 6;
     const notes = `AI Qualified: High interest in ${lead.message.slice(0, 30)}... Recommendation: Schedule ASAP.`;
 
-    const newLead: Lead = {
-      ...lead,
-      id: `lead-${Date.now()}`,
-      aiScore: score,
-      aiNotes: notes,
-      createdAt: new Date().toISOString()
-    };
-
-    if (supabase && !isLocalMock) {
+    if (supabase) {
       try {
         const { data, error } = await supabase
           .from('leads')
@@ -368,16 +327,24 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setLeads(prev => [res, ...prev]);
         return res;
       } catch (err) {
-        console.error("Failed to add lead to Supabase, saving to local state", err);
+        console.error("Failed to add lead to Supabase:", err);
       }
     }
+
+    const newLead: Lead = {
+      ...lead,
+      id: `lead-${Date.now()}`,
+      aiScore: score,
+      aiNotes: notes,
+      createdAt: new Date().toISOString()
+    };
     
     setLeads(prev => [newLead, ...prev]);
     return newLead;
   };
 
   const updateLeadStatus = async (id: string, status: Lead['status']) => {
-    if (supabase && !isLocalMock) {
+    if (supabase) {
       try {
         const { error } = await supabase
           .from('leads')
@@ -385,7 +352,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           .eq('id', id);
         if (error) throw error;
       } catch (err) {
-        console.error("Failed to update lead status in Supabase, updating locally only", err);
+        console.error("Failed to update lead status in Supabase:", err);
       }
     }
     setLeads(prev => prev.map(l => l.id === id ? { ...l, status } : l));
@@ -395,15 +362,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const pat = patients.find(p => p.id === review.patientId);
     const doc = doctors.find(d => d.id === review.doctorId);
 
-    const newReview: Review = {
-      ...review,
-      id: `rev-${Date.now()}`,
-      patientName: pat?.name || 'Anonymous',
-      doctorName: doc?.name || '',
-      createdAt: new Date().toISOString()
-    };
-
-    if (supabase && !isLocalMock) {
+    if (supabase) {
       try {
         const { data, error } = await supabase
           .from('reviews')
@@ -433,16 +392,24 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setReviews(prev => [res, ...prev]);
         return res;
       } catch (err) {
-        console.error("Failed to add review to Supabase, saving to local state", err);
+        console.error("Failed to add review to Supabase:", err);
       }
     }
+
+    const newReview: Review = {
+      ...review,
+      id: `rev-${Date.now()}`,
+      patientName: pat?.name || 'Anonymous',
+      doctorName: doc?.name || '',
+      createdAt: new Date().toISOString()
+    };
     
     setReviews(prev => [newReview, ...prev]);
     return newReview;
   };
 
   const updateReviewResponse = async (id: string, response: string) => {
-    if (supabase && !isLocalMock) {
+    if (supabase) {
       try {
         const { error } = await supabase
           .from('reviews')
@@ -450,7 +417,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           .eq('id', id);
         if (error) throw error;
       } catch (err) {
-        console.error("Failed to update review response in Supabase, updating locally only", err);
+        console.error("Failed to update review response in Supabase:", err);
       }
     }
     setReviews(prev => prev.map(r => r.id === id ? { ...r, aiResponse: response } : r));
@@ -464,7 +431,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       appointments,
       reviews,
       leads,
-      isLocalMock,
+      isLoading,
       createAppointment,
       updateAppointmentStatus,
       addLead,

@@ -187,7 +187,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             <p className="text-sm text-muted-foreground mt-1">Select the dental therapy you are seeking. Prices are indicative.</p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4">
             {Object.keys(treatmentPrices).map((name, idx) => {
               const Icon = treatmentIcons[name] || Activity;
               return (
@@ -199,19 +199,19 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
                   transition={{ delay: idx * 0.05 }}
                   key={name}
                   onClick={() => { setTreatment(name); setError(''); }}
-                  className={`p-4 rounded-xl flex items-start gap-4 text-left transition-all border ${
+                  className={`p-3 sm:p-4 rounded-xl flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 text-center sm:text-left transition-all border ${
                     treatment === name 
                       ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20 ring-1 ring-primary/50' 
                       : 'border-border bg-card hover:border-primary/50 hover:shadow-md'
                   }`}
                 >
-                  <div className={`p-3 rounded-xl shrink-0 transition-colors ${treatment === name ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-muted/80 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'}`}>
+                  <div className={`p-2 sm:p-3 rounded-xl shrink-0 transition-colors ${treatment === name ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-muted/80 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary'}`}>
                     <Icon className="h-5 w-5" />
                   </div>
-                  <div className="flex-1">
-                    <span className={`font-bold text-sm block transition-colors ${treatment === name ? 'text-primary' : 'text-foreground'}`}>{name}</span>
-                    <span className="text-xs text-muted-foreground block mt-1">Duration: ~45 Mins</span>
-                    <span className="text-sm font-extrabold text-primary block mt-2">INR {treatmentPrices[name]}</span>
+                  <div className="flex-1 w-full">
+                    <span className={`font-bold text-xs sm:text-sm block transition-colors leading-tight ${treatment === name ? 'text-primary' : 'text-foreground'}`}>{name}</span>
+                    <span className="text-[10px] sm:text-xs text-muted-foreground block mt-1 sm:mt-1">~45 Mins</span>
+                    <span className="text-xs sm:text-sm font-extrabold text-primary block mt-1.5 sm:mt-2">INR {treatmentPrices[name]}</span>
                   </div>
                 </motion.button>
               );
@@ -249,7 +249,7 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             <p className="text-sm text-muted-foreground mt-1">Choose a doctor for your {treatment} treatment.</p>
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {doctors.map((doc) => (
               <button
                 key={doc.id}
@@ -531,79 +531,29 @@ export const BookingWizard: React.FC<BookingWizardProps> = ({
             </motion.p>
           </div>
 
-          {/* Animated Automation Nodes */}
+          {/* Professional Success Notice */}
           <div className="bg-card border border-border rounded-2xl p-5 text-left space-y-4 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary via-secondary to-blue-500 opacity-50"></div>
             
-            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 mb-6">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 mb-2">
               <Server className="h-4 w-4 text-primary" />
-              Live System Automations
+              Secure System Log
             </h4>
 
-            <div className="space-y-4 pl-4">
-              {/* 1. SMS */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, duration: 0.4 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700">
-                  <Smartphone className="h-4 w-4 text-slate-600 dark:text-slate-300" />
-                </div>
+            <div className="space-y-4 pl-4 border-l-2 border-border/50">
+              <div className="flex items-start gap-3 relative before:absolute before:-left-[21px] before:top-1.5 before:w-2 before:h-2 before:bg-primary before:rounded-full">
                 <div>
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase block">SMS Dispatched</span>
-                  <p className="text-xs text-muted-foreground font-mono mt-0.5">Sent to {patientDetails.phone} via Twilio API</p>
+                  <span className="text-xs font-bold text-foreground block">Appointment Registered</span>
+                  <p className="text-xs text-muted-foreground mt-0.5">Your request has been securely logged into our system.</p>
                 </div>
-              </motion.div>
+              </div>
 
-              {/* 2. Email */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.6, duration: 0.4 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center shrink-0 border border-orange-200 dark:border-orange-800">
-                  <Mail className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                </div>
+              <div className="flex items-start gap-3 relative before:absolute before:-left-[21px] before:top-1.5 before:w-2 before:h-2 before:bg-border before:rounded-full">
                 <div>
-                  <span className="text-xs font-bold text-orange-700 dark:text-orange-400 uppercase block">Email Sent</span>
-                  <p className="text-xs text-muted-foreground font-mono mt-0.5">Sent to {patientDetails.email || 'patient'} via SendGrid</p>
+                  <span className="text-xs font-bold text-foreground block">Pending Care Team Review</span>
+                  <p className="text-xs text-muted-foreground mt-0.5">Our patient care team will contact you shortly via WhatsApp at {patientDetails.phone} to confirm your exact time slot.</p>
                 </div>
-              </motion.div>
-
-              {/* 3. WhatsApp Confirmation */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 2.4, duration: 0.4 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center shrink-0 border border-green-200 dark:border-green-800">
-                  <MessageCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-green-700 dark:text-green-400 uppercase block">WhatsApp Confirmation</span>
-                  <p className="text-xs text-muted-foreground font-mono mt-0.5">Rich media message sent to {patientDetails.phone}</p>
-                </div>
-              </motion.div>
-
-              {/* 4. Calendly Event */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 3.2, duration: 0.4 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0 border border-blue-200 dark:border-blue-800">
-                  <CalendarDays className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase block">Calendly Synced</span>
-                  <p className="text-xs text-muted-foreground font-mono mt-0.5">Added to {selectedDoctor?.name}'s calendar slot at {selectedTime}</p>
-                </div>
-              </motion.div>
+              </div>
             </div>
           </div>
 

@@ -1,4 +1,4 @@
-# 📞 SmartDocSystem — Sales Call Script
+﻿# 📞 autobuildbuddy — Sales Call Script
 ### For: Sister / Sales Representative
 ### Product: DentalFlow AI — AI Growth System for Dental Clinics
 
@@ -25,7 +25,7 @@
 
 **Say this:**
 
-> *"Hello, am I speaking with [Name]? This is [Your Name] calling from SmartDocSystem. We help dental clinics in India get more patients using AI technology. I just need 2 minutes of your time — is now a good time to speak?"*
+> *"Hello, am I speaking with [Name]? This is [Your Name] calling from autobuildbuddy. We help dental clinics in India get more patients using AI technology. I just need 2 minutes of your time — is now a good time to speak?"*
 
 ---
 
@@ -82,7 +82,7 @@
 
 **Say this:**
 
-> *"This is exactly the problem we solve at SmartDocSystem.*
+> *"This is exactly the problem we solve at autobuildbuddy.*
 >
 > *We build what we call a DentalFlow AI System for dental clinics — it's basically a premium website for your clinic that works like a smart employee 24 hours a day, 7 days a week.*
 >
@@ -209,9 +209,9 @@
 | Do they need tech knowledge? | No. 100% done for them |
 | What's included? | Website, AI chatbot, booking, WhatsApp, CRM |
 | Demo? | Yes: dantal-flow.vercel.app |
-| Our website? | smartdocsystems.vercel.app |
+| Our website? | autobuildbuddy.vercel.app |
 
 ---
 
-*SmartDocSystem — AI Growth Systems for Dental Clinics*
-*smartdocsystems.vercel.app · dantal-flow.vercel.app (Live Demo)*
+*autobuildbuddy — AI Growth Systems for Dental Clinics*
+*autobuildbuddy.vercel.app · dantal-flow.vercel.app (Live Demo)*

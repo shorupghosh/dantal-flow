@@ -20,8 +20,19 @@ interface WebhookPayload {
   schema: string;
 }
 
+const WEBHOOK_SECRET = Deno.env.get('WEBHOOK_SECRET') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+
 serve(async (req) => {
   try {
+    // 0. Enforce Authentication Header
+    const authHeader = req.headers.get('Authorization') || req.headers.get('x-webhook-secret');
+    if (WEBHOOK_SECRET && authHeader !== `Bearer ${WEBHOOK_SECRET}` && authHeader !== WEBHOOK_SECRET) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: Invalid or missing webhook authorization token.' }), {
+        headers: { "Content-Type": "application/json" },
+        status: 401,
+      });
+    }
+
     const payload: WebhookPayload = await req.json();
     
     // We only care about new leads

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Users, DollarSign, Award, Target, MessageSquare, Bot, AlertTriangle, Send, Sparkles, RefreshCw, Star, Clock, Stethoscope } from 'lucide-react';
+import { Calendar, Users, DollarSign, Award, Target, MessageSquare, Bot, AlertTriangle, Send, Sparkles, RefreshCw, Star, Clock, Stethoscope, CheckCircle } from 'lucide-react';
 import { WhatsAppEngine } from './WhatsAppEngine/WhatsAppEngine';
 import { useDatabase } from '../context/DatabaseContext';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -249,45 +249,46 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* Calendar List */}
-          <div className="lg:col-span-8 space-y-4">
-            <h3 className="text-lg font-bold">Today's Appointment Board ({todayAppointments.length})</h3>
+          <div className="lg:col-span-8 space-y-6">
+            <h3 className="text-2xl font-bold text-foreground">Today's Appointment Board ({todayAppointments.length})</h3>
             
             <div className="bg-card border border-border rounded-2xl overflow-x-auto shadow-sm">
-              <table className="w-full text-xs min-w-[600px]">
+              <table className="w-full text-sm min-w-[600px]">
                 <thead>
                   <tr className="bg-muted border-b border-border font-bold text-muted-foreground text-left">
-                    <th className="p-4">Time</th>
-                    <th className="p-4">Patient</th>
-                    <th className="p-4">Treatment</th>
-                    <th className="p-4">Status</th>
-                    <th className="p-4 text-center">Update Status</th>
+                    <th className="p-5">Time</th>
+                    <th className="p-5">Patient</th>
+                    <th className="p-5">Treatment</th>
+                    <th className="p-5">Status</th>
+                    <th className="p-5 text-center">Update Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {appointments.slice(0, 10).map((appt) => {
                     const time = new Date(appt.scheduledAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     return (
-                      <tr key={appt.id} className="hover:bg-muted/30">
-                        <td className="p-4 font-mono font-bold text-primary">{time}</td>
-                        <td className="p-4">
-                          <span className="font-bold text-foreground block">{appt.patientName}</span>
-                          <span className="text-[10px] text-muted-foreground block">{appt.patientPhone}</span>
+                      <tr key={appt.id} className="hover:bg-muted/30 transition-colors">
+                        <td className="p-5 font-mono font-bold text-primary text-base">{time}</td>
+                        <td className="p-5">
+                          <span className="font-bold text-foreground text-base block">{appt.patientName}</span>
+                          <span className="text-sm text-muted-foreground block mt-1">{appt.patientPhone}</span>
                         </td>
-                        <td className="p-4 font-semibold">{appt.treatmentName}</td>
-                        <td className="p-4">
-                          <span className={`px-2 py-0.5 rounded-full font-bold text-[9px] ${
-                            appt.status === 'Completed' ? 'bg-green-500/10 text-green-600' :
-                            appt.status === 'Confirmed' ? 'bg-blue-500/10 text-blue-600' :
-                            appt.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-600' : 'bg-red-500/10 text-red-600'
+                        <td className="p-5 font-semibold text-foreground">{appt.treatmentName}</td>
+                        <td className="p-5">
+                          <span className={`px-3 py-1 rounded-full font-bold text-xs ${
+                            appt.status === 'Completed' ? 'bg-green-500/10 text-green-700' :
+                            appt.status === 'Confirmed' ? 'bg-blue-500/10 text-blue-700' :
+                            appt.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-700' : 'bg-red-500/10 text-red-700'
                           }`}>
                             {appt.status}
                           </span>
                         </td>
-                        <td className="p-4 text-center">
+                        <td className="p-5 text-center">
                           <select
                             value={appt.status}
                             onChange={(e) => updateAppointmentStatus(appt.id, e.target.value as any)}
-                            className="bg-background border border-border text-[10px] rounded px-2 py-1 focus:outline-none focus:border-primary"
+                            className="bg-background border border-border text-sm rounded-lg px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer w-full max-w-[140px]"
+                            aria-label={`Update status for ${appt.patientName}`}
                           >
                             <option value="Pending">Pending</option>
                             <option value="Confirmed">Confirmed</option>
@@ -305,25 +306,28 @@ Write a professional, HIPAA-compliant response thanking the patient and highligh
           </div>
 
           {/* Quick Doctor Info card */}
-          <div className="lg:col-span-4 space-y-4">
-            <h3 className="text-lg font-bold">Specialist Info</h3>
+          <div className="lg:col-span-4 space-y-6">
+            <h3 className="text-2xl font-bold text-foreground">Specialist Info</h3>
             {doctors.length > 0 ? (
-              <div className="bg-card border border-border rounded-2xl p-5 space-y-4 shadow-sm">
+              <div className="bg-card border border-border rounded-2xl p-6 space-y-4 shadow-sm">
                 <div className="flex gap-4">
-                  <img src={doctors[0].imageUrl} alt={doctors[0].name} className="w-16 h-16 object-cover rounded-xl" />
+                  <img src={doctors[0].imageUrl} alt={doctors[0].name} className="w-20 h-20 object-cover rounded-xl shadow-sm" />
                   <div>
-                    <h4 className="font-bold text-foreground text-sm">{doctors[0].name}</h4>
-                    <span className="text-xs text-primary font-semibold">{doctors[0].specialization}</span>
-                    <div className="flex items-center text-yellow-500 text-xs font-semibold mt-1">
-                      <Star className="h-3.5 w-3.5 fill-yellow-500 mr-0.5" />
+                    <h4 className="font-bold text-foreground text-lg">{doctors[0].name}</h4>
+                    <span className="text-sm text-primary font-semibold block mt-1">{doctors[0].specialization}</span>
+                    <div className="flex items-center text-yellow-500 text-sm font-semibold mt-2">
+                      <Star className="h-4 w-4 fill-yellow-500 mr-1" />
                       {doctors[0].rating} Rating
                     </div>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{doctors[0].bio}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mt-4">{doctors[0].bio}</p>
+                <button className="w-full mt-4 py-3 bg-primary text-primary-foreground font-bold rounded-xl hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all cursor-pointer">
+                  View Full Schedule
+                </button>
               </div>
             ) : (
-              <div className="bg-card border border-border rounded-2xl p-5 shadow-sm text-center text-xs text-muted-foreground py-8">
+              <div className="bg-card border border-border rounded-2xl p-8 shadow-sm text-center text-sm text-muted-foreground py-12">
                 No specialists registered in the database.
               </div>
             )}

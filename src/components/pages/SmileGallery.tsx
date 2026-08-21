@@ -40,32 +40,32 @@ const GALLERY_DATA: GalleryItem[] = [
     category: 'Implants',
     title: 'Full Molar Implant',
     description: 'Surgical titanium implant with custom porcelain crown restoration.',
-    before: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=800&h=600',
-    after: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=800&h=600'
+    before: '/images/teeth_before_aligners.png',
+    after: '/images/teeth_after_aligners.png'
   },
   {
     id: '4',
     category: 'Veneers',
     title: 'Porcelain Veneers',
     description: 'Six front teeth seamlessly restored with ultra-thin porcelain veneers.',
-    before: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=800&h=600',
-    after: 'https://images.unsplash.com/photo-1522845015757-50bce044e5da?auto=format&fit=crop&q=80&w=800&h=600'
+    before: '/images/teeth_before_aligners.png',
+    after: '/images/teeth_after_aligners.png'
   },
   {
     id: '5',
     category: 'Smile Design',
     title: 'Gingival Contouring & Crowns',
     description: 'Gum line leveling perfectly paired with ceramic crowns.',
-    before: 'https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&q=80&w=800&h=600',
-    after: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800&h=600'
+    before: '/images/teeth_before_aligners.png',
+    after: '/images/teeth_after_aligners.png'
   },
   {
     id: '6',
     category: 'Whitening',
     title: 'Deep Stain Removal',
     description: 'Advanced whitening targeting intrinsic stains for lasting brightness.',
-    before: 'https://images.unsplash.com/photo-1445404590072-16ef9c18bd83?auto=format&fit=crop&q=80&w=800&h=600',
-    after: 'https://images.unsplash.com/photo-1550525811-e5869dd03032?auto=format&fit=crop&q=80&w=800&h=600'
+    before: '/images/teeth_before_aligners.png',
+    after: '/images/teeth_after_aligners.png'
   }
 ];
 

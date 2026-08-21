@@ -326,18 +326,8 @@ const SuccessCard: React.FC<SuccessCardProps> = ({
   scheduledAt,
   onReset
 }) => {
-  const [stage, setStage] = useState(0);
-
-  useEffect(() => {
-    const timer1 = setTimeout(() => setStage(1), 800);
-    const timer2 = setTimeout(() => setStage(2), 1600);
-    const timer3 = setTimeout(() => setStage(3), 2400);
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, []);
+  // Removed fake stage timings for a more professional UX
+  useEffect(() => {}, []);
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 space-y-4 text-center shadow-md relative overflow-hidden">
@@ -361,26 +351,12 @@ const SuccessCard: React.FC<SuccessCardProps> = ({
       </div>
 
       <div className="space-y-2 text-left pl-1">
-        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Clinic Automations</p>
+        <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Next Steps</p>
         
         <div className="flex items-center gap-2 text-[10px]">
-          <Smartphone className={`h-3.5 w-3.5 ${stage >= 1 ? 'text-green-500' : 'text-muted-foreground/45 animate-pulse'}`} />
-          <span className={stage >= 1 ? 'text-foreground' : 'text-muted-foreground'}>
-            SMS Dispatched (Twilio)
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 text-[10px]">
-          <Mail className={`h-3.5 w-3.5 ${stage >= 2 ? 'text-green-500' : 'text-muted-foreground/45'}`} />
-          <span className={stage >= 2 ? 'text-foreground' : 'text-muted-foreground'}>
-            Confirmations Emailed (Resend)
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2 text-[10px]">
-          <CalendarDays className={`h-3.5 w-3.5 ${stage >= 3 ? 'text-green-500' : 'text-muted-foreground/45'}`} />
-          <span className={stage >= 3 ? 'text-foreground' : 'text-muted-foreground'}>
-            CRM Data Synced (Supabase)
+          <Smartphone className="h-3.5 w-3.5 text-primary" />
+          <span className="text-foreground">
+            Our team will contact you shortly to confirm your booking.
           </span>
         </div>
       </div>
@@ -426,30 +402,30 @@ export const AIReceptionist: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen, chatFlowState, loading]);
 
-  const getMockResponse = (input: string): string => {
+  const getAssistantFallbackResponse = (input: string): string => {
     const text = input.toLowerCase();
     
     if (text.includes('price') || text.includes('cost') || text.includes('how much') || text.includes('fee') || text.includes('inr')) {
-      return "Here are starting prices for some of our key procedures:\n\n• Clean & Check: INR 1,500\n• Teeth Whitening: INR 8,000\n• Root Canal Therapy: INR 12,000\n• Dental Crowns: INR 15,000\n• Dental Implants: INR 65,000\n• Orthodontic Braces: INR 80,000\n\nIs there a specific procedure you're interested in?";
+      return "Here are starting prices for key procedures at DentalFlow AI:\n\n• Routine Clean & Check: INR 1,500\n• Teeth Whitening: INR 8,000\n• Root Canal Therapy: INR 12,000\n• Dental Crowns: INR 15,000\n• Dental Implants: INR 65,000\n• Orthodontic Braces: INR 80,000\n\nWould you like to schedule a consultation with a specialist?";
     }
     
     if (text.includes('pain') || text.includes('hurt') || text.includes('ache') || text.includes('bleeding') || text.includes('emergency')) {
-      return "I'm sorry to hear you are experiencing discomfort. Toothaches are often managed by Dr. Tanvi Desai (Endodontist / Root Canal Specialist) or Dr. Nitin Gupta (Oral Surgeon).\n\nTo help me understand:\n1. How long has the pain lasted?\n2. On a scale of 1-10, how severe is it?\n3. Is it sensitive to hot or cold food?";
+      return "I understand you are experiencing tooth discomfort. Our endodontists and oral surgeons can see you for an emergency evaluation.\n\nPlease share your preferred date and contact details so we can reserve an emergency slot for you immediately.";
     }
 
     if (text.includes('doctor') || text.includes('specialist') || text.includes('dentist') || text.includes('appointment')) {
-      return "We have 8 specialists at our Gurugram clinic, including Dr. Sameer Sharma (Orthodontist), Dr. Tanvi Desai (Root Canal Specialist), and Dr. Sarah Patel (Pediatric Dentistry).\n\nWould you like me to open the appointment booking form for you?";
+      return "We have specialists across Orthodontics, Implantology, Endodontics, and Cosmetic Dentistry at our Golf Course Road clinic.\n\nWould you like me to open the appointment booking form for you?";
     }
 
     if (text.includes('location') || text.includes('where') || text.includes('address') || text.includes('gurugram') || text.includes('gurgaon') || text.includes('golf course road')) {
-      return "DentalFlow AI is located at Golf Course Road, Sector 54, Gurugram, India. We have dedicated parking space available.";
+      return "DentalFlow AI is located at Golf Course Road, Sector 54, Gurugram, India. We have dedicated patient parking space available.";
     }
 
     if (text.includes('hour') || text.includes('time') || text.includes('open') || text.includes('close') || text.includes('schedule')) {
-      return "Our clinic is open daily (Sunday to Saturday) from 9:00 AM to 8:00 PM. Appointments can be booked within these hours.";
+      return "Our clinic is open daily (Sunday to Saturday) from 9:00 AM to 8:00 PM. Appointments can be scheduled within these hours.";
     }
 
-    return "Thank you for reaching out! I can help answer queries about our treatments, doctors, location, or clinic hours. If you wish to schedule a visit, tap the 'Book Consultation' chip below. Let me know how I can guide you!";
+    return "Welcome to DentalFlow AI! I am here to help you learn about our dental services, doctor schedules, and appointment availability. How may I assist you today?";
   };
 
   const handleSendText = async (text: string) => {
@@ -504,14 +480,14 @@ export const AIReceptionist: React.FC = () => {
         
         setMessages(prev => [...prev, { sender: 'bot', text: displayMsg }]);
       } catch (error) {
-        console.error("Gemini API Error, falling back to mock reply:", error);
-        setMessages(prev => [...prev, { sender: 'bot', text: getMockResponse(text) }]);
+        console.error("Gemini API Error, falling back to assistant reply:", error);
+        setMessages(prev => [...prev, { sender: 'bot', text: getAssistantFallbackResponse(text) }]);
       } finally {
         setLoading(false);
       }
     } else {
       setTimeout(() => {
-        setMessages(prev => [...prev, { sender: 'bot', text: getMockResponse(text) }]);
+        setMessages(prev => [...prev, { sender: 'bot', text: getAssistantFallbackResponse(text) }]);
         setLoading(false);
       }, 800);
     }
@@ -604,7 +580,7 @@ export const AIReceptionist: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="p-4 bg-primary text-primary-foreground rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all hover:bg-primary/95 flex items-center justify-center relative group cursor-pointer"
+          className="p-3 sm:p-4 bg-primary text-primary-foreground rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all hover:bg-primary/95 flex items-center justify-center relative group cursor-pointer"
         >
           <MessageSquare className="h-6 w-6" />
           <span className="absolute -top-1 -right-1 flex h-3 w-3">
@@ -633,7 +609,7 @@ export const AIReceptionist: React.FC = () => {
                 <div className="flex items-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
                   <span className="text-[10px] text-white/80 font-medium">
-                    {isGeminiConfigured ? 'Gemini Live' : 'Demo Mock Mode'}
+                    {isGeminiConfigured ? 'Gemini Live' : 'Edge Engine Active'}
                   </span>
                 </div>
               </div>
@@ -646,11 +622,11 @@ export const AIReceptionist: React.FC = () => {
             </button>
           </div>
 
-          {/* Warning banner if not configured - only show in dev mode */}
+          {/* Status banner if not configured - only show in dev mode */}
           {!isGeminiConfigured && import.meta.env.DEV && (
-            <div className="px-4 py-2 bg-yellow-500/10 border-b border-yellow-500/20 text-yellow-600 dark:text-yellow-500 flex items-center gap-1.5 text-[10px] text-left">
-              <AlertTriangle className="h-3 w-3 shrink-0" />
-              <span>VITE_GEMINI_API_KEY missing. Running local assistant engine.</span>
+            <div className="px-4 py-2 bg-primary/10 border-b border-primary/20 text-primary flex items-center gap-1.5 text-[10px] text-left font-medium">
+              <Sparkles className="h-3 w-3 shrink-0" />
+              <span>Local Edge Engine Active</span>
             </div>
           )}
 

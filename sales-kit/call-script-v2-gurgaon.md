@@ -1,4 +1,4 @@
-# 📞 SmartDocSystem — Gurgaon Cold Call Script v2.0
+﻿# 📞 autobuildbuddy — Gurgaon Cold Call Script v2.0
 ## "The Invisible Clinic" Method — India-Optimised
 
 **Version:** 2.0 — Gurgaon Market Intelligence Edition
@@ -43,7 +43,7 @@
 *(She'll say "Doctor is busy, call back" — and you never get through)*
 
 ### ✅ Right approach:
-> "Hi, good morning — is this [Clinic Name]? I'm [Name] calling from SmartDocSystem.
+> "Hi, good morning — is this [Clinic Name]? I'm [Name] calling from autobuildbuddy.
 > Quick question for you actually — **are you the one who manages patient inquiries and bookings here?**"
 
 **If she says YES:**
@@ -68,7 +68,7 @@
 
 **[Doctor answers or you've been put through]**
 
-> *"Dr. [Name], good morning. My name is [Name] from SmartDocSystem — I promise this will take 90 seconds and I think you'll find it interesting. Is this an okay moment?"*
+> *"Dr. [Name], good morning. My name is [Name] from autobuildbuddy — I promise this will take 90 seconds and I think you'll find it interesting. Is this an okay moment?"*
 
 **[Wait for yes]**
 
@@ -87,7 +87,7 @@
 
 ---
 
-> *"Dr. [Name], good morning — [Name] from SmartDocSystem. 90 seconds of your time — I think you'll find this genuinely relevant. Okay?"*
+> *"Dr. [Name], good morning — [Name] from autobuildbuddy. 90 seconds of your time — I think you'll find this genuinely relevant. Okay?"*
 
 **[Wait]**
 
@@ -108,7 +108,7 @@
 
 ---
 
-> *"Dr. [Name], I'll be direct with you — my name is [Name] from SmartDocSystem. I called because I wanted to speak with you before you start feeling a pressure you may not have noticed yet. One minute of your time?"*
+> *"Dr. [Name], I'll be direct with you — my name is [Name] from autobuildbuddy. I called because I wanted to speak with you before you start feeling a pressure you may not have noticed yet. One minute of your time?"*
 
 **[Wait]**
 
@@ -267,7 +267,7 @@
 ## 📊 SHORUP'S PERSONAL CALL VERSION
 *(For your 5 calls — use founder authority as a differentiator)*
 
-> *"Dr. [Name], my name is Shorup — I'm the founder of SmartDocSystem. I'm making a few calls personally today because we're onboarding a select group of dental clinics in Gurgaon this month and I wanted to speak with the doctors myself, not send a sales team.*
+> *"Dr. [Name], my name is Shorup — I'm the founder of autobuildbuddy. I'm making a few calls personally today because we're onboarding a select group of dental clinics in Gurgaon this month and I wanted to speak with the doctors myself, not send a sales team.*
 >
 > *I'll take 90 seconds of your time. If it's not relevant, just say so and I'll let you go.*
 >
@@ -306,7 +306,7 @@
 | Day | Message |
 |-----|---------|
 | Day 0 | Demo + pricing PDF sent on WhatsApp |
-| Day 2 | *"Dr. [Name], did you get a chance to try the chatbot demo? Happy to answer any questions — [Name], SmartDocSystem"* |
+| Day 2 | *"Dr. [Name], did you get a chance to try the chatbot demo? Happy to answer any questions — [Name], autobuildbuddy"* |
 | Day 5 | Send 1 value insight: *"Quick stat — a clinic similar to yours in Gurgaon reduced their no-show rate by 35% in the first month using WhatsApp reminders. Worth a quick chat?"* |
 | Day 10 | *"Dr. [Name], I don't want to keep following up if this isn't the right time. But if you'd like to revisit in a few weeks, just reply 'later' and I'll reach out then. No pressure."* |
 | Day 21 | Reconnect with a new insight. Restart cycle. |
@@ -344,5 +344,5 @@
 
 ---
 
-*SmartDocSystem · AI Growth Systems for Premium Dental Clinics*
-*smartdocsystems.vercel.app · dantal-flow.vercel.app*
+*autobuildbuddy · AI Growth Systems for Premium Dental Clinics*
+*autobuildbuddy.vercel.app · dantal-flow.vercel.app*

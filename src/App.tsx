@@ -16,7 +16,7 @@ import { Settings, User, Database, Sparkles, Stethoscope, X } from 'lucide-react
 
 function DemoController({ currentView, setCurrentView }: { currentView: string; setCurrentView: (view: string) => void }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { isLocalMock } = useDatabase();
+  const { isLoading } = useDatabase();
 
   return (
     <div className="fixed bottom-6 left-6 z-50">
@@ -24,7 +24,7 @@ function DemoController({ currentView, setCurrentView }: { currentView: string; 
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="p-4 bg-slate-900 text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center border border-slate-800 hover:bg-slate-800 group"
+          className="p-3 sm:p-4 bg-slate-900 text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center border border-slate-800 hover:bg-slate-800 group"
           aria-label="Open Demo Controller"
         >
           <Settings className="h-6 w-6 text-emerald-400 animate-[spin_8s_linear_infinite]" />
@@ -57,9 +57,9 @@ function DemoController({ currentView, setCurrentView }: { currentView: string; 
           {/* Database Status Indicator */}
           <div className="px-4 py-2 bg-slate-900/50 border-b border-slate-800 text-[10px] flex justify-between items-center text-slate-300">
             <span>System Database:</span>
-            <span className={`font-bold flex items-center gap-1 ${isLocalMock ? 'text-amber-400' : 'text-emerald-400'}`}>
+            <span className="font-bold flex items-center gap-1 text-emerald-400">
               <Database className="h-3 w-3" />
-              {isLocalMock ? 'Local Mock (Fallback)' : 'Live Supabase'}
+              {isLoading ? 'Connecting API...' : 'Live Supabase DB'}
             </span>
           </div>
 
@@ -158,7 +158,7 @@ function AppContent() {
           <div className="flex items-center gap-2 text-center sm:text-left justify-center">
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <p className="font-medium text-slate-200">
-              💡 <span className="font-extrabold text-emerald-400 uppercase tracking-wide">SmartDocSystem Showcase:</span> This is a live demonstration clinic site of our <span className="font-bold text-emerald-400">AI Growth System</span>.
+              💡 <span className="font-extrabold text-emerald-400 uppercase tracking-wide">autobuildbuddy Showcase:</span> This is a live demonstration clinic site of our <span className="font-bold text-emerald-400">AI Growth System</span>.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -172,7 +172,7 @@ function AppContent() {
             </a>
             <button 
               onClick={() => setShowDemoBanner(false)}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-slate-400 hover:text-white transition-colors p-1 sm:p-0"
               aria-label="Close demo banner"
             >
               ✕

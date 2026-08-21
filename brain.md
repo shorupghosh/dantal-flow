@@ -1,4 +1,4 @@
-# Project Brain: DentalFlow AI
+﻿# Project Brain: DentalFlow AI
 
 This file serves as the persistent memory, architectural index, and technical roadmap for **DentalFlow AI**. It provides onboarding context, coding standards, and active development state for developers and agentic coding assistants.
 
@@ -6,8 +6,8 @@ This file serves as the persistent memory, architectural index, and technical ro
 
 ## 1. Project Overview & Context
 
-*   **Product Name**: DentalFlow AI (SmartDocSystem Showcase)
-*   **Startup / Agency**: SmartDocSystem Agency (founded by Shorup Ghosh)
+*   **Product Name**: DentalFlow AI (autobuildbuddy Showcase)
+*   **Startup / Agency**: autobuildbuddy Agency (founded by Shorup Ghosh)
 *   **Target Market**: Premium cosmetic, implant, and specialty dental clinics in India (specifically Golf Course Road, Gurugram).
 *   **Core Objective**: Transition dental clinics from passive sites to active patient-acquisition systems.
 *   **Core Systems**:

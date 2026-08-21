@@ -1,4 +1,4 @@
-# 🧪 Contact Form Testing Guide — DentalFlow AI
+﻿# 🧪 Contact Form Testing Guide — DentalFlow AI
 ### Purpose: Verify that the contact form and chatbot capture leads correctly
 
 ---
@@ -204,5 +204,5 @@ Screenshot: [attach if possible]
 
 ---
 
-*SmartDocSystem — AI Growth Systems for Dental Clinics*
+*autobuildbuddy — AI Growth Systems for Dental Clinics*
 *Live Demo: dantal-flow.vercel.app*

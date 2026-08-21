@@ -75,7 +75,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
       id: "crowns",
       name: "Dental Crowns",
       shortDesc: "Custom-crafted caps to protect, cover, and restore damaged teeth.",
-      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=1200",
+      image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1200",
       benefits: ["Protects weak teeth", "Restores broken teeth", "Improves appearance and shape", "Durable porcelain materials"],
       process: "Tooth Preparation → Digital Impression → Temporary Crown → Final Placement",
       duration: "2 Visits",

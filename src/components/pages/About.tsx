@@ -24,14 +24,14 @@ export const About: React.FC<AboutProps> = ({
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 }
+      transition: { staggerChildren: 0.1 }
     }
   };
 
@@ -44,7 +44,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="text-center max-w-4xl mx-auto space-y-8"
           >
@@ -72,7 +72,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
           >
@@ -117,7 +117,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -128,7 +128,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
@@ -167,7 +167,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="flex flex-col lg:flex-row gap-12 items-center"
           >
@@ -220,7 +220,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -233,7 +233,7 @@ export const About: React.FC<AboutProps> = ({
             <motion.div 
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "100px" }}
               variants={staggerContainer}
               className="bg-card border border-border rounded-3xl overflow-hidden shadow-lg mb-16"
             >
@@ -273,7 +273,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
           >
@@ -307,7 +307,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="text-center mb-16"
           >
@@ -352,7 +352,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="text-center max-w-3xl mx-auto mb-16"
           >
@@ -363,7 +363,7 @@ export const About: React.FC<AboutProps> = ({
           <motion.div 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "100px" }}
             variants={staggerContainer}
             className="grid grid-cols-2 md:grid-cols-4 gap-6"
           >
