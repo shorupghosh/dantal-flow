@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronDown, Clock, Activity, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ChevronDown, Clock, Activity, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
+import { useDatabase } from '../../context/DatabaseContext';
 
 interface TreatmentsProps {
   setCurrentView: (view: string) => void;
@@ -10,6 +11,8 @@ export const Treatments: React.FC<TreatmentsProps> = ({
   setCurrentView, 
   setSelectedTreatment
 }) => {
+  const { activeClinic } = useDatabase();
+
   const handleQuickBook = (treatment?: string) => {
     if (treatment && setSelectedTreatment) setSelectedTreatment(treatment);
     setCurrentView('booking');
@@ -29,7 +32,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
     },
     {
       id: "smile-design",
-      name: "Smile Design",
+      name: "Smile Design & Veneers",
       shortDesc: "A complete aesthetic transformation tailored to your facial proportions.",
       image: "/images/smile_design_1784019314304.png",
       benefits: ["Customized to your facial structure", "Corrects multiple flaws at once", "Boosts self-confidence", "Predictable digital results"],
@@ -40,7 +43,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
     },
     {
       id: "braces",
-      name: "Braces",
+      name: "Orthodontic Solutions",
       shortDesc: "Traditional and ceramic orthodontic solutions for perfect alignment.",
       image: "/images/braces_1784019323966.png",
       benefits: ["Handles complex bite issues", "Durable and highly effective", "Options for clear ceramic brackets", "Permanent alignment correction"],
@@ -62,7 +65,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
     },
     {
       id: "root-canal",
-      name: "Root Canal",
+      name: "Single-Sitting Root Canal",
       shortDesc: "Advanced endodontic therapy to save an infected or damaged tooth.",
       image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=1200",
       benefits: ["Relieves severe tooth pain", "Saves the natural tooth", "Prevents spread of infection", "Restores normal chewing"],
@@ -73,7 +76,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
     },
     {
       id: "crowns",
-      name: "Dental Crowns",
+      name: "Dental Crowns & Ceramic Bridges",
       shortDesc: "Custom-crafted caps to protect, cover, and restore damaged teeth.",
       image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1200",
       benefits: ["Protects weak teeth", "Restores broken teeth", "Improves appearance and shape", "Durable porcelain materials"],
@@ -84,7 +87,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
     },
     {
       id: "bridges",
-      name: "Dental Bridges",
+      name: "Restorative Dental Bridges",
       shortDesc: "A fixed restoration to bridge the gap created by one or more missing teeth.",
       image: "/images/bridges_1784019333793.png",
       benefits: ["Restores your smile", "Maintains face shape", "Prevents remaining teeth from drifting", "Restores speaking and chewing"],
@@ -95,7 +98,7 @@ export const Treatments: React.FC<TreatmentsProps> = ({
     },
     {
       id: "whitening",
-      name: "Teeth Whitening",
+      name: "Laser Teeth Whitening",
       shortDesc: "Professional laser whitening for a dramatically brighter smile.",
       image: "https://images.unsplash.com/photo-1534608176107-b67f671733b3?auto=format&fit=crop&q=80&w=1200",
       benefits: ["Instantly brighter smile", "Removes stubborn stains", "Safe and supervised", "Boosts confidence"],
@@ -111,16 +114,16 @@ export const Treatments: React.FC<TreatmentsProps> = ({
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden bg-card/30 border-b border-border">
         <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6">
-            Our Services
-          </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-foreground tracking-tight mb-6">
-            Complete Dental <span className="text-primary">Solutions</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold mx-auto">
+            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <span>Specialized Procedures • {activeClinic.name}</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-foreground tracking-tight">
+            High-Value Clinical <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-300 bg-clip-text text-transparent">Procedures</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            From routine care to advanced full-mouth reconstructions, our expert team utilizes 
-            state-of-the-art technology to deliver exceptional, pain-free results.
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Led by {activeClinic.doctorName} with 30+ years of clinical mastery in {activeClinic.location}.
           </p>
         </div>
       </section>
@@ -142,22 +145,22 @@ export const Treatments: React.FC<TreatmentsProps> = ({
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-                    <div className="absolute bottom-6 left-6 right-6">
+                    <div className="absolute bottom-6 left-6 right-6 text-left">
                       <h2 className="text-3xl font-bold text-white mb-2">{treatment.name}</h2>
-                      <p className="text-white/80 text-lg">{treatment.shortDesc}</p>
+                      <p className="text-white/80 text-base">{treatment.shortDesc}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Content Section */}
-                <div className="w-full lg:w-1/2 flex flex-col space-y-8">
+                <div className="w-full lg:w-1/2 flex flex-col space-y-8 text-left">
                   {/* Benefits */}
                   <div>
                     <h3 className="text-xl font-bold text-foreground mb-4 border-b border-border pb-2">Key Benefits</h3>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {treatment.benefits.map((benefit, i) => (
-                        <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                          <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <li key={i} className="flex items-start gap-2 text-muted-foreground text-sm">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                           <span>{benefit}</span>
                         </li>
                       ))}
@@ -166,28 +169,28 @@ export const Treatments: React.FC<TreatmentsProps> = ({
 
                   {/* Process */}
                   <div className="bg-card/50 rounded-2xl p-6 border border-border">
-                    <h3 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                    <h3 className="text-base font-bold text-foreground mb-2 flex items-center gap-2">
                       <Activity className="w-5 h-5 text-primary" />
-                      Treatment Process
+                      Treatment Protocol
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">{treatment.process}</p>
+                    <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{treatment.process}</p>
                   </div>
 
                   {/* Duration & Recovery */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 flex items-center gap-2">
                         <Clock className="w-4 h-4 text-primary" />
                         Duration
                       </h4>
-                      <p className="text-muted-foreground text-sm">{treatment.duration}</p>
+                      <p className="text-muted-foreground text-xs sm:text-sm">{treatment.duration}</p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-2 flex items-center gap-2">
+                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-1 flex items-center gap-2">
                         <Activity className="w-4 h-4 text-primary" />
                         Recovery
                       </h4>
-                      <p className="text-muted-foreground text-sm">{treatment.recovery}</p>
+                      <p className="text-muted-foreground text-xs sm:text-sm">{treatment.recovery}</p>
                     </div>
                   </div>
 
@@ -195,26 +198,26 @@ export const Treatments: React.FC<TreatmentsProps> = ({
                   {(treatment.id === 'implants' || treatment.id === 'smile-design' || treatment.id === 'braces' || treatment.id === 'aligners') && (
                     <div className="bg-primary/5 border border-primary/10 rounded-2xl p-4 flex items-center justify-between gap-4">
                       <div>
-                        <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">Special Finance Offer</span>
+                        <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">Flexible Payment</span>
                         <p className="text-xs font-bold mt-0.5">0% Interest EMI Plans Available</p>
-                        <p className="text-[11px] text-muted-foreground">Easy finance options via Bajaj Finserv, HDFC, and all major credit cards.</p>
+                        <p className="text-[11px] text-muted-foreground">Easy monthly payment via Bajaj Finserv and major credit cards.</p>
                       </div>
-                      <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded">₹3,000/mo min</span>
+                      <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-bold px-2 py-1 rounded">0% EMI</span>
                     </div>
                   )}
 
                   {/* FAQ & CTA */}
-                  <div className="pt-6 border-t border-border">
-                    <div className="mb-6">
-                      <h4 className="text-base font-bold text-foreground mb-2">Q: {treatment.faq.q}</h4>
-                      <p className="text-muted-foreground text-sm italic">A: {treatment.faq.a}</p>
+                  <div className="pt-4 border-t border-border">
+                    <div className="mb-5">
+                      <h4 className="text-sm font-bold text-foreground mb-1">Q: {treatment.faq.q}</h4>
+                      <p className="text-muted-foreground text-xs italic">A: {treatment.faq.a}</p>
                     </div>
                     <button
                       onClick={() => handleQuickBook(treatment.name)}
-                      className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:bg-primary/90 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto"
+                      className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:bg-primary/90 transition-all text-xs sm:text-sm cursor-pointer"
                     >
-                      Book {treatment.name}
-                      <ArrowRight className="w-5 h-5" />
+                      Book Consultation for {treatment.name}
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -225,31 +228,27 @@ export const Treatments: React.FC<TreatmentsProps> = ({
       </section>
 
       {/* Footer CTA */}
-      <section className="py-24 bg-card border-t border-border relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-64 bg-primary/20 blur-[100px] rounded-full pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10 space-y-8">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-foreground">
-            Not sure which treatment is right for you?
+      <section className="py-20 bg-card border-t border-border relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 text-center relative z-10 space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
+            Consult Directly with {activeClinic.doctorName}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Schedule a comprehensive consultation. Our experts will evaluate your oral health 
-            and design a personalized treatment plan just for you.
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Schedule a comprehensive in-clinic examination at {activeClinic.name}, {activeClinic.location}.
           </p>
           <button
             onClick={() => handleQuickBook()}
-            className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-foreground text-background font-bold text-lg rounded-2xl shadow-xl hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background font-bold text-sm rounded-2xl shadow-xl hover:scale-105 transition-all cursor-pointer"
           >
-            Get Expert Opinion
-            <ArrowRight className="w-6 h-6" />
+            Book Clinical Examination
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-border bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
-          <p>&copy; 2026 DentalFlow AI. Built with premium medical design. All rights reserved.</p>
-        </div>
+      <footer className="py-8 border-t border-border bg-background text-center text-xs text-muted-foreground">
+        <p>&copy; 2026 {activeClinic.name} ({activeClinic.location}). Powered by AutoBuild Buddy 24/7 AI Growth Engine.</p>
       </footer>
     </div>
   );

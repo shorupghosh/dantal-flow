@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#060e1e"/>
+  <title>Dr. Anjali Aggarwal (Sita Dental Clinic) — 24/7 Patient Engine Walkthrough</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-dark: #060e1e;
+      --bg-card: rgba(13, 27, 49, 0.75);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-accent: rgba(16, 185, 129, 0.3);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
+      --wa-green: #25D366;
+      --teal: #14b8a6;
+      --blue: #3b82f6;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --nav-h: 70px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-dark);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* Ambient Lighting Background */
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .glow-orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.35; animation: float 14s infinite alternate ease-in-out; }
+    .orb-1 { width: 500px; height: 500px; top: -10%; left: -10%; background: radial-gradient(circle, #10b981, transparent 70%); }
+    .orb-2 { width: 450px; height: 450px; bottom: -10%; right: -5%; background: radial-gradient(circle, #3b82f6, transparent 70%); animation-delay: -5s; }
+    .orb-3 { width: 350px; height: 350px; top: 40%; left: 60%; background: radial-gradient(circle, #14b8a6, transparent 70%); animation-delay: -9s; }
+    @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 40px) scale(1.08); } }
+
+    /* Top Progress Bar */
+    .progress-bar-container { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.06); z-index: 300; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--emerald), var(--teal), var(--blue)); width: 16.66%; transition: width 0.35s ease; }
+
+    /* Header Bar */
+    .header-bar {
+      position: fixed; top: 12px; left: 16px; right: 16px; z-index: 250;
+      display: flex; justify-content: space-between; align-items: center; pointer-events: none;
+    }
+    .header-pill {
+      pointer-events: all;
+      background: rgba(13, 27, 49, 0.85);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      padding: 8px 16px;
+      border-radius: 50px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .clinic-badge { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+    .loc-tag { font-size: 11px; color: var(--emerald); font-weight: 600; padding: 2px 8px; background: rgba(16, 185, 129, 0.12); border-radius: 20px; }
+
+    .header-actions { pointer-events: all; display: flex; gap: 8px; align-items: center; }
+    .hud-btn {
+      background: rgba(13, 27, 49, 0.85);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      backdrop-filter: blur(16px);
+      transition: all 0.2s;
+    }
+    .hud-btn:hover { border-color: var(--emerald); background: rgba(16, 185, 129, 0.15); }
+    .hud-btn.timer-running { border-color: var(--amber); color: var(--amber); }
+
+    /* Slides Container */
+    .slides-viewport { position: relative; width: 100%; height: 100%; overflow: hidden; z-index: 10; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 75px 20px calc(var(--nav-h) + 20px);
+      overflow-y: auto; overflow-x: hidden;
+      opacity: 0; transform: translateX(50px);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .slide::-webkit-scrollbar { display: none; }
+    .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+    .slide.exit { opacity: 0; transform: translateX(-50px); }
+
+    @media (min-width: 800px) {
+      .slide { justify-content: center; padding: 80px 40px calc(var(--nav-h) + 25px); }
+    }
+
+    /* Content Styling */
+    .slide-content { width: 100%; max-width: 980px; text-align: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 50px;
+      font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+      background: rgba(16, 185, 129, 0.12); color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      margin-bottom: 16px;
+    }
+    .eyebrow.red { background: rgba(239, 68, 68, 0.12); color: #f87171; border-color: rgba(239, 68, 68, 0.25); }
+    .eyebrow.gold { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border-color: rgba(245, 158, 11, 0.25); }
+
+    h1 { font-size: clamp(28px, 5.5vw, 56px); font-weight: 800; line-height: 1.12; margin-bottom: 16px; letter-spacing: -0.02em; }
+    h2 { font-size: clamp(22px, 4.2vw, 42px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; letter-spacing: -0.02em; }
+    p.lead { font-size: clamp(13px, 1.8vw, 17px); color: var(--text-muted); line-height: 1.6; max-width: 700px; margin: 0 auto 28px; }
+
+    .highlight-emerald { background: linear-gradient(135deg, #34d399, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .highlight-gold { background: linear-gradient(135deg, #fde047, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* Cards & Layouts */
+    .card-grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; text-align: left; }
+    @media (min-width: 768px) { .card-grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .card-grid-2 { display: grid; grid-template-columns: 1fr; gap: 18px; width: 100%; text-align: left; }
+    @media (min-width: 768px) { .card-grid-2 { grid-template-columns: 1fr 1fr; } }
+
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s;
+    }
+    .glass-card:hover { border-color: var(--border-accent); transform: translateY(-3px); }
+
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 14px;
+    }
+    .icon-red { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.25); }
+    .icon-emerald { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.25); }
+    .icon-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.25); }
+    .icon-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+
+    .card-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .card-body { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+    .card-tag { display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+    /* Comparison Box (Before vs After) */
+    .compare-container {
+      display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; text-align: left;
+    }
+    @media (min-width: 768px) { .compare-container { grid-template-columns: 1fr 1fr; } }
+    .compare-box {
+      border-radius: 20px; padding: 24px; background: rgba(13, 27, 49, 0.7);
+      border: 1px solid var(--border);
+    }
+    .compare-box.bad { border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.03); }
+    .compare-box.good { border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.04); }
+    .compare-header { font-size: 14px; font-weight: 800; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+    .flow-step { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; line-height: 1.45; }
+    .flow-bullet { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; shrink-0; }
+    .bad .flow-bullet { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .good .flow-bullet { background: rgba(16, 185, 129, 0.2); color: var(--emerald); }
+
+    /* Pilot Offer Box */
+    .pilot-contract-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(6, 182, 212, 0.05));
+      border: 2px solid rgba(16, 185, 129, 0.4);
+      border-radius: 24px; padding: clamp(20px, 4vw, 36px);
+      text-align: left; width: 100%; box-shadow: 0 10px 40px rgba(16, 185, 129, 0.1);
+    }
+    .pilot-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 20px 0; }
+    @media (min-width: 640px) { .pilot-grid { grid-template-columns: 1fr 1fr; } }
+    .pilot-item {
+      background: rgba(6, 14, 30, 0.6); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px 18px;
+    }
+    .pilot-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
+    .pilot-val { font-size: 16px; font-weight: 800; color: #fff; margin-top: 4px; }
+    .pilot-val.free { color: var(--emerald); }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-h);
+      background: rgba(6, 14, 30, 0.92); backdrop-filter: blur(24px);
+      border-top: 1px solid var(--border); z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+    .nav-btn-circle {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
+      color: #fff; font-size: 18px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .nav-btn-circle:hover { background: var(--emerald); border-color: var(--emerald); color: #000; }
+    
+    .nav-tracker { display: flex; gap: 6px; align-items: center; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); cursor: pointer; transition: all 0.2s; }
+    .nav-dot.active { width: 26px; border-radius: 6px; background: var(--emerald); }
+
+    /* Live Drawer (Caller HUD / Objection Sheet) */
+    .drawer-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      z-index: 400; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .caller-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 90vw);
+      background: #0b1528; border-left: 1px solid var(--border); z-index: 450;
+      transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;
+    }
+    .caller-drawer.open { transform: translateX(0); }
+    .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+    
+    .objection-card {
+      background: rgba(13, 27, 49, 0.9); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px; text-align: left;
+    }
+    .objection-q { font-size: 12px; font-weight: 800; color: #fbbf24; margin-bottom: 6px; }
+    .objection-a { font-size: 12px; color: #cbd5e1; line-height: 1.5; }
+
+    .copy-box {
+      background: rgba(0,0,0,0.4); border: 1px dashed var(--border);
+      border-radius: 10px; padding: 10px; font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: #94a3b8; position: relative;
+    }
+    .copy-btn {
+      position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 700;
+      background: var(--emerald); color: #000; border: none; border-radius: 6px;
+      padding: 4px 8px; cursor: pointer;
+    }
+
+    .action-btn-main {
+      padding: 13px 26px; border-radius: 14px; font-size: 14px; font-weight: 800;
+      background: linear-gradient(135deg, var(--emerald), var(--teal));
+      color: #042f2e; border: none; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 24px var(--emerald-glow); transition: all 0.2s;
+    }
+    .action-btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--emerald-glow); }
+
+    .action-btn-secondary {
+      padding: 13px 24px; border-radius: 14px; font-size: 14px; font-weight: 700;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .action-btn-secondary:hover { border-color: var(--emerald); background: rgba(16, 185, 129, 0.1); }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow -->
+  <div class="bg-canvas">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="header-bar">
+    <div class="header-pill">
+      <span style="font-size: 16px;">🦷</span>
+      <div>
+        <div class="clinic-badge">Sita Dental Clinic</div>
+      </div>
+      <span class="loc-tag">Galleria Market, DLF 4</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="hud-btn" id="timerBtn" onclick="toggleTimer()">
+        ⏱️ <span id="timerDisplay">05:00</span>
+      </button>
+      <button class="hud-btn" onclick="toggleDrawer()">
+        🛡️ Caller Cheat Sheet
+      </button>
+    </div>
+  </div>
+
+  <!-- Slides -->
+  <div class="slides-viewport" id="slidesViewport">
+
+    <!-- SLIDE 1: COVER & DOCTOR SPOTLIGHT -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-content">
+        <div class="eyebrow">
+          <span>✨</span> Clinical Growth Intelligence for Dr. Anjali Aggarwal
+        </div>
+        <h1>
+          Plugging the 8 PM Patient Leakage for <br/>
+          <span class="highlight-emerald">Sita Dental Clinic</span>
+        </h1>
+        <p class="lead">
+          How to capture high-value DLF Phase IV cosmetic, crown & implant patients after clinic hours — with <strong>zero extra receptionist workload</strong>.
+        </p>
+
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 30px;">
+          <a href="https://dantal-flow.vercel.app/" target="_blank" class="action-btn-main">
+            🚀 Open Live Clinic Demo
+          </a>
+          <button onclick="goToSlide(2)" class="action-btn-secondary">
+            View Diagnostic Report →
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; max-width: 680px; margin: 0 auto; text-align: left;">
+          <div class="glass-card" style="padding: 14px 18px;">
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">DOCTOR</div>
+            <div style="font-size: 14px; font-weight: 800; color: #fff; margin-top: 2px;">Dr. Anjali Aggarwal</div>
+            <div style="font-size: 10px; color: var(--emerald); font-mono;">30+ Yrs Practice</div>
+          </div>
+          <div class="glass-card" style="padding: 14px 18px;">
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">LOCATION</div>
+            <div style="font-size: 14px; font-weight: 800; color: #fff; margin-top: 2px;">Galleria Market</div>
+            <div style="font-size: 10px; color: var(--blue);">DLF Phase IV, Gurugram</div>
+          </div>
+          <div class="glass-card" style="padding: 14px 18px;">
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">GOOGLE TRUST</div>
+            <div style="font-size: 14px; font-weight: 800; color: #fbbf24; margin-top: 2px;">5.0 ★★★★★</div>
+            <div style="font-size: 10px; color: var(--text-muted);">15 Verified Reviews</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: THE 3 REVENUE LEAKS -->
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <div class="eyebrow red">
+          <span>🚨</span> Clinical Audit Findings
+        </div>
+        <h2>Where Sita Dental Is Losing Patient Inquiries</h2>
+        <p class="lead">
+          Even with 30 years of reputation and a 5.0-star rating, three hidden leaks cost your practice 10–15 high-value consultation bookings every single month.
+        </p>
+
+        <div class="card-grid-3">
+          <div class="glass-card">
+            <div class="card-icon icon-red">🌙</div>
+            <h3 class="card-title">1. The 8 PM Galleria Shutdown</h3>
+            <p class="card-body">
+              DLF Phase IV corporate executives search for dentists between <strong>8:30 PM and 11:30 PM</strong>. With reception closed, 7 out of 10 move to competing NCR clinics that confirm on WhatsApp instantly.
+            </p>
+            <span class="card-tag" style="color: #f87171;">40%+ Night Inquiries Lost</span>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon icon-amber">📑</div>
+            <h3 class="card-title">2. The Practo Competitor Trap</h3>
+            <p class="card-body">
+              When patients search Dr. Anjali Aggarwal on Practo, competitor clinic sponsored ads appear right under your profile in Sector 43/52, pulling high-intent patients away.
+            </p>
+            <span class="card-tag" style="color: #fbbf24;">Direct Traffic Hijacking</span>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon icon-blue">💬</div>
+            <h3 class="card-title">3. Staff Phone-Tag Friction</h3>
+            <p class="card-body">
+              During clinic hours, staff spend 20 minutes manually texting: <em>"Which treatment? What time are you free?"</em> while patients wait and lose interest.
+            </p>
+            <span class="card-tag" style="color: #60a5fa;">2–3 Hours Wasted Daily</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: BEFORE VS AFTER PATIENT EXPERIENCE -->
+    <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <div class="eyebrow gold">
+          <span>⚖️</span> Patient Experience Benchmark
+        </div>
+        <h2>What Happens When a Patient Inquires at 10:30 PM?</h2>
+        <p class="lead">Comparing the current traditional front-desk setup with the AutoBuild Buddy 24/7 WhatsApp Engine.</p>
+
+        <div class="compare-container">
+          <div class="compare-box bad">
+            <div class="compare-header" style="color: #f87171;">
+              <span>❌</span> Current Experience (Without System)
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">1</div>
+              <div>Patient has tooth pain or wants cosmetic veneers at 10:30 PM in DLF Phase 4.</div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">2</div>
+              <div>Calls clinic phone ➔ No answer (Clinic closed at 8 PM).</div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">3</div>
+              <div>Sends a WhatsApp message ➔ Left on unread until 10:00 AM next morning.</div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">4</div>
+              <div><strong>Result:</strong> Patient books another Gurgaon clinic that responds in 2 minutes.</div>
+            </div>
+          </div>
+
+          <div class="compare-box good">
+            <div class="compare-header" style="color: var(--emerald);">
+              <span>✅</span> With AutoBuild Buddy 24/7 Engine
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">1</div>
+              <div>Patient clicks WhatsApp link on Google Maps or website at 10:30 PM.</div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">2</div>
+              <div>AI assistant welcomes them with <em>"Namaskar"</em> in 5 seconds.</div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">3</div>
+              <div>Triages condition (Cosmetic / RCT / Implant) & locks a slot based on Dr. Anjali's schedule.</div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-bullet">4</div>
+              <div><strong>Result:</strong> Patient booked. Front desk gets a WhatsApp alert summary instantly.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: HOW THE WHATSAPP ENGINE WORKS -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <div class="eyebrow">
+          <span>⚡</span> 4-Step Technical Simplicity
+        </div>
+        <h2>From Inquiring Visitor to Confirmed Chair Slot</h2>
+        <p class="lead">Fully automated on your existing clinic WhatsApp number with <strong>zero clinical diagnosis risks</strong>.</p>
+
+        <div class="card-grid-2">
+          <div class="glass-card" style="border-left: 4px solid var(--emerald);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--emerald); font-family: 'JetBrains Mono';">STEP 01</div>
+            <h3 class="card-title" style="margin-top: 4px;">1. Instant Warm Triage (5 Secs)</h3>
+            <p class="card-body">
+              Greets the patient politely, asks what treatment they need (Veneers, Implants, Root Canal, General Checkup), and explains consultation fee (₹1,000).
+            </p>
+          </div>
+
+          <div class="glass-card" style="border-left: 4px solid var(--teal);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--teal); font-family: 'JetBrains Mono';">STEP 02</div>
+            <h3 class="card-title" style="margin-top: 4px;">2. Interactive Slot Selection</h3>
+            <p class="card-body">
+              Presents real consultation timings (e.g. 11:30 AM, 4:00 PM, 6:30 PM) so the patient picks their preferred slot in 2 taps.
+            </p>
+          </div>
+
+          <div class="glass-card" style="border-left: 4px solid var(--blue);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--blue); font-family: 'JetBrains Mono';">STEP 03</div>
+            <h3 class="card-title" style="margin-top: 4px;">3. Instant Staff Buzz Card</h3>
+            <p class="card-body">
+              Your receptionist receives a clean WhatsApp lead notification card with patient name, phone number, treatment, and slot booked.
+            </p>
+          </div>
+
+          <div class="glass-card" style="border-left: 4px solid var(--amber);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--amber); font-family: 'JetBrains Mono';">STEP 04</div>
+            <h3 class="card-title" style="margin-top: 4px;">4. Automated WhatsApp Reminders</h3>
+            <p class="card-body">
+              Sends automated reminder pings 2 hours before the appointment to slash patient no-shows down to near zero.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: ROI MATHEMATICS -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <div class="eyebrow gold">
+          <span>📈</span> ROI Business Case
+        </div>
+        <h2>Just 1 Saved Patient Pays for the Entire System</h2>
+        <p class="lead">Because Sita Dental specializes in premium cosmetic and restorative procedures, unit economics are extraordinarily favorable.</p>
+
+        <div class="card-grid-3" style="margin-bottom: 24px;">
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">DENTAL IMPLANT</div>
+            <div style="font-size: 28px; font-weight: 800; color: var(--emerald); font-family: 'JetBrains Mono'; margin: 6px 0;">₹65,000</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Average case value</div>
+          </div>
+
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">SMILE MAKEOVER / VENEERS</div>
+            <div style="font-size: 28px; font-weight: 800; color: var(--teal); font-family: 'JetBrains Mono'; margin: 6px 0;">₹90,000+</div>
+            <div style="font-size: 11px; color: var(--text-muted);">6–10 unit rehabilitation</div>
+          </div>
+
+          <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">SYSTEM SETUP COST</div>
+            <div style="font-size: 28px; font-weight: 800; color: #fff; font-family: 'JetBrains Mono'; margin: 6px 0;">₹9,999</div>
+            <div style="font-size: 11px; color: var(--emerald); font-weight: 700;">1-Time Flat Investment</div>
+          </div>
+        </div>
+
+        <div class="glass-card" style="background: rgba(16, 185, 129, 0.06); border-color: rgba(16, 185, 129, 0.3); padding: 18px 24px; text-align: center;">
+          <strong style="color: #fff; font-size: 15px;">The Bottom Line for Dr. Anjali:</strong>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+            Capturing just <strong>ONE single implant or restorative case</strong> in the next 12 months delivers a <strong>600% to 900% ROI</strong> on this system.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: 7-DAY ZERO-RISK PILOT AGREEMENT -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <div class="eyebrow">
+          <span>🤝</span> Zero Risk Performance Pilot
+        </div>
+        <h2>The 7-Day ₹0 Upfront Pilot Agreement</h2>
+        <p class="lead">We configure and launch the system for Sita Dental with zero financial risk to Dr. Anjali.</p>
+
+        <div class="pilot-contract-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+            <div>
+              <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Performance Guarantee Terms</h3>
+              <p style="font-size: 12px; color: var(--text-muted);">Sita Dental Clinic (Galleria Market) Pilot</p>
+            </div>
+            <span style="font-size: 11px; font-weight: 800; background: rgba(16, 185, 129, 0.2); color: var(--emerald); padding: 4px 10px; border-radius: 50px;">
+              100% RISK-FREE
+            </span>
+          </div>
+
+          <div class="pilot-grid">
+            <div class="pilot-item">
+              <div class="pilot-label">Setup Time</div>
+              <div class="pilot-val">48 Hours (Turnkey)</div>
+            </div>
+            <div class="pilot-item">
+              <div class="pilot-label">Upfront Payment</div>
+              <div class="pilot-val free">₹0 Upfront</div>
+            </div>
+            <div class="pilot-item">
+              <div class="pilot-label">Pilot Benchmark</div>
+              <div class="pilot-val">Min. 2 Confirmed Bookings in 7 Days</div>
+            </div>
+            <div class="pilot-item">
+              <div class="pilot-label">If Successful</div>
+              <div class="pilot-val">₹9,999 Flat One-Time Setup</div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5; border-top: 1px solid var(--border); padding-top: 14px;">
+            🛡️ <strong>If it fails to bring in at least 2 confirmed consultations in 7 days:</strong> You owe ₹0, and we turn the system off with zero hassle.
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; display: flex; justify-content: center; gap: 14px;">
+          <a href="https://dantal-flow.vercel.app/" target="_blank" class="action-btn-main">
+            🚀 Test Live Demo on Phone
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav Bar -->
+  <div class="bottom-nav">
+    <button class="nav-btn-circle" onclick="prevSlide()" title="Previous Slide">←</button>
+
+    <div class="nav-tracker">
+      <span class="nav-dot active" onclick="goToSlide(1)"></span>
+      <span class="nav-dot" onclick="goToSlide(2)"></span>
+      <span class="nav-dot" onclick="goToSlide(3)"></span>
+      <span class="nav-dot" onclick="goToSlide(4)"></span>
+      <span class="nav-dot" onclick="goToSlide(5)"></span>
+      <span class="nav-dot" onclick="goToSlide(6)"></span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 12px; color: var(--text-muted); font-mono;" id="slideCounter">1 / 6</span>
+      <button class="nav-btn-circle" onclick="nextSlide()" title="Next Slide">→</button>
+    </div>
+  </div>
+
+  <!-- Caller Drawer & Objection Sheet -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+  <div class="caller-drawer" id="callerDrawer">
+    <div class="drawer-header">
+      <div>
+        <h3 style="font-size: 15px; font-weight: 800; color: #fff;">📞 Sales Caller Cheat Sheet</h3>
+        <p style="font-size: 11px; color: var(--text-muted);">Dr. Anjali Aggarwal 5-Min Live Call Script</p>
+      </div>
+      <button onclick="toggleDrawer()" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">✕</button>
+    </div>
+
+    <!-- 5-Minute Call Flow -->
+    <div>
+      <h4 style="font-size: 12px; font-weight: 800; color: var(--emerald); text-transform: uppercase; margin-bottom: 8px;">
+        ⏱️ 5-Minute Call Pacing Strategy
+      </h4>
+      <div style="font-size: 11px; color: #cbd5e1; line-height: 1.6; space-y-2;">
+        <div><strong>Min 0–1:</strong> Compliment 30-year Galleria legacy & 5.0 rating.</div>
+        <div><strong>Min 1–2:</strong> Ask: <em>"How do DLF Phase 4 patients book after 8 PM?"</em></div>
+        <div><strong>Min 2–3.5:</strong> Explain 24/7 WhatsApp triage & slot booking.</div>
+        <div><strong>Min 3.5–5:</strong> Close on 7-Day ₹0 Upfront Pilot (2 bookings or ₹0).</div>
+      </div>
+    </div>
+
+    <!-- Objection Handling Cards -->
+    <div>
+      <h4 style="font-size: 12px; font-weight: 800; color: #fbbf24; text-transform: uppercase; margin-bottom: 8px;">
+        🛡️ Instant Objection Answers
+      </h4>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        
+        <div class="objection-card">
+          <div class="objection-q">Q: "I already get patients through Practo & word-of-mouth."</div>
+          <div class="objection-a">
+            <em>"Doctor, your 30-year reputation is priceless! But Practo puts competing clinic ads right under your name. This WhatsApp system gives you 100% direct bookings with zero competitor ads."</em>
+          </div>
+        </div>
+
+        <div class="objection-card">
+          <div class="objection-q">Q: "Will this change my existing WhatsApp number?"</div>
+          <div class="objection-a">
+            <em>"Not at all, Doctor. It works directly on your clinic's existing number. Patients interact directly with Sita Dental."</em>
+          </div>
+        </div>
+
+        <div class="objection-card">
+          <div class="objection-q">Q: "Will it give wrong medical advice to patients?"</div>
+          <div class="objection-a">
+            <em>"Never. It is strictly a triage & appointment booking assistant. It never prescribes medicine or clinical diagnoses — it strictly collects symptoms and locks consultation slots."</em>
+          </div>
+        </div>
+
+        <div class="objection-card">
+          <div class="objection-q">Q: "What do you need from me to start?"</div>
+          <div class="objection-a">
+            <em>"Just 3 things: 1. Your consultation hours, 2. Top treatments to highlight, 3. The staff number for booking alerts. We do 100% of the tech setup."</em>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 1-Click WhatsApp Copy Templates -->
+    <div>
+      <h4 style="font-size: 12px; font-weight: 800; color: #60a5fa; text-transform: uppercase; margin-bottom: 8px;">
+        📲 Post-Call WhatsApp Agreement
+      </h4>
+      <div class="copy-box">
+        <button class="copy-btn" onclick="copyTemplate()">Copy</button>
+        <span id="postCallText">Namaskar Dr. Anjali! Summary of the 7-Day Zero-Risk Pilot for Sita Dental Clinic:
+✅ Setup Time: 48 Hours
+✅ Cost: ₹0 Upfront
+✅ Benchmark: Min 2 confirmed patient bookings in 7 days
+✅ If successful: ₹9,999 one-time. If not: ₹0.
+Excited to support Sita Dental! — AutoBuild Buddy</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function updateSlideView() {
+      document.querySelectorAll('.slide').forEach((slide, idx) => {
+        slide.classList.remove('active', 'exit');
+        if (idx + 1 === currentSlide) {
+          slide.classList.add('active');
+        } else if (idx + 1 < currentSlide) {
+          slide.classList.add('exit');
+        }
+      });
+
+      document.querySelectorAll('.nav-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+      document.getElementById('progressFill').style.width = `${(currentSlide / totalSlides) * 100}%`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlideView();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlideView();
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateSlideView();
+      }
+    }
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+
+    // Touch Swipe
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, false);
+    document.addEventListener('touchend', (e) => {
+      let touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) nextSlide();
+      if (touchEndX > touchStartX + 50) prevSlide();
+    }, false);
+
+    // 5-Minute Timer
+    let secondsLeft = 300;
+    let timerInterval = null;
+    function toggleTimer() {
+      const btn = document.getElementById('timerBtn');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.classList.remove('timer-running');
+      } else {
+        btn.classList.add('timer-running');
+        timerInterval = setInterval(() => {
+          if (secondsLeft > 0) {
+            secondsLeft--;
+            const mins = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+            const secs = (secondsLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${mins}:${secs}`;
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            btn.classList.remove('timer-running');
+            alert('5-Minute Call Window Completed!');
+          }
+        }, 1000);
+      }
+    }
+
+    // Drawer Toggle
+    function toggleDrawer() {
+      document.getElementById('drawerOverlay').classList.toggle('open');
+      document.getElementById('callerDrawer').classList.toggle('open');
+    }
+
+    // Copy Template
+    function copyTemplate() {
+      const text = document.getElementById('postCallText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Post-call agreement copied to clipboard!');
+      });
+    }
+  </script>
+</body>
+</html>
