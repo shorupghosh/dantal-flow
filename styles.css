@@ -1,0 +1,177 @@
+/* ==========================================
+   DentalFlow India - Main Stylesheet
+   Dark Mode Palette & Custom Utilities
+   ========================================== */
+
+:root {
+  --bg-slate: #030712;
+  --emerald-accent: #10b981;
+  --emerald-dark: #059669;
+  --emerald-light: #34d399;
+  --teal-accent: #14b8a6;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+  --slate-800: #1e293b;
+  --slate-700: #334155;
+  --slate-300: #cbd5e1;
+  --slate-100: #f1f5f9;
+  --emerald-glow: rgba(16, 185, 129, 0.25);
+  --emerald-glow-strong: rgba(16, 185, 129, 0.45);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-slate);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--slate-800);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--emerald-accent);
+}
+
+/* Glassmorphic Card Utilities */
+.glass-card {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.glass-glow {
+  box-shadow: 0 0 50px -12px var(--emerald-glow);
+}
+
+.glass-glow-strong {
+  box-shadow: 0 0 60px -10px var(--emerald-glow-strong);
+}
+
+/* Range Slider Custom Styling */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: var(--emerald-accent);
+  cursor: pointer;
+  box-shadow: 0 0 12px var(--emerald-glow-strong);
+  margin-top: -8px;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  background: var(--emerald-light);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: var(--slate-800);
+  border-radius: 4px;
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: var(--emerald-accent);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 12px var(--emerald-glow-strong);
+}
+
+/* Keyframes & Micro-Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.7);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.animate-bounce-subtle {
+  animation: bounceSubtle 2s infinite ease-in-out;
+}
+
+/* Responsive Utilities & Interactive Sliders */
+#before-after-container {
+  touch-action: pan-y;
+}
+
+#mobile-sticky-bar {
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Quiz Steps Transition */
+.quiz-step {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Toast Notification Floating Alert */
+#toast-notification {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 100;
+  max-width: 340px;
+  animation: slideUp 0.4s ease forwards;
+}

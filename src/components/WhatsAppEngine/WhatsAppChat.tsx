@@ -84,7 +84,9 @@ export const WhatsAppChat: React.FC<WhatsAppChatProps> = ({ conversation, onAppr
   }, [conversation?.id, conversation?.aiDraft]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (conversation?.messages) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [conversation?.messages]);
 
   if (!conversation) {
