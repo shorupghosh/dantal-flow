@@ -17,7 +17,7 @@ export const Home: React.FC<HomeProps> = ({
   setSelectedDoctorId,
   onOpenSimulator
 }) => {
-  const { reviews, activeClinic } = useDatabase();
+  const { reviews, activeClinic, doctors } = useDatabase();
   const [sliderPosition, setSliderPosition] = useState(50);
 
   const handleQuickBook = (treatment?: string, doctorId?: string) => {
@@ -130,13 +130,13 @@ export const Home: React.FC<HomeProps> = ({
 
               <div className="pt-2 flex items-center gap-6 text-xs text-muted-foreground font-mono">
                 <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                  ✓ Instant 5-Sec Triage
+                  ✓ Instant Clinical Triage
                 </span>
                 <span className="flex items-center gap-1 text-teal-400 font-bold">
-                  ✓ After-8 PM Auto-Booking
+                  {activeClinic.key === 'ManglaDental' ? '✓ 100% Doctor Calendar Control' : '✓ 100% Front Desk Control'}
                 </span>
                 <span className="hidden sm:flex items-center gap-1 text-blue-400 font-bold">
-                  ✓ 100% DPDPA Secure
+                  {activeClinic.key === 'ManglaDental' ? '✓ Zero Auto-Booking' : '✓ 100% DPDPA Secure'}
                 </span>
               </div>
             </div>
@@ -147,7 +147,7 @@ export const Home: React.FC<HomeProps> = ({
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-md">
                     <img 
-                      src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400" 
+                      src={doctors[0]?.imageUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400"} 
                       alt={activeClinic.doctorName}
                       className="w-full h-full object-cover rounded-2xl"
                     />
@@ -157,7 +157,7 @@ export const Home: React.FC<HomeProps> = ({
                     <p className="text-xs text-primary font-semibold">{activeClinic.doctorTitle.split('(')[0]}</p>
                     <div className="flex items-center text-yellow-500 text-xs font-bold mt-1">
                       <Star className="h-3.5 w-3.5 fill-yellow-400 mr-1" />
-                      5.0 (300+ Patients)
+                      5.0 ({activeClinic.key === 'ManglaDental' ? '500+ Patients (22+ Yrs)' : '300+ Patients'})
                     </div>
                   </div>
                 </div>
@@ -169,10 +169,10 @@ export const Home: React.FC<HomeProps> = ({
                   </div>
                   <div className="flex justify-between">
                     <span>Timings:</span>
-                    <strong className="text-foreground font-mono">Mon–Sat: Closes 8 PM</strong>
+                    <strong className="text-foreground font-mono">{activeClinic.key === 'ManglaDental' ? 'Mon–Sat: Closes 8:30 PM' : 'Mon–Sat: Closes 8 PM'}</strong>
                   </div>
                   <div className="flex justify-between text-emerald-500 font-bold pt-1 border-t border-border">
-                    <span>After-8 PM Inquiries:</span>
+                    <span>After-Hours Inquiries:</span>
                     <span>24/7 WhatsApp AI Active</span>
                   </div>
                 </div>

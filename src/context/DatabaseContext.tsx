@@ -8,19 +8,19 @@ const DEFAULT_DOCTORS: Doctor[] = [
   {
     id: 'doc-anjali',
     name: 'Dr. Anjali Aggarwal',
-    specialization: 'Senior Dental Surgeon & Restorative Specialist',
+    specialization: 'Senior Dental Surgeon (BDS - 30+ Yrs Exp) • Restorative, RCT, Cosmetic & Invisalign',
     imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400',
     email: 'dr.anjali@sitadental.com',
     phone: '+91 98183 45055',
-    bio: '30+ years of clinical excellence in cosmetic smile design, crowns, and advanced restorative dentistry in DLF Phase 4, Gurugram.',
+    bio: '30+ years of trusted clinical excellence in Galleria Market, DLF Phase 4. Specializing in Root Canal, Dental & Cosmetic Fillings, Crowns, Veneers, Bridges, and Invisalign.',
     rating: 5.0,
     availability: {
-      Monday: ["10:00", "11:30", "14:00", "16:30", "18:00"],
-      Tuesday: ["10:00", "11:30", "14:00", "16:30", "18:00"],
-      Wednesday: ["10:00", "11:30", "14:00", "16:30", "18:00"],
-      Thursday: ["10:00", "11:30", "14:00", "16:30", "18:00"],
-      Friday: ["10:00", "11:30", "14:00", "16:30", "18:00"],
-      Saturday: ["10:00", "11:30", "14:00", "16:00"]
+      Monday: ["11:00", "12:00", "13:00", "14:00", "15:00"],
+      Tuesday: ["11:00", "12:00", "13:00", "14:00", "15:00"],
+      Wednesday: ["11:00", "12:00", "13:00", "14:00", "15:00"],
+      Thursday: ["11:00", "12:00", "13:00", "14:00", "15:00"],
+      Friday: ["11:00", "12:00", "13:00", "14:00", "15:00"],
+      Saturday: ["11:00", "12:00", "13:00", "14:00", "15:00"]
     }
   },
   {
@@ -53,6 +53,49 @@ const DEFAULT_DOCTORS: Doctor[] = [
       Thursday: ["11:00", "14:00", "17:00"],
       Saturday: ["11:00", "14:00", "17:00"]
     }
+  },
+  {
+    id: 'doc-mangla',
+    name: 'Dr. Asheesh Mangla',
+    specialization: 'Senior Prosthodontist & Implantologist (MDS - 22+ Yrs Exp) • Full Mouth Rehab, Implants, Fixed Teeth',
+    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+    email: 'dr.mangla@gurgaon-dental.com',
+    phone: '+91 95401 77077',
+    bio: '22+ years of senior surgical & prosthetic excellence near HUDA Market, Sector 31, Gurugram. Specializing in single & full-arch dental implants, advanced crown & bridge prosthetics, and complete smile restorations.',
+    rating: 5.0,
+    availability: {
+      Monday: ["10:00", "11:30", "17:00", "18:30"],
+      Tuesday: ["10:00", "11:30", "17:00", "18:30"],
+      Wednesday: ["10:00", "11:30", "17:00", "18:30"],
+      Thursday: ["10:00", "11:30", "17:00", "18:30"],
+      Friday: ["10:00", "11:30", "17:00", "18:30"],
+      Saturday: ["10:00", "11:30", "17:00", "18:30"]
+    }
+  }
+];
+
+const MANGLA_REVIEWS: Review[] = [
+  {
+    id: 'rev-mangla-1',
+    patientId: 'pat-m1',
+    patientName: 'Sunil Grover (Sector 31, Gurugram)',
+    doctorId: 'doc-mangla',
+    doctorName: 'Dr. Asheesh Mangla',
+    rating: 5,
+    comment: 'Dr. Mangla replaced my missing molars with implants. Complete pain-free precision and genuine 22-year mastery. The clinic coordination was seamless and respectful.',
+    aiResponse: 'Thank you Sunil Ji! Delighted to restore your chewing comfort.',
+    createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+  },
+  {
+    id: 'rev-mangla-2',
+    patientId: 'pat-m2',
+    patientName: 'Kavita Chawla (South City 1)',
+    doctorId: 'doc-mangla',
+    doctorName: 'Dr. Asheesh Mangla',
+    rating: 5,
+    comment: 'Best prosthodontist in Gurgaon. Got full zirconia bridges done. Perfect bite alignment with zero discomfort.',
+    aiResponse: 'Thank you Kavita Ji! Always a pleasure caring for your dental health.',
+    createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
   }
 ];
 
@@ -151,6 +194,9 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (clinicParam && CLINIC_PRESETS[clinicParam]) {
         return CLINIC_PRESETS[clinicParam];
       }
+      if (clinicParam && (clinicParam.toLowerCase().includes('mangla') || clinicParam.toLowerCase().includes('sector31'))) {
+        return CLINIC_PRESETS.ManglaDental;
+      }
       if (clinicParam && clinicParam.toLowerCase().includes('sita')) {
         return CLINIC_PRESETS.SitaDental;
       }
@@ -159,11 +205,23 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return CLINIC_PRESETS.SitaDental || CLINIC_PRESETS.DentalFlow;
   });
 
-  const [doctors, setDoctors] = useState<Doctor[]>(DEFAULT_DOCTORS);
+  const [doctors, setDoctors] = useState<Doctor[]>(() => {
+    if (activeClinic.key === 'ManglaDental') {
+      const mangla = DEFAULT_DOCTORS.find(d => d.id === 'doc-mangla');
+      const others = DEFAULT_DOCTORS.filter(d => d.id !== 'doc-mangla');
+      return mangla ? [mangla, ...others] : DEFAULT_DOCTORS;
+    }
+    return DEFAULT_DOCTORS;
+  });
   const [staff, setStaff] = useState<Staff[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [reviews, setReviews] = useState<Review[]>(DEFAULT_REVIEWS);
+  const [reviews, setReviews] = useState<Review[]>(() => {
+    if (activeClinic.key === 'ManglaDental') {
+      return MANGLA_REVIEWS;
+    }
+    return DEFAULT_REVIEWS;
+  });
   const [leads, setLeads] = useState<Lead[]>(DEFAULT_LEADS);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -174,6 +232,21 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setActiveClinic(CLINIC_PRESETS[key]);
     }
   };
+
+  // Sync doctors and reviews whenever active clinic changes
+  useEffect(() => {
+    if (activeClinic.key === 'ManglaDental') {
+      const mangla = DEFAULT_DOCTORS.find(d => d.id === 'doc-mangla');
+      const others = DEFAULT_DOCTORS.filter(d => d.id !== 'doc-mangla');
+      if (mangla) {
+        setDoctors([mangla, ...others]);
+      }
+      setReviews(MANGLA_REVIEWS);
+    } else {
+      setDoctors(DEFAULT_DOCTORS);
+      setReviews(DEFAULT_REVIEWS);
+    }
+  }, [activeClinic]);
 
   // Initialize data from Supabase API if configured, else keep robust defaults
   useEffect(() => {

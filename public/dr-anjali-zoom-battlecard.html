@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Anjali Aggarwal — Zoom Sales Battlecard & Call Audit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #060e1e;
+      --card-bg: #0c182e;
+      --card-inner: #112240;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-emerald: rgba(16, 185, 129, 0.35);
+      --emerald: #10b981;
+      --emerald-light: #34d399;
+      --teal: #14b8a6;
+      --blue: #3b82f6;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.45;
+      padding: 30px 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .container { max-width: 920px; margin: 0 auto; }
+
+    .page {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px 40px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page {
+        page-break-after: always;
+        max-width: 100%;
+        margin: 0 0 20px 0;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        padding: 24px 28px;
+        background: #060e1e !important;
+        color: #f8fafc !important;
+      }
+      .no-print { display: none !important; }
+    }
+
+    /* Ambient Header Glow */
+    .glow-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 5px;
+      background: linear-gradient(90deg, var(--emerald), var(--teal), var(--blue));
+    }
+
+    /* Header Section */
+    .header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .brand-title {
+      font-size: 22px; font-weight: 900; letter-spacing: -0.02em; color: #fff;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .brand-subtitle { font-size: 12px; color: var(--emerald-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .badge-target {
+      background: rgba(16, 185, 129, 0.12); border: 1px solid var(--border-emerald);
+      border-radius: 12px; padding: 8px 14px; text-align: right;
+    }
+    .target-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .target-clinic { font-size: 11px; color: var(--text-muted); }
+
+    /* Action bar */
+    .action-bar {
+      display: flex; gap: 10px; margin-bottom: 20px; justify-content: flex-end;
+    }
+    .btn-action {
+      background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border);
+      color: #fff; padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 700;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-action:hover { background: var(--emerald); color: #000; border-color: var(--emerald); }
+
+    /* Section Headings */
+    .section-title {
+      font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title.red { color: #f87171; }
+    .section-title.emerald { color: var(--emerald-light); }
+    .section-title.blue { color: #60a5fa; }
+    .section-title.amber { color: #fbbf24; }
+
+    /* Grids & Cards */
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 20px; }
+    @media (min-width: 650px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+    @media (min-width: 650px) { .grid-3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .card {
+      background: var(--card-inner); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .card.red-border { border-left: 4px solid var(--red); }
+    .card.green-border { border-left: 4px solid var(--emerald); }
+    .card.blue-border { border-left: 4px solid var(--blue); }
+    .card.amber-border { border-left: 4px solid var(--amber); }
+
+    .card-head { font-size: 12px; font-weight: 800; color: #fff; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .card-body { font-size: 11.5px; color: var(--text-muted); line-height: 1.45; }
+
+    /* Polish Table */
+    table.table-polish {
+      width: 100%; border-collapse: collapse; margin-bottom: 20px;
+      font-size: 11.5px; border-radius: 12px; overflow: hidden;
+    }
+    table.table-polish th {
+      background: rgba(255,255,255,0.06); text-align: left; padding: 10px 14px;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    table.table-polish td {
+      padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      background: var(--card-inner);
+    }
+    .text-bad { color: #f87171; font-weight: 600; }
+    .text-good { color: var(--emerald-light); font-weight: 700; }
+
+    /* Script Blocks */
+    .script-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.05));
+      border: 1px solid var(--border-emerald);
+      border-radius: 16px; padding: 16px 20px; margin-bottom: 18px; position: relative;
+    }
+    .script-phase-title {
+      font-size: 12px; font-weight: 800; color: var(--emerald-light);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .script-text {
+      font-size: 12.5px; color: #e2e8f0; line-height: 1.6; font-style: normal;
+    }
+    .script-text strong { color: #fff; }
+    .script-stage-dir {
+      font-size: 10.5px; color: #fbbf24; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 6px; display: block;
+    }
+
+    .copy-chip {
+      background: rgba(16, 185, 129, 0.2); color: var(--emerald-light);
+      border: 1px solid var(--border-emerald); border-radius: 6px;
+      padding: 3px 8px; font-size: 10px; font-weight: 700; cursor: pointer;
+    }
+    .copy-chip:hover { background: var(--emerald); color: #000; }
+
+    /* Key Value Stats */
+    .stat-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700;
+    }
+
+    /* Print Header & Footer */
+    .page-footer {
+      border-top: 1px solid var(--border); padding-top: 12px; margin-top: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="action-bar no-print">
+      <a href="https://dantal-flow.vercel.app/dr-anjali-deck.html" target="_blank" class="btn-action">
+        🖥️ Open Presentation Deck
+      </a>
+      <a href="https://dantal-flow.vercel.app/" target="_blank" class="btn-action">
+        🚀 Open Live Clinic Simulator
+      </a>
+      <button onclick="window.print()" class="btn-action" style="background:var(--emerald); color:#000;">
+        🖨️ Print / Save as PDF
+      </button>
+    </div>
+
+    <!-- ==================== PAGE 1: CALL AUDIT & MISTAKE RECTIFICATION ==================== -->
+    <div class="page">
+      <div class="glow-bar"></div>
+
+      <div class="header">
+        <div>
+          <div class="brand-title">⚡ AutoBuild Buddy <span style="font-size:13px; font-weight:600; color:var(--text-muted);">| Caller Training & Master Playbook</span></div>
+          <div class="brand-subtitle">Forensic Call Audit & Rectification Matrix</div>
+        </div>
+        <div class="badge-target">
+          <div class="target-name">Dr. Anjali Aggarwal (BDS)</div>
+          <div class="target-clinic">Sita Dental Clinic • Galleria Market, DLF 4</div>
+        </div>
+      </div>
+
+      <!-- Section 1: Call Mistakes & Lessons -->
+      <div class="section-title red">
+        <span>🚨</span> Part 1: Yesterday's Call Red Flags & Key Learnings
+      </div>
+
+      <div class="grid-2">
+        <div class="card red-border">
+          <div class="card-head">
+            <span>1. Company Name & Opener Stumble</span>
+            <span style="color:#f87171;">Min 0:10</span>
+          </div>
+          <div class="card-body">
+            <strong>What Happened:</strong> Hesitated and said <em>"AutoBillBuddy... uh we had a call on WhatsApp"</em>. Doctor got confused.<br/>
+            <strong>The Fix:</strong> Open with calm authority: <em>"Namaskar Dr. Anjali! Shorup here from AutoBuild Buddy. Hope you had a smooth drive home from Galleria!"</em>
+          </div>
+        </div>
+
+        <div class="card red-border">
+          <div class="card-head">
+            <span>2. Declining In-Person Invite</span>
+            <span style="color:#f87171;">Min 5:45 (CRITICAL)</span>
+          </div>
+          <div class="card-body">
+            <strong>What Happened:</strong> Said <em>"Visiting is not possible... we work across India"</em>. Triggered her <em>"bank fraud & phone hack"</em> fear.<br/>
+            <strong>The Fix:</strong> Frame Zoom around live screen sharing: <em>"Our cloud engine is best seen on a 10-min Zoom screen share where you can watch both screens live!"</em>
+          </div>
+        </div>
+
+        <div class="card red-border">
+          <div class="card-head">
+            <span>3. Defensive Tone ('Not Here to Sell')</span>
+            <span style="color:#f87171;">Min 3:35</span>
+          </div>
+          <div class="card-body">
+            <strong>What Happened:</strong> Repeatedly said <em>"No no no... I am not here to sell my website, okay?"</em> Sounded defensive.<br/>
+            <strong>The Fix:</strong> Agree & validate her premium tier: <em>"Doctor, you're 100% right! Galleria patients want VIP convenience, not to wait 12 hours for a reply."</em>
+          </div>
+        </div>
+
+        <div class="card red-border">
+          <div class="card-head">
+            <span>4. Weak Practo Comparison</span>
+            <span style="color:#f87171;">Min 4:55</span>
+          </div>
+          <div class="card-body">
+            <strong>What Happened:</strong> Struggled to explain how we differ from Practo.<br/>
+            <strong>The Fix (1-Liner):</strong> <em>"Practo puts competing clinic ads right under your name in DLF. Your WhatsApp engine gives you 100% direct bookings with zero ads."</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Vocabulary & Speech Polish Table -->
+      <div class="section-title amber">
+        <span>🗣️</span> Part 2: Vocabulary & Clinical Speech Polish
+      </div>
+
+      <table class="table-polish">
+        <thead>
+          <tr>
+            <th style="width: 45%;">❌ What Was Said (Avoid)</th>
+            <th style="width: 55%;">✅ What To Say Instead (Clinical Authority)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-bad">"I have a teeth paining..."</td>
+            <td class="text-good">"When a patient experiences acute tooth pain or an emergency..."</td>
+          </tr>
+          <tr>
+            <td class="text-bad">"Here is the catch..." / "How patient behaves..."</td>
+            <td class="text-good">"Here is what patient inquiry data in DLF Phase 4 shows..."</td>
+          </tr>
+          <tr>
+            <td class="text-bad">"I can give you that guarantee you won't lose 42%"</td>
+            <td class="text-good">"We provide a 15-day risk-free validation period to prove real patient bookings."</td>
+          </tr>
+          <tr>
+            <td class="text-bad">"Visiting is not possible for us"</td>
+            <td class="text-good">"Our interactive 2-way simulator is best viewed over a quick 10-minute Zoom screen share."</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="page-footer">
+        <span>AUTOBUIID BUDDY SALES TRAINING MANUAL</span>
+        <span>PAGE 1 OF 2 • CONFIDENTIAL</span>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE 2: MASTER ZOOM SCRIPT & GAME PLAN ==================== -->
+    <div class="page">
+      <div class="glow-bar"></div>
+
+      <div class="header">
+        <div>
+          <div class="brand-title">🚀 Master Zoom Demo Blueprint <span style="font-size:13px; font-weight:600; color:var(--text-muted);">| Dr. Anjali Aggarwal</span></div>
+          <div class="brand-subtitle">10-Minute High-Converting Walkthrough & Close</div>
+        </div>
+        <div class="badge-target">
+          <div class="target-name">Offer: 15-Day ₹0 Pilot</div>
+          <div class="target-clinic">Benchmark: Min 2 Bookings • ₹9,999 Flat</div>
+        </div>
+      </div>
+
+      <!-- Phase 1: Trust & Safety Opener -->
+      <div class="script-box">
+        <div class="script-phase-title">
+          <span>Phase 1: The Face-to-Face Trust & Safety Opener (0:00 - 1:30)</span>
+          <span class="stat-pill" style="color:var(--emerald-light);">WEBCAM ON 🎥</span>
+        </div>
+        <span class="script-stage-dir">[Camera ON • Warm Smile • Dissolve Fraud Fear Immediately]</span>
+        <p class="script-text" id="scriptP1">
+          "Namaskar Dr. Anjali! Good morning. First of all, thank you so much for taking out 10 minutes from your busy schedule.<br/>
+          Before I share my screen, I want to personally reassure you: <strong>We are a genuine technology team specializing in dental automation. We will NEVER ask you for any bank details, passwords, OTPs, or financial info. There is ₹0 upfront cost and zero financial risk for Sita Dental.</strong><br/>
+          Our only goal today is to give you a 5-minute preview of your clinic's WhatsApp engine. If you like it, we will run a <strong>15-day free trial</strong> so you can validate real patient bookings for yourself before deciding anything."
+        </p>
+      </div>
+
+      <!-- Phase 2: Practo vs Sita Direct Engine -->
+      <div class="script-box">
+        <div class="script-phase-title">
+          <span>Phase 2: The Practo Comparison & 10:30 PM Gap (1:30 - 4:00)</span>
+          <span class="stat-pill" style="color:#60a5fa;">SCREEN SHARE DECK 🖥️</span>
+        </div>
+        <span class="script-stage-dir">[Share Screen: dantal-flow.vercel.app/dr-anjali-deck.html Slide 2]</span>
+        <p class="script-text" id="scriptP2">
+          "Doctor, you asked a great question yesterday: <em>'How is this different from Practo?'</em><br/>
+          On <strong>Practo</strong>, when patients search for Dr. Anjali, Practo shows competitor advertisements right under your name in Sector 43 and DLF, pulling patients away.<br/>
+          With your <strong>Own WhatsApp System</strong>, 100% of the patient inquiries belong exclusively to Sita Dental with <strong>zero competitor ads</strong>.<br/>
+          When corporate patients in DLF Phase 4 search at <strong>10:30 PM</strong> after your clinic closes, Practo leaves them hanging. Our system answers in <strong>10 seconds</strong>, confirms their slot, and alerts your front desk with zero manual staff effort."
+        </p>
+      </div>
+
+      <!-- Phase 3: Live Simulator & The ₹0 Pilot Close -->
+      <div class="script-box">
+        <div class="script-phase-title">
+          <span>Phase 3: Live Simulator & 15-Day Pilot Close (4:00 - 8:00)</span>
+          <span class="stat-pill" style="color:#fbbf24;">LIVE SIMULATOR ⚡</span>
+        </div>
+        <span class="script-stage-dir">[Switch to dantal-flow.vercel.app • Trigger "Dental Implant ₹65,000" Preset]</span>
+        <p class="script-text" id="scriptP3">
+          "Look at the screen: Left is Vikram booking at 10:30 PM; Right is your receptionist getting the instant WhatsApp alert with Vikram's name, phone, and ₹65,000 Implant procedure slot.<br/>
+          <strong>The Agreement:</strong> We set this up in 48 hours for <strong>₹0 Upfront</strong>. We run a 15-day trial. If it doesn't bring you at least 2 confirmed patient consultations, you pay <strong>₹0</strong>. If you love it, it's just a flat <strong>₹9,999 one-time setup</strong>.<br/>
+          Can we get your consultation timings today to have this ready for Sita Dental by Wednesday?"
+        </p>
+      </div>
+
+      <!-- Bottom Cheat Sheet Grid -->
+      <div class="grid-3" style="margin-bottom:0;">
+        <div class="card green-border">
+          <div class="card-head" style="color:var(--emerald-light);">Rule 1: Camera ON</div>
+          <div class="card-body">Your warm face kills 100% of "online scam" skepticism.</div>
+        </div>
+        <div class="card blue-border">
+          <div class="card-head" style="color:#60a5fa;">Rule 2: Point & Show</div>
+          <div class="card-body">Point your mouse to Vikram's ₹65,000 Implant pass during demo.</div>
+        </div>
+        <div class="card amber-border">
+          <div class="card-head" style="color:#fbbf24;">Rule 3: ₹0 Risk Anchor</div>
+          <div class="card-body">Remind her: "2 confirmed bookings or ₹0 fee".</div>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>AUTOBUIID BUDDY • DR. ANJALI AGGARWAL ZOOM CLOSING PLAYBOOK</span>
+        <span>PAGE 2 OF 2 • READY FOR EXECUTION</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

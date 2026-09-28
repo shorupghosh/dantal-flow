@@ -21,6 +21,15 @@ export const CLINIC_PRESETS: Record<string, ClinicConfig> = {
     phone: '+91 98183 45055',
     consultationFee: 1000
   },
+  ManglaDental: {
+    key: 'ManglaDental',
+    name: "Dr. Mangla's Multispeciality Dental & Implant Clinic",
+    doctorName: 'Dr. Asheesh Mangla',
+    doctorTitle: 'MDS Prosthodontics & Implantology (22+ Yrs Legacy)',
+    location: 'HUDA Market, Sector 31, Gurugram',
+    phone: '+91 95401 77077',
+    consultationFee: 1000
+  },
   DentalFlow: {
     key: 'DentalFlow',
     name: 'DentalFlow AI Flagship',
@@ -119,6 +128,11 @@ export const ClinicCustomizerModal: React.FC<ClinicCustomizerModalProps> = ({
                     {preset.key === 'SitaDental' && (
                       <span className="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">
                         Dr. Anjali Pitch Target
+                      </span>
+                    )}
+                    {preset.key === 'ManglaDental' && (
+                      <span className="text-[9px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full font-bold">
+                        Dr. Mangla MDS Target
                       </span>
                     )}
                   </div>

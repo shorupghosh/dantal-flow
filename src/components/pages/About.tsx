@@ -50,7 +50,7 @@ export const About: React.FC<AboutProps> = ({
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold mx-auto">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span>30+ Years of Clinical Practice • {activeClinic.name}</span>
+              <span>{activeClinic.key === 'ManglaDental' ? '22+ Years of Clinical Mastery' : '30+ Years of Clinical Practice'} • {activeClinic.name}</span>
             </div>
 
             <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-extrabold tracking-tight">
@@ -60,7 +60,7 @@ export const About: React.FC<AboutProps> = ({
               </span>
             </motion.h1>
             <motion.p variants={fadeIn} className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Founded by <strong className="text-foreground">{activeClinic.doctorName}</strong>, {activeClinic.name} has served families across {activeClinic.location} for three decades. We combine meticulous restorative dental artistry with 24/7 intelligent patient care.
+              Founded by <strong className="text-foreground">{activeClinic.doctorName}</strong>, {activeClinic.name} has served families across {activeClinic.location} for {activeClinic.key === 'ManglaDental' ? 'over two decades' : 'three decades'}. We combine meticulous restorative dental artistry with 24/7 intelligent patient care.
             </motion.p>
             <motion.div variants={fadeIn} className="flex justify-center gap-4 pt-2">
               <button 
