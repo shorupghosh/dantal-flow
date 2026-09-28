@@ -363,7 +363,7 @@ export const Home: React.FC<HomeProps> = ({
               Patient Experiences at {activeClinic.name}
             </h2>
             <p className="text-muted-foreground text-sm">
-              Real feedback from verified patients across DLF Phase 4, Golf Course Road, and NCR.
+              Real feedback from verified patients across {activeClinic.key === 'ManglaDental' ? 'Sector 31, HUDA Market, South City 1, and Gurugram.' : 'DLF Phase 4, Golf Course Road, and NCR.'}
             </p>
           </div>
 

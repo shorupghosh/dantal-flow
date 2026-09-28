@@ -99,6 +99,57 @@ const MANGLA_REVIEWS: Review[] = [
   }
 ];
 
+const MANGLA_DOCTORS: Doctor[] = [
+  {
+    id: 'doc-mangla',
+    name: 'Dr. Asheesh Mangla',
+    specialization: 'Senior Prosthodontist & Implantologist (MDS - 22+ Yrs Exp) • Full Mouth Rehab, Implants, Fixed Teeth',
+    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+    email: 'dr.mangla@gurgaon-dental.com',
+    phone: '+91 95401 77077',
+    bio: '22+ years of senior surgical & prosthetic excellence near HUDA Market, Sector 31, Gurugram. Specializing in single & full-arch dental implants, advanced crown & bridge prosthetics, and complete smile restorations.',
+    rating: 5.0,
+    availability: {
+      Monday: ["10:00", "11:30", "17:00", "18:30"],
+      Tuesday: ["10:00", "11:30", "17:00", "18:30"],
+      Wednesday: ["10:00", "11:30", "17:00", "18:30"],
+      Thursday: ["10:00", "11:30", "17:00", "18:30"],
+      Friday: ["10:00", "11:30", "17:00", "18:30"],
+      Saturday: ["10:00", "11:30", "17:00", "18:30"]
+    }
+  },
+  {
+    id: 'doc-mangla-ortho',
+    name: 'Dr. Shruti Sen (Consulting)',
+    specialization: 'Consulting Orthodontist & Clear Aligner Specialist',
+    imageUrl: 'https://images.unsplash.com/photo-1594824813590-798e4d29cfc7?auto=format&fit=crop&q=80&w=400',
+    email: 'ortho@gurgaon-dental.com',
+    phone: '+91 95401 77077',
+    bio: 'Specialist in digital smile alignment, clear aligners, and interceptive orthodontics collaborating with Dr. Mangla on full-mouth aesthetic cases.',
+    rating: 4.9,
+    availability: {
+      Tuesday: ["16:00", "17:30", "19:00"],
+      Thursday: ["16:00", "17:30", "19:00"],
+      Saturday: ["11:00", "14:00", "16:00"]
+    }
+  },
+  {
+    id: 'doc-mangla-endo',
+    name: 'Dr. Gaurav Chhabra (Consulting)',
+    specialization: 'Consulting Endodontist & Microscopic RCT Specialist',
+    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+    email: 'endo@gurgaon-dental.com',
+    phone: '+91 95401 77077',
+    bio: 'Single-sitting painless root canal therapy under surgical magnification and 3D endodontic precision.',
+    rating: 4.9,
+    availability: {
+      Monday: ["11:00", "14:00", "18:00"],
+      Wednesday: ["11:00", "14:00", "18:00"],
+      Friday: ["11:00", "14:00", "18:00"]
+    }
+  }
+];
+
 const DEFAULT_REVIEWS: Review[] = [
   {
     id: 'rev-1',
@@ -207,9 +258,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const [doctors, setDoctors] = useState<Doctor[]>(() => {
     if (activeClinic.key === 'ManglaDental') {
-      const mangla = DEFAULT_DOCTORS.find(d => d.id === 'doc-mangla');
-      const others = DEFAULT_DOCTORS.filter(d => d.id !== 'doc-mangla');
-      return mangla ? [mangla, ...others] : DEFAULT_DOCTORS;
+      return MANGLA_DOCTORS;
     }
     return DEFAULT_DOCTORS;
   });
@@ -236,11 +285,7 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Sync doctors and reviews whenever active clinic changes
   useEffect(() => {
     if (activeClinic.key === 'ManglaDental') {
-      const mangla = DEFAULT_DOCTORS.find(d => d.id === 'doc-mangla');
-      const others = DEFAULT_DOCTORS.filter(d => d.id !== 'doc-mangla');
-      if (mangla) {
-        setDoctors([mangla, ...others]);
-      }
+      setDoctors(MANGLA_DOCTORS);
       setReviews(MANGLA_REVIEWS);
     } else {
       setDoctors(DEFAULT_DOCTORS);

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { TrendingDown, Sparkles, ArrowRight, ShieldCheck, Zap, DollarSign } from 'lucide-react';
+import { useDatabase } from '../context/DatabaseContext';
 
 interface RevenueLeakCalculatorProps {
   onOpenSimulator: () => void;
 }
 
 export const RevenueLeakCalculator: React.FC<RevenueLeakCalculatorProps> = ({ onOpenSimulator }) => {
+  const { activeClinic } = useDatabase();
   const [missedInquiriesPerWeek, setMissedInquiriesPerWeek] = useState<number>(4);
   const [avgTreatmentTicket, setAvgTreatmentTicket] = useState<number>(35000); // INR (mix of Implants, RCT, Aligners)
 
@@ -33,7 +35,7 @@ export const RevenueLeakCalculator: React.FC<RevenueLeakCalculatorProps> = ({ on
             How Much Revenue Is Your Clinic Losing While Closed?
           </h2>
           <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
-            In affluent areas like DLF Phase 4, Golf Course Road & South Delhi, over <strong>40% of working patients search for dental care between 8:30 PM and 11:30 PM</strong>. Without instant WhatsApp booking, they book the next clinic.
+            In affluent areas like {activeClinic.key === 'ManglaDental' ? 'Sector 31, HUDA Market, South City & Gurugram' : 'DLF Phase 4, Golf Course Road & South Delhi'}, over <strong>40% of working patients search for dental care between 8:30 PM and 11:30 PM</strong>. Without instant WhatsApp booking, they book the next clinic.
           </p>
         </div>
 

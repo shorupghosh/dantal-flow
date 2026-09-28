@@ -157,6 +157,11 @@ function AppContent() {
   const [currentView, setCurrentView] = useState('home');
   const [darkMode, setDarkMode] = useState(false);
   const [showDemoBanner, setShowDemoBanner] = useState(true);
+
+  // Sync page title with active clinic
+  useEffect(() => {
+    document.title = `${activeClinic.name} | ${activeClinic.doctorName} (Gurugram)`;
+  }, [activeClinic]);
   
   // Modals
   const [showWhatsAppSimulator, setShowWhatsAppSimulator] = useState(false);

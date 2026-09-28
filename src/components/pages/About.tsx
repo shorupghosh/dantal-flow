@@ -182,7 +182,11 @@ export const About: React.FC<AboutProps> = ({
             className="text-center max-w-3xl mx-auto mb-16"
           >
             <h2 className="text-3xl font-extrabold mb-4">Meet the Lead Surgeon</h2>
-            <p className="text-muted-foreground text-lg">Senior clinical leadership with over three decades of trusted dental care in Gurugram.</p>
+            <p className="text-muted-foreground text-lg">
+              {activeClinic.key === 'ManglaDental' 
+                ? 'Senior clinical leadership with over 22 years of prosthetic and surgical mastery in Sector 31, Gurugram.' 
+                : 'Senior clinical leadership with over three decades of trusted dental care in Gurugram.'}
+            </p>
           </motion.div>
 
           {/* Lead Doctor Highlight */}
@@ -202,7 +206,7 @@ export const About: React.FC<AboutProps> = ({
                     className="w-full h-full object-cover" 
                   />
                   <div className="absolute top-4 left-4 bg-emerald-500 text-slate-950 px-4 py-1 rounded-full text-xs font-black shadow-md font-mono">
-                    30+ Years Practice
+                    {activeClinic.key === 'ManglaDental' ? '22+ Years Legacy' : '30+ Years Practice'}
                   </div>
                 </div>
                 <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center space-y-6 text-left">
@@ -215,7 +219,7 @@ export const About: React.FC<AboutProps> = ({
                   </div>
                   <div className="flex items-center gap-2 text-yellow-500 font-semibold bg-yellow-500/10 w-fit px-3 py-1 rounded-full text-xs">
                     <Star className="h-4 w-4 fill-current" />
-                    5.0 (30+ Years Clinical Reputation)
+                    5.0 ({activeClinic.key === 'ManglaDental' ? '22+ Years Legacy in Sector 31' : '30+ Years Clinical Reputation'})
                   </div>
                   <p className="text-base text-muted-foreground leading-relaxed">
                     {doctors[0].bio}
@@ -277,7 +281,7 @@ export const About: React.FC<AboutProps> = ({
         </div>
       </section>
 
-      {/* 5. 30-Year Journey Timeline */}
+      {/* 5. Journey Timeline */}
       <section className="py-24 bg-card/20 border-b border-border overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div 
@@ -287,17 +291,24 @@ export const About: React.FC<AboutProps> = ({
             variants={staggerContainer}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-extrabold mb-4">3 Decades of Excellence</h2>
+            <h2 className="text-3xl font-extrabold mb-4">
+              {activeClinic.key === 'ManglaDental' ? '22+ Years of Clinical Mastery' : '3 Decades of Excellence'}
+            </h2>
             <p className="text-muted-foreground text-lg">A trusted legacy of restoring smiles across Gurugram.</p>
           </motion.div>
 
           <div className="relative border-l-2 border-primary/30 ml-4 md:ml-[50%] space-y-12 pb-8">
-            {[
+            {(activeClinic.key === 'ManglaDental' ? [
+              { year: "2004", title: "Practice Established in Sector 31", desc: "Dr. Asheesh Mangla (MDS Prosthodontics) founded the clinic near HUDA Market with a commitment to specialized, pain-free restorative care." },
+              { year: "2012", title: "3D Guided Implant Centre", desc: "Expanded into advanced computer-guided dental implants, bone grafting, and full-mouth rehabilitation." },
+              { year: "2019", title: "Digital Zirconia & Aesthetic Lab", desc: "Upgraded to high-precision computerized CAD/CAM prosthetics and immediate fixed teeth solutions." },
+              { year: "2026", title: "24/7 Clinical Triage Engine", desc: "Integrated intelligent WhatsApp triage to screen after-hours surgical inquiries with 100% doctor calendar protection." }
+            ] : [
               { year: "1994", title: "Practice Established", desc: "Dr. Anjali Aggarwal established Sita Dental Clinic with a commitment to ethical, pain-free dentistry." },
               { year: "2005", title: "Galleria Market Expansion", desc: "Moved to Galleria Commercial Complex, DLF Phase IV, serving premier NCR residents." },
               { year: "2018", title: "Aesthetic & Implants Upgrade", desc: "Incorporated advanced 3D digital smile design and single-sitting endodontics." },
-              { year: "2026", title: "24/7 Smart WhatsApp Booking", desc: "Automated after-hours patient inquiries with instant triage and slot booking." },
-            ].map((item, i) => (
+              { year: "2026", title: "24/7 Smart WhatsApp Booking", desc: "Automated after-hours patient inquiries with instant triage and slot booking." }
+            ]).map((item, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
@@ -344,7 +355,7 @@ export const About: React.FC<AboutProps> = ({
             {[
               { icon: <Shield className="h-8 w-8" />, name: "Class B Autoclave", desc: "100% Hospital Sterilization" },
               { icon: <Medal className="h-8 w-8" />, name: "IDA Member", desc: "Indian Dental Association" },
-              { icon: <Award className="h-8 w-8" />, name: "30+ Years Trust", desc: "DLF Phase 4 Landmark" },
+              { icon: <Award className="h-8 w-8" />, name: activeClinic.key === 'ManglaDental' ? '22+ Years Trust' : '30+ Years Trust', desc: activeClinic.key === 'ManglaDental' ? 'Sector 31 Landmark' : 'DLF Phase 4 Landmark' },
               { icon: <Star className="h-8 w-8" />, name: "5.0★ Rating", desc: "Verified Patient Feedback" }
             ].map((cert, i) => (
               <motion.div key={i} variants={fadeIn} className="flex flex-col items-center text-center p-6 bg-card border border-border rounded-2xl hover:shadow-lg transition-shadow hover:border-primary/50 group">
