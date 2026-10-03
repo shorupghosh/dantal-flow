@@ -150,6 +150,94 @@ const MANGLA_DOCTORS: Doctor[] = [
   }
 ];
 
+const PAINLESS_REVIEWS: Review[] = [
+  {
+    id: 'rev-painless-1',
+    patientId: 'pat-p1',
+    patientName: 'Vikas Rawat (Eldeco Accolade, Sector 2 Sohna)',
+    doctorId: 'doc-painless-surgeon',
+    doctorName: 'Dr. Consultant Oral Surgeon',
+    rating: 5,
+    comment: 'Living just across at Eldeco Accolade. Had severe impacted wisdom tooth pain late night. Got emergency slot next morning; the extraction was 100% painless. Completely true to their name!',
+    aiResponse: 'Thank you Vikas Ji! Glad we could relieve your wisdom tooth pain quickly and comfortably.',
+    createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+  },
+  {
+    id: 'rev-painless-2',
+    patientId: 'pat-p2',
+    patientName: 'Pooja Raghav (Sohna Rural)',
+    doctorId: 'doc-painless-pedo',
+    doctorName: 'Dr. Consultant Pedodontist',
+    rating: 5,
+    comment: 'My 7-year-old daughter was crying and terrified of dentists. The pediatric doctor was so gentle and caring, she did not feel the injection at all. Best clinic in Sohna for kids.',
+    aiResponse: 'Thank you Pooja Ji! Ensuring children feel safe and happy chairside is our highest priority.',
+    createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
+  },
+  {
+    id: 'rev-painless-3',
+    patientId: 'pat-p3',
+    patientName: 'Harish Yadav (Sohna Road, Gurugram)',
+    doctorId: 'doc-painless-lead',
+    doctorName: 'Dr. Senior Implantologist',
+    rating: 5,
+    comment: 'Got 2 dental implants placed with Zirconia crowns. Modern setup, totally transparent pricing, and gentle hands. No need to travel all the way to Gurgaon city center.',
+    aiResponse: 'Thank you Harish Ji! Delighted to restore your chewing confidence locally in Sohna.',
+    createdAt: new Date(Date.now() - 86400000 * 7).toISOString()
+  }
+];
+
+const PAINLESS_DOCTORS: Doctor[] = [
+  {
+    id: 'doc-painless-lead',
+    name: 'Dr. Senior Implantologist & Prosthodontist',
+    specialization: 'Senior Prosthodontist & Implantologist (MDS - 14+ Yrs Exp) • Implants, Crowns & Smile Aesthetics',
+    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+    email: 'info@painlessdentalcare.in',
+    phone: '+91 74978 59616',
+    bio: '14+ years of clinical excellence in Sohna & South Gurugram. Specializing in computer-guided painless dental implants, full-mouth restorations, and aesthetic smile design for Eldeco & surrounding townships.',
+    rating: 4.8,
+    availability: {
+      Monday: ["10:30", "12:00", "16:30", "18:00"],
+      Tuesday: ["10:30", "12:00", "16:30", "18:00"],
+      Wednesday: ["10:30", "12:00", "16:30", "18:00"],
+      Thursday: ["10:30", "12:00", "16:30", "18:00"],
+      Friday: ["10:30", "12:00", "16:30", "18:00"],
+      Saturday: ["10:30", "12:00", "16:30", "18:00"]
+    }
+  },
+  {
+    id: 'doc-painless-surgeon',
+    name: 'Dr. Consultant Oral & Maxillofacial Surgeon',
+    specialization: 'Oral & Maxillofacial Surgeon (MDS) • Painless Wisdom Teeth Extractions & Impactions',
+    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+    email: 'surgery@painlessdentalcare.in',
+    phone: '+91 74978 59616',
+    bio: 'Specialist in complex third molar (wisdom tooth) surgical extractions, bone preservation, and trauma surgery with 100% painless computerized anesthesia.',
+    rating: 4.9,
+    availability: {
+      Tuesday: ["15:00", "17:00", "19:00"],
+      Thursday: ["15:00", "17:00", "19:00"],
+      Saturday: ["11:00", "14:00", "17:00"]
+    }
+  },
+  {
+    id: 'doc-painless-pedo',
+    name: 'Dr. Consultant Pedodontist',
+    specialization: 'Pediatric Dental Specialist (MDS) • Child-Friendly & Fear-Free Kids Dentistry',
+    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400',
+    email: 'pedo@painlessdentalcare.in',
+    phone: '+91 74978 59616',
+    bio: 'Specialized care for toddlers, children, and teenagers. Expertise in pain-free fillings, pulpectomies, habit breaking, and anxiety-free dental visits.',
+    rating: 4.9,
+    availability: {
+      Monday: ["11:00", "15:00", "17:30"],
+      Wednesday: ["11:00", "15:00", "17:30"],
+      Friday: ["11:00", "15:00", "17:30"],
+      Saturday: ["10:00", "13:00", "16:00"]
+    }
+  }
+];
+
 const DEFAULT_REVIEWS: Review[] = [
   {
     id: 'rev-1',
@@ -237,13 +325,16 @@ interface DatabaseContextType {
 const DatabaseContext = createContext<DatabaseContextType | undefined>(undefined);
 
 export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize Active Clinic Configuration (supports URL query params e.g. ?clinic=SitaDental)
+  // Initialize Active Clinic Configuration (supports URL query params e.g. ?clinic=painless or ?clinic=SitaDental)
   const [activeClinic, setActiveClinic] = useState<ClinicConfig>(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       const clinicParam = urlParams.get('clinic');
       if (clinicParam && CLINIC_PRESETS[clinicParam]) {
         return CLINIC_PRESETS[clinicParam];
+      }
+      if (clinicParam && (clinicParam.toLowerCase().includes('painless') || clinicParam.toLowerCase().includes('sohna'))) {
+        return CLINIC_PRESETS.PainlessDental;
       }
       if (clinicParam && (clinicParam.toLowerCase().includes('mangla') || clinicParam.toLowerCase().includes('sector31'))) {
         return CLINIC_PRESETS.ManglaDental;
@@ -252,11 +343,14 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return CLINIC_PRESETS.SitaDental;
       }
     }
-    // Default preset for Dr. Anjali / Sita Dental pitch
-    return CLINIC_PRESETS.SitaDental || CLINIC_PRESETS.DentalFlow;
+    // Default preset for Painless Dental Care pitch
+    return CLINIC_PRESETS.PainlessDental || CLINIC_PRESETS.SitaDental || CLINIC_PRESETS.DentalFlow;
   });
 
   const [doctors, setDoctors] = useState<Doctor[]>(() => {
+    if (activeClinic.key === 'PainlessDental') {
+      return PAINLESS_DOCTORS;
+    }
     if (activeClinic.key === 'ManglaDental') {
       return MANGLA_DOCTORS;
     }
@@ -266,6 +360,9 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [patients, setPatients] = useState<Patient[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [reviews, setReviews] = useState<Review[]>(() => {
+    if (activeClinic.key === 'PainlessDental') {
+      return PAINLESS_REVIEWS;
+    }
     if (activeClinic.key === 'ManglaDental') {
       return MANGLA_REVIEWS;
     }
@@ -284,7 +381,10 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Sync doctors and reviews whenever active clinic changes
   useEffect(() => {
-    if (activeClinic.key === 'ManglaDental') {
+    if (activeClinic.key === 'PainlessDental') {
+      setDoctors(PAINLESS_DOCTORS);
+      setReviews(PAINLESS_REVIEWS);
+    } else if (activeClinic.key === 'ManglaDental') {
       setDoctors(MANGLA_DOCTORS);
       setReviews(MANGLA_REVIEWS);
     } else {

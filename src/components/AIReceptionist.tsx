@@ -286,6 +286,15 @@ const SuccessCard: React.FC<SuccessCardProps> = ({
       </div>
 
       <div className="space-y-2">
+        <a
+          href={`https://wa.me/917497859616?text=${encodeURIComponent(`Hi Painless Dental Care! I booked an appointment via your 24/7 web assistant for ${treatment} on ${scheduledAt}. Name: ${patientName}.`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full py-2 bg-[#25D366] hover:bg-[#20bd5a] text-slate-950 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
+        >
+          <MessageSquare className="w-3.5 h-3.5 fill-slate-950" />
+          Send Confirmation to Clinic WhatsApp
+        </a>
         {onOpenSimulator && (
           <button
             type="button"
@@ -337,6 +346,21 @@ export const AIReceptionist: React.FC<{ onOpenSimulator?: () => void }> = ({ onO
 
   const getAssistantFallbackResponse = (input: string): string => {
     const text = input.toLowerCase();
+
+    if (activeClinic.key === 'PainlessDental') {
+      if (text.includes('pain') || text.includes('hurt') || text.includes('wisdom') || text.includes('bleed') || text.includes('emergency')) {
+        return `We specialize in 100% painless dentistry! Our Consultant Oral Surgeon handles acute pain and wisdom tooth extractions using gentle computer-assisted anesthesia with zero discomfort.\n\nLet me open the priority booking form so we can relieve your pain immediately.`;
+      }
+      if (text.includes('child') || text.includes('kid') || text.includes('baby') || text.includes('pedo')) {
+        return `We have a dedicated Consultant Pedodontist specializing in fear-free, gentle dentistry for children in Sohna. We ensure kids feel completely relaxed and happy chairside.\n\nWould you like to reserve a consultation for your child?`;
+      }
+      if (text.includes('eldeco') || text.includes('location') || text.includes('address') || text.includes('where')) {
+        return `We are located at Chungi 1, next to Eldeco Society and Tata Motors Service, Sohna. Ample parking space is available right outside the clinic. Would you like directions or to book a visit?`;
+      }
+      if (text.includes('price') || text.includes('cost') || text.includes('fee') || text.includes('how much') || text.includes('inr')) {
+        return `Here are starting treatment estimates at Painless Dental Care:\n\n• Specialist Consultation: ₹${activeClinic.consultationFee}\n• Painless Wisdom Tooth Extraction: from ₹4,500\n• Single-Sitting Painless RCT: from ₹4,000\n• German Dental Implants: from ₹25,000\n• Pediatric Preventive Care: from ₹1,500\n• Laser Whitening: from ₹8,000\n\nWould you like to lock in a consultation slot with our specialist team?`;
+      }
+    }
     
     if (text.includes('price') || text.includes('cost') || text.includes('fee') || text.includes('how much') || text.includes('inr')) {
       return `Here are starting prices at ${activeClinic.name}:\n\n• Routine Consultation: ₹${activeClinic.consultationFee}\n• Teeth Whitening: ₹8,000\n• Root Canal Therapy: ₹12,000\n• Dental Crowns: ₹15,000\n• Dental Implants: ₹65,000\n• Clear Aligners: ₹80,000 (0% EMI available)\n\nWould you like to lock in a consultation slot with ${activeClinic.doctorName}?`;
@@ -347,7 +371,7 @@ export const AIReceptionist: React.FC<{ onOpenSimulator?: () => void }> = ({ onO
     }
 
     if (text.includes('implant')) {
-      return `Our clinic specializes in 3D CBCT guided Dental Implants with lifetime warranty options starting from ₹65,000. Would you like to schedule an implant scan consultation?`;
+      return `Our clinic specializes in 3D CBCT guided Dental Implants with lifetime warranty options starting from ₹25,000. Would you like to schedule an implant scan consultation?`;
     }
 
     if (text.includes('aligner') || text.includes('brace') || text.includes('smile')) {

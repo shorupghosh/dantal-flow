@@ -26,7 +26,36 @@ export const Home: React.FC<HomeProps> = ({
     setCurrentView('booking');
   };
 
-  const serviceCards = [
+  const serviceCards = activeClinic.key === 'PainlessDental' ? [
+    {
+      title: "Painless Wisdom Tooth Surgery",
+      desc: "Surgical impactions & third molar extractions with computerized gentle anesthesia.",
+      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
+      treatmentRef: "Emergency Pain Triage",
+      price: "From ₹4,500"
+    },
+    {
+      title: "Painless Dental Implants",
+      desc: "Permanent single-tooth & full arch guided implants with natural bite strength.",
+      image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
+      treatmentRef: "Dental Implants",
+      price: "From ₹25,000"
+    },
+    {
+      title: "Pediatric & Gentle Kids Dentistry",
+      desc: "Fear-free treatments for children and teens led by our Consultant Pedodontist.",
+      image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
+      treatmentRef: "Routine Clean & Check (₹1,500)",
+      price: "From ₹1,500"
+    },
+    {
+      title: "Single-Sitting Painless RCT",
+      desc: "Rotary microscopic root canal therapy saving infected natural teeth with zero pain.",
+      image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
+      treatmentRef: "Root Canal Therapy",
+      price: "From ₹4,000"
+    }
+  ] : [
     {
       title: "Dental Implants",
       desc: "Single-tooth & full arch 3D guided implants with lifetime warranty.",
@@ -133,10 +162,10 @@ export const Home: React.FC<HomeProps> = ({
                   ✓ Instant Clinical Triage
                 </span>
                 <span className="flex items-center gap-1 text-teal-400 font-bold">
-                  {activeClinic.key === 'ManglaDental' ? '✓ 100% Doctor Calendar Control' : '✓ 100% Front Desk Control'}
+                  {activeClinic.key === 'PainlessDental' ? '✓ 100% Zero-Pain Protocol' : activeClinic.key === 'ManglaDental' ? '✓ 100% Doctor Calendar Control' : '✓ 100% Front Desk Control'}
                 </span>
                 <span className="hidden sm:flex items-center gap-1 text-blue-400 font-bold">
-                  {activeClinic.key === 'ManglaDental' ? '✓ Zero Auto-Booking' : '✓ 100% DPDPA Secure'}
+                  {activeClinic.key === 'PainlessDental' ? '✓ Eldeco / Sohna Specialist' : activeClinic.key === 'ManglaDental' ? '✓ Zero Auto-Booking' : '✓ 100% DPDPA Secure'}
                 </span>
               </div>
             </div>
@@ -157,7 +186,7 @@ export const Home: React.FC<HomeProps> = ({
                     <p className="text-xs text-primary font-semibold">{activeClinic.doctorTitle.split('(')[0]}</p>
                     <div className="flex items-center text-yellow-500 text-xs font-bold mt-1">
                       <Star className="h-3.5 w-3.5 fill-yellow-400 mr-1" />
-                      5.0 ({activeClinic.key === 'ManglaDental' ? '500+ Patients (22+ Yrs)' : '300+ Patients'})
+                      {activeClinic.key === 'PainlessDental' ? '4.8 (49+ Google Reviews)' : activeClinic.key === 'ManglaDental' ? '5.0 (500+ Patients • 22+ Yrs)' : '5.0 (300+ Patients)'}
                     </div>
                   </div>
                 </div>
@@ -169,7 +198,7 @@ export const Home: React.FC<HomeProps> = ({
                   </div>
                   <div className="flex justify-between">
                     <span>Timings:</span>
-                    <strong className="text-foreground font-mono">{activeClinic.key === 'ManglaDental' ? 'Mon–Sat: Closes 8:30 PM' : 'Mon–Sat: Closes 8 PM'}</strong>
+                    <strong className="text-foreground font-mono">{activeClinic.key === 'PainlessDental' ? 'Mon–Sat: 10 AM – 8 PM' : activeClinic.key === 'ManglaDental' ? 'Mon–Sat: Closes 8:30 PM' : 'Mon–Sat: Closes 8 PM'}</strong>
                   </div>
                   <div className="flex justify-between text-emerald-500 font-bold pt-1 border-t border-border">
                     <span>After-Hours Inquiries:</span>
@@ -363,7 +392,7 @@ export const Home: React.FC<HomeProps> = ({
               Patient Experiences at {activeClinic.name}
             </h2>
             <p className="text-muted-foreground text-sm">
-              Real feedback from verified patients across {activeClinic.key === 'ManglaDental' ? 'Sector 31, HUDA Market, South City 1, and Gurugram.' : 'DLF Phase 4, Golf Course Road, and NCR.'}
+              Real feedback from verified patients across {activeClinic.key === 'PainlessDental' ? 'Eldeco Accolade, Sohna Rural, and South Gurugram.' : activeClinic.key === 'ManglaDental' ? 'Sector 31, HUDA Market, South City 1, and Gurugram.' : 'DLF Phase 4, Golf Course Road, and NCR.'}
             </p>
           </div>
 

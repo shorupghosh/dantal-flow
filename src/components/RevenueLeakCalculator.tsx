@@ -35,8 +35,30 @@ export const RevenueLeakCalculator: React.FC<RevenueLeakCalculatorProps> = ({ on
             How Much Revenue Is Your Clinic Losing While Closed?
           </h2>
           <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
-            In affluent areas like {activeClinic.key === 'ManglaDental' ? 'Sector 31, HUDA Market, South City & Gurugram' : 'DLF Phase 4, Golf Course Road & South Delhi'}, over <strong>40% of working patients search for dental care between 8:30 PM and 11:30 PM</strong>. Without instant WhatsApp booking, they book the next clinic.
+            {activeClinic.key === 'PainlessDental' ? (
+              <>
+                In rapidly expanding residential corridors like <strong>Eldeco Accolade, Central Park Flower Valley, and Sector 2 Sohna</strong>, young working parents search for dentists between 8:30 PM and 11:30 PM. Without instant 24/7 WhatsApp booking, they call clinics on Sohna Road or Gurgaon center.
+              </>
+            ) : activeClinic.key === 'ManglaDental' ? (
+              <>
+                In affluent areas like Sector 31, HUDA Market, South City & Gurugram, over <strong>40% of working patients search for dental care between 8:30 PM and 11:30 PM</strong>. Without instant WhatsApp booking, they book the next clinic.
+              </>
+            ) : (
+              <>
+                In affluent areas like DLF Phase 4, Golf Course Road & South Delhi, over <strong>40% of working patients search for dental care between 8:30 PM and 11:30 PM</strong>. Without instant WhatsApp booking, they book the next clinic.
+              </>
+            )}
           </p>
+
+          {activeClinic.key === 'PainlessDental' && (
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-center gap-3 text-xs text-amber-300">
+              <span className="text-base shrink-0">⚠️</span>
+              <div>
+                <strong className="text-white block font-semibold">Critical Conversion Bottleneck Identified:</strong>
+                Your registered Google listing website <span className="underline font-mono text-amber-200">painlessdentalcare.in</span> currently redirects to a parked GoDaddy screen. Every patient clicking from Eldeco / Sohna bounces immediately.
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sliders Grid */}

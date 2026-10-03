@@ -12,6 +12,15 @@ export interface ClinicConfig {
 }
 
 export const CLINIC_PRESETS: Record<string, ClinicConfig> = {
+  PainlessDental: {
+    key: 'PainlessDental',
+    name: 'Painless Dental Care and Aesthetics',
+    doctorName: 'Dr. Lead Surgeon & Specialist Team',
+    doctorTitle: 'Oral Surgery • Pedodontics • Prosthodontics',
+    location: 'Chungi 1, Next to Eldeco Society, Sohna, Gurugram',
+    phone: '+91 74978 59616',
+    consultationFee: 500
+  },
   SitaDental: {
     key: 'SitaDental',
     name: 'Sita Dental Clinic',
@@ -125,6 +134,11 @@ export const ClinicCustomizerModal: React.FC<ClinicCustomizerModalProps> = ({
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-sm text-white">{preset.name}</span>
+                    {preset.key === 'PainlessDental' && (
+                      <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-bold">
+                        Painless Dental (Sohna Pitch)
+                      </span>
+                    )}
                     {preset.key === 'SitaDental' && (
                       <span className="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">
                         Dr. Anjali Pitch Target

@@ -50,17 +50,17 @@ export const About: React.FC<AboutProps> = ({
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold mx-auto">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span>{activeClinic.key === 'ManglaDental' ? '22+ Years of Clinical Mastery' : '30+ Years of Clinical Practice'} • {activeClinic.name}</span>
+              <span>{activeClinic.key === 'PainlessDental' ? '14+ Years of Clinical Excellence' : activeClinic.key === 'ManglaDental' ? '22+ Years of Clinical Mastery' : '30+ Years of Clinical Practice'} • {activeClinic.name}</span>
             </div>
 
             <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-extrabold tracking-tight">
               Master Craftsmanship in <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-300">
-                Cosmetic &amp; Restorative Dentistry
+                {activeClinic.key === 'PainlessDental' ? 'Painless Surgery & Smile Aesthetics' : 'Cosmetic & Restorative Dentistry'}
               </span>
             </motion.h1>
             <motion.p variants={fadeIn} className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Founded by <strong className="text-foreground">{activeClinic.doctorName}</strong>, {activeClinic.name} has served families across {activeClinic.location} for {activeClinic.key === 'ManglaDental' ? 'over two decades' : 'three decades'}. We combine meticulous restorative dental artistry with 24/7 intelligent patient care.
+              Founded by <strong className="text-foreground">{activeClinic.doctorName}</strong>, {activeClinic.name} has served families across {activeClinic.location} for {activeClinic.key === 'PainlessDental' ? 'over 14 years with a strict 100% pain-free ethos' : activeClinic.key === 'ManglaDental' ? 'over two decades' : 'three decades'}. We combine specialized Oral Surgery, Pedodontics, and Prosthodontics with 24/7 intelligent patient care.
             </motion.p>
             <motion.div variants={fadeIn} className="flex justify-center gap-4 pt-2">
               <button 
@@ -183,7 +183,9 @@ export const About: React.FC<AboutProps> = ({
           >
             <h2 className="text-3xl font-extrabold mb-4">Meet the Lead Surgeon</h2>
             <p className="text-muted-foreground text-lg">
-              {activeClinic.key === 'ManglaDental' 
+              {activeClinic.key === 'PainlessDental'
+                ? 'Multi-specialist clinical team covering Painless Oral Surgery, Pedodontics, and Prosthodontics in Sohna, Gurugram.'
+                : activeClinic.key === 'ManglaDental' 
                 ? 'Senior clinical leadership with over 22 years of prosthetic and surgical mastery in Sector 31, Gurugram.' 
                 : 'Senior clinical leadership with over three decades of trusted dental care in Gurugram.'}
             </p>
@@ -206,7 +208,7 @@ export const About: React.FC<AboutProps> = ({
                     className="w-full h-full object-cover" 
                   />
                   <div className="absolute top-4 left-4 bg-emerald-500 text-slate-950 px-4 py-1 rounded-full text-xs font-black shadow-md font-mono">
-                    {activeClinic.key === 'ManglaDental' ? '22+ Years Legacy' : '30+ Years Practice'}
+                    {activeClinic.key === 'PainlessDental' ? '14+ Years Practice' : activeClinic.key === 'ManglaDental' ? '22+ Years Legacy' : '30+ Years Practice'}
                   </div>
                 </div>
                 <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center space-y-6 text-left">
@@ -219,7 +221,7 @@ export const About: React.FC<AboutProps> = ({
                   </div>
                   <div className="flex items-center gap-2 text-yellow-500 font-semibold bg-yellow-500/10 w-fit px-3 py-1 rounded-full text-xs">
                     <Star className="h-4 w-4 fill-current" />
-                    5.0 ({activeClinic.key === 'ManglaDental' ? '22+ Years Legacy in Sector 31' : '30+ Years Clinical Reputation'})
+                    {activeClinic.key === 'PainlessDental' ? '4.8 (49+ Google Reviews • Sohna)' : activeClinic.key === 'ManglaDental' ? '5.0 (22+ Years Legacy in Sector 31)' : '5.0 (30+ Years Clinical Reputation)'}
                   </div>
                   <p className="text-base text-muted-foreground leading-relaxed">
                     {doctors[0].bio}
