@@ -12,10 +12,37 @@ export interface ClinicConfig {
 }
 
 export const CLINIC_PRESETS: Record<string, ClinicConfig> = {
+  Dentoplay: {
+    key: 'Dentoplay',
+    name: 'Dentoplay Pediatric & Family Dental Studio',
+    doctorName: 'Dr. Ritesh Kundu',
+    doctorTitle: 'MDS Pedodontics • Pediatric & Interceptive Orthodontics Specialist',
+    location: 'Action Area 1 (DE 93), New Town, Kolkata',
+    phone: '+91 81009 41854',
+    consultationFee: 800
+  },
+  DelhiDental: {
+    key: 'DelhiDental',
+    name: 'Delhi Dental Clinic & Orthodontic Centre',
+    doctorName: 'Dr. Nitu Gautam',
+    doctorTitle: 'BDS (Nair Mumbai), MDS (Orthodontics), Fellow WFO (16+ Yrs Exp)',
+    location: 'R-241, Greater Kailash 1 (GK-1), South Delhi',
+    phone: '+91 80797 97978',
+    consultationFee: 1200
+  },
+  HollywoodSmile: {
+    key: 'HollywoodSmile',
+    name: 'Hollywood Smile Dental & Aesthetic Studio',
+    doctorName: 'Dr. Prashant',
+    doctorTitle: 'MDS Endodontics & Aesthetic Smile Architect (21+ Yrs Exp)',
+    location: 'SCO 139–140, Sector 9C, Chandigarh',
+    phone: '+91 82888 38222',
+    consultationFee: 1500
+  },
   PainlessDental: {
     key: 'PainlessDental',
     name: 'Painless Dental Care and Aesthetics',
-    doctorName: 'Dr. Lead Surgeon & Specialist Team',
+    doctorName: 'Dr. Gaurav & Specialist Team',
     doctorTitle: 'Oral Surgery • Pedodontics • Prosthodontics',
     location: 'Chungi 1, Next to Eldeco Society, Sohna, Gurugram',
     phone: '+91 74978 59616',
@@ -134,9 +161,24 @@ export const ClinicCustomizerModal: React.FC<ClinicCustomizerModalProps> = ({
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-sm text-white">{preset.name}</span>
+                    {preset.key === 'Dentoplay' && (
+                      <span className="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold">
+                        Dr. Kundu (New Town Pitch)
+                      </span>
+                    )}
+                    {preset.key === 'DelhiDental' && (
+                      <span className="text-[9px] bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full font-bold">
+                        Dr. Nitu (GK-1 Invisalign)
+                      </span>
+                    )}
+                    {preset.key === 'HollywoodSmile' && (
+                      <span className="text-[9px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full font-bold">
+                        Dr. Prashant (Sector 9 NRI)
+                      </span>
+                    )}
                     {preset.key === 'PainlessDental' && (
                       <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-bold">
-                        Painless Dental (Sohna Pitch)
+                        Dr. Gaurav (Sohna Pitch)
                       </span>
                     )}
                     {preset.key === 'SitaDental' && (

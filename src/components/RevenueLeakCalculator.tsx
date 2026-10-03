@@ -35,7 +35,19 @@ export const RevenueLeakCalculator: React.FC<RevenueLeakCalculatorProps> = ({ on
             How Much Revenue Is Your Clinic Losing While Closed?
           </h2>
           <p className="text-slate-400 text-sm sm:text-base max-w-2xl">
-            {activeClinic.key === 'PainlessDental' ? (
+            {activeClinic.key === 'Dentoplay' ? (
+              <>
+                In high-density tech townships like <strong>Action Area 1, Uniworld City, and Shapoorji Pallonji New Town</strong>, IT parents search for pediatric dentists late in the evening (8:30 PM – 11:30 PM) when children develop acute toothaches or discomfort. Without instant 24/7 WhatsApp booking, they book whichever clinic responds first.
+              </>
+            ) : activeClinic.key === 'DelhiDental' ? (
+              <>
+                In affluent South Delhi neighborhoods like <strong>Greater Kailash 1, Panchsheel Park, and Defence Colony</strong>, high-net-worth professionals research Invisalign and implants at night. With the clinic <strong>shutting at 7:00 PM and closed on Mondays</strong>, after-hours leads are completely unserved.
+              </>
+            ) : activeClinic.key === 'HollywoodSmile' ? (
+              <>
+                During the massive <strong>October–March NRI Dental Tourism wave</strong>, international patients from <strong>Canada, the UK, and the US</strong> search for cosmetic smile makeovers and full-arch implants between <strong>9:30 PM and 3:30 AM IST</strong> (daytime in North America/Europe) while Sector 9 clinics are shut.
+              </>
+            ) : activeClinic.key === 'PainlessDental' ? (
               <>
                 In rapidly expanding residential corridors like <strong>Eldeco Accolade, Central Park Flower Valley, and Sector 2 Sohna</strong>, young working parents search for dentists between 8:30 PM and 11:30 PM. Without instant 24/7 WhatsApp booking, they call clinics on Sohna Road or Gurgaon center.
               </>
@@ -49,6 +61,36 @@ export const RevenueLeakCalculator: React.FC<RevenueLeakCalculatorProps> = ({ on
               </>
             )}
           </p>
+
+          {activeClinic.key === 'Dentoplay' && (
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-2xl p-4 flex items-center gap-3 text-xs text-purple-300">
+              <span className="text-base shrink-0">⚠️</span>
+              <div>
+                <strong className="text-white block font-semibold">Critical Conversion Bottleneck Identified:</strong>
+                Dentoplay currently relies on Practo or manual Google dials with zero standalone direct booking webapp. Third-party aggregators cross-promote competing Rajarhat clinics on your listing.
+              </div>
+            </div>
+          )}
+
+          {activeClinic.key === 'DelhiDental' && (
+            <div className="bg-sky-500/10 border border-sky-500/30 rounded-2xl p-4 flex items-center gap-3 text-xs text-sky-300">
+              <span className="text-base shrink-0">⚠️</span>
+              <div>
+                <strong className="text-white block font-semibold">Critical Conversion Bottleneck Identified:</strong>
+                Your clinic shuts at 7 PM and is closed on Mondays. Static contact forms have a multi-hour lag. High-ticket Invisalign (₹80k–₹1.5L) inquiries bounce to corporate dental chains that respond in 60 seconds.
+              </div>
+            </div>
+          )}
+
+          {activeClinic.key === 'HollywoodSmile' && (
+            <div className="bg-pink-500/10 border border-pink-500/30 rounded-2xl p-4 flex items-center gap-3 text-xs text-pink-300">
+              <span className="text-base shrink-0">⚠️</span>
+              <div>
+                <strong className="text-white block font-semibold">Critical Conversion Bottleneck Identified:</strong>
+                NRI travelers searching from Vancouver or London at 11 PM IST find an offline reception and no instant timezone-aware booking bridge. High-ticket smile cases ($3,000–$6,000) bounce to overseas aggregators.
+              </div>
+            </div>
+          )}
 
           {activeClinic.key === 'PainlessDental' && (
             <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex items-center gap-3 text-xs text-amber-300">

@@ -238,6 +238,269 @@ const PAINLESS_DOCTORS: Doctor[] = [
   }
 ];
 
+const DENTOPLAY_REVIEWS: Review[] = [
+  {
+    id: 'rev-dentoplay-1',
+    patientId: 'pat-dp1',
+    patientName: 'Anirban Mukherjee (Uniworld City, New Town)',
+    doctorId: 'doc-kundu',
+    doctorName: 'Dr. Ritesh Kundu',
+    rating: 5,
+    comment: 'Dr. Kundu is magical with kids. My 6-year-old son had acute molar pain at 9 PM. We booked on WhatsApp, and the pulpectomy next morning was 100% painless. No tears at all!',
+    aiResponse: 'Thank you Anirban Babu! So glad your little boy is smiling and pain-free.',
+    createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+  },
+  {
+    id: 'rev-dentoplay-2',
+    patientId: 'pat-dp2',
+    patientName: 'Shreya Sengupta (Action Area 1, New Town)',
+    doctorId: 'doc-kundu-ortho',
+    doctorName: 'Dr. Ananya Sen',
+    rating: 5,
+    comment: 'Got interceptive braces for my 11-year-old daughter. Very gentle and modern pediatric setup right in New Town. Cleanest clinic in Rajarhat.',
+    aiResponse: 'Thank you Shreya! Watching kids gain smile confidence is our greatest joy.',
+    createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
+  },
+  {
+    id: 'rev-dentoplay-3',
+    patientId: 'pat-dp3',
+    patientName: 'Debashis Roy (Shapoorji Pallonji)',
+    doctorId: 'doc-kundu',
+    doctorName: 'Dr. Ritesh Kundu',
+    rating: 5,
+    comment: 'The whole family now visits Dentoplay. Transparent fees, zero waiting time with the automated booking system, and truly specialist child care.',
+    aiResponse: 'Thank you Debashis Babu! Honored to care for your family’s dental health.',
+    createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
+  }
+];
+
+const DENTOPLAY_DOCTORS: Doctor[] = [
+  {
+    id: 'doc-kundu',
+    name: 'Dr. Ritesh Kundu',
+    specialization: 'Founder & Chief Pedodontist (BDS, MDS Pedodontics) • Child Dental Surgery, RCT & Habit Breaking',
+    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+    email: 'dr.kundu@dentoplay.com',
+    phone: '+91 81009 41854',
+    bio: 'Renowned Pediatric Dental Specialist with practices in Action Area 1 New Town and Uttarpara. Dedicated to 100% painless, anxiety-free pediatric dental surgery, pulpectomies, stainless steel crowns, and early preventive care.',
+    rating: 4.9,
+    availability: {
+      Monday: ["10:00", "11:30", "16:30", "18:00"],
+      Tuesday: ["10:00", "11:30", "16:30", "18:00"],
+      Wednesday: ["10:00", "11:30", "16:30", "18:00"],
+      Thursday: ["10:00", "11:30", "16:30", "18:00"],
+      Friday: ["10:00", "11:30", "16:30", "18:00"],
+      Saturday: ["10:00", "11:30", "16:30", "18:00"],
+      Sunday: ["10:00", "12:00"]
+    }
+  },
+  {
+    id: 'doc-kundu-ortho',
+    name: 'Dr. Ananya Sen (Consulting)',
+    specialization: 'Consulting Orthodontist • Interceptive Child Braces & Myofunctional Therapy',
+    imageUrl: 'https://images.unsplash.com/photo-1594824813590-798e4d29cfc7?auto=format&fit=crop&q=80&w=400',
+    email: 'ortho@dentoplay.com',
+    phone: '+91 81009 41854',
+    bio: 'Specialist in early jaw guidance, space maintainers, and child orthodontics ensuring natural straight teeth development before adolescence.',
+    rating: 4.9,
+    availability: {
+      Tuesday: ["16:00", "17:30", "19:00"],
+      Thursday: ["16:00", "17:30", "19:00"],
+      Saturday: ["11:00", "14:00", "16:00"]
+    }
+  },
+  {
+    id: 'doc-kundu-implant',
+    name: 'Dr. Subhajit Roy (Consulting)',
+    specialization: 'Consulting Oral Surgeon & Implantologist • Adult Restorative Dentistry',
+    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+    email: 'implants@dentoplay.com',
+    phone: '+91 81009 41854',
+    bio: 'Advanced dental implants and surgical extractions for parents and adults at Dentoplay Family Dental Clinic.',
+    rating: 4.8,
+    availability: {
+      Monday: ["11:00", "15:00", "18:00"],
+      Wednesday: ["11:00", "15:00", "18:00"],
+      Friday: ["11:00", "15:00", "18:00"]
+    }
+  }
+];
+
+const DELHIDE_REVIEWS: Review[] = [
+  {
+    id: 'rev-ddc-1',
+    patientId: 'pat-ddc1',
+    patientName: 'Anjali Mehta (Greater Kailash 1, South Delhi)',
+    doctorId: 'doc-nitu',
+    doctorName: 'Dr. Nitu Gautam',
+    rating: 5,
+    comment: 'Dr. Nitu Gautam is an absolute artist with Invisalign! Her 16+ years of clinical mastery shows in every detail. My aligner treatment was flawless, smooth, and delivered months ahead of schedule.',
+    aiResponse: 'Thank you Anjali! Your radiant smile is the best reward for our team.',
+    createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+  },
+  {
+    id: 'rev-ddc-2',
+    patientId: 'pat-ddc2',
+    patientName: 'Rohit Singhania (Panchsheel Park)',
+    doctorId: 'doc-vinod',
+    doctorName: 'Dr. Vinod Khanna',
+    rating: 5,
+    comment: 'Dr. Vinod Khanna replaced two missing molars with immediate Swiss implants. PGI Chandigarh training shines through. Zero post-op swelling and 100% precision.',
+    aiResponse: 'Thank you Rohit! Delighted that your recovery was swift and comfortable.',
+    createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
+  },
+  {
+    id: 'rev-ddc-3',
+    patientId: 'pat-ddc3',
+    patientName: 'Sonia Gupta (Vasant Vihar)',
+    doctorId: 'doc-geetanjali',
+    doctorName: 'Dr. Geetanjali Kumari',
+    rating: 5,
+    comment: 'Microscopic root canal completed in a single 45-minute sitting with zero discomfort. The clinic in GK-1 has world-class infrastructure.',
+    aiResponse: 'Thank you Sonia! Keeping natural teeth healthy and pain-free is our prime mission.',
+    createdAt: new Date(Date.now() - 86400000 * 8).toISOString()
+  }
+];
+
+const DELHIDE_DOCTORS: Doctor[] = [
+  {
+    id: 'doc-nitu',
+    name: 'Dr. Nitu Gautam',
+    specialization: 'Founder & Chief Orthodontist (BDS Nair Mumbai, MDS Orthodontics) • Fellow World Federation of Orthodontists (WFO) • 16+ Yrs Exp',
+    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400',
+    email: 'dr.nitu@delhidental.org',
+    phone: '+91 80797 97978',
+    bio: 'Senior Orthodontic Specialist with over 16 years of clinical mastery from Nair Hospital Dental College Mumbai. Former Professor and Fellow WFO specializing in Invisalign, invisible clear aligners, and aesthetic smile harmony in Greater Kailash 1.',
+    rating: 5.0,
+    availability: {
+      Tuesday: ["10:00", "11:30", "15:00", "17:30"],
+      Wednesday: ["10:00", "11:30", "15:00", "17:30"],
+      Thursday: ["10:00", "11:30", "15:00", "17:30"],
+      Friday: ["10:00", "11:30", "15:00", "17:30"],
+      Saturday: ["10:00", "11:30", "15:00", "17:30"],
+      Sunday: ["10:00", "12:00", "14:00"]
+    }
+  },
+  {
+    id: 'doc-vinod',
+    name: 'Dr. Vinod Khanna',
+    specialization: 'Senior Prosthodontist & Implantologist (BDS, MDS Prosthodontics PGIMER Chandigarh)',
+    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+    email: 'implants@delhidental.org',
+    phone: '+91 80797 97978',
+    bio: 'PGI Chandigarh trained prosthodontist specializing in single-stage dental implants, full-mouth rehabilitation, and premium cosmetic zirconia restorations.',
+    rating: 4.9,
+    availability: {
+      Tuesday: ["11:00", "14:00", "16:30"],
+      Thursday: ["11:00", "14:00", "16:30"],
+      Saturday: ["11:00", "14:00", "16:30"]
+    }
+  },
+  {
+    id: 'doc-geetanjali',
+    name: 'Dr. Geetanjali Kumari',
+    specialization: 'Microscopic Endodontist & Aesthetic Dental Surgeon (BDS)',
+    imageUrl: 'https://images.unsplash.com/photo-1594824813590-798e4d29cfc7?auto=format&fit=crop&q=80&w=400',
+    email: 'endo@delhidental.org',
+    phone: '+91 80797 97978',
+    bio: 'Specialist in single-sitting painless root canal treatments under high-magnification surgical operating microscopes and cosmetic smile enhancements.',
+    rating: 4.9,
+    availability: {
+      Tuesday: ["10:30", "12:30", "16:00"],
+      Wednesday: ["10:30", "12:30", "16:00"],
+      Friday: ["10:30", "12:30", "16:00"],
+      Sunday: ["10:30", "13:00"]
+    }
+  }
+];
+
+const HOLLYWOOD_REVIEWS: Review[] = [
+  {
+    id: 'rev-hw-1',
+    patientId: 'pat-hw1',
+    patientName: 'Jaspreet Gill (Vancouver, Canada / NRI Patient)',
+    doctorId: 'doc-prashant',
+    doctorName: 'Dr. Prashant',
+    rating: 5,
+    comment: 'Flew in from Canada for my wedding and full smile makeover. Dr. Prashant designed 10 ultra-thin porcelain veneers in just 5 days. Saved $8,000 compared to Canadian clinic prices with superior aesthetics!',
+    aiResponse: 'Thank you Jaspreet! Thrilled to give you a true red-carpet Hollywood smile.',
+    createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+  },
+  {
+    id: 'rev-hw-2',
+    patientId: 'pat-hw2',
+    patientName: 'Ramanjit Dhillon (Sector 9C, Chandigarh)',
+    doctorId: 'doc-prashant',
+    doctorName: 'Dr. Prashant',
+    rating: 5,
+    comment: 'The premier cosmetic studio in Chandigarh. World-class technology right in Sector 9 market. International standards trained in Germany and Dubai.',
+    aiResponse: 'Thank you Ramanjit Ji! Always a pleasure welcoming you.',
+    createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
+  },
+  {
+    id: 'rev-hw-3',
+    patientId: 'pat-hw3',
+    patientName: 'Kulwinder Sidhu (Birmingham, UK / NRI Patient)',
+    doctorId: 'doc-hollywood-implant',
+    doctorName: 'Dr. Harpreet Singh',
+    rating: 5,
+    comment: 'Full arch All-on-4 implants completed during my 2-week annual leave in Punjab. Booked the appointment at 11 PM UK time via WhatsApp. Phenomenal service and painless execution.',
+    aiResponse: 'Thank you Kulwinder! Safe travels back to the UK with your strong new smile.',
+    createdAt: new Date(Date.now() - 86400000 * 9).toISOString()
+  }
+];
+
+const HOLLYWOOD_DOCTORS: Doctor[] = [
+  {
+    id: 'doc-prashant',
+    name: 'Dr. Prashant',
+    specialization: 'Director & Chief Aesthetic Architect (MDS Endodontics) • 21+ Yrs International Practice (Germany, Dubai, Muscat)',
+    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400',
+    email: 'dr.prashant@hollywoodsmile.in',
+    phone: '+91 82888 38222',
+    bio: '21+ years of elite international dental leadership across Muscat, Germany, and Dubai. Specializing in Hollywood Smile Design, ultra-thin porcelain veneers, full-mouth rehabilitations, and aesthetic digital smile simulations in Sector 9C Chandigarh.',
+    rating: 5.0,
+    availability: {
+      Monday: ["11:00", "12:30", "16:00", "18:00"],
+      Tuesday: ["11:00", "12:30", "16:00", "18:00"],
+      Wednesday: ["11:00", "12:30", "16:00", "18:00"],
+      Thursday: ["11:00", "12:30", "16:00", "18:00"],
+      Friday: ["11:00", "12:30", "16:00", "18:00"],
+      Saturday: ["11:00", "12:30", "16:00", "18:00"]
+    }
+  },
+  {
+    id: 'doc-hollywood-implant',
+    name: 'Dr. Harpreet Singh (Consulting)',
+    specialization: 'Senior Oral Implantologist • Full-Arch All-on-4 / All-on-6 Specialist',
+    imageUrl: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400',
+    email: 'implants@hollywoodsmile.in',
+    phone: '+91 82888 38222',
+    bio: 'Specialist in immediate-load dental implants and bone grafting for NRI dental travelers seeking full mouth restorations during short stays in India.',
+    rating: 4.9,
+    availability: {
+      Tuesday: ["14:00", "16:00", "18:30"],
+      Thursday: ["14:00", "16:00", "18:30"],
+      Saturday: ["11:30", "15:00", "17:30"]
+    }
+  },
+  {
+    id: 'doc-hollywood-ortho',
+    name: 'Dr. Simran Kaur (Consulting)',
+    specialization: 'Consulting Orthodontist • Invisalign & Digital Clear Aligners',
+    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400',
+    email: 'ortho@hollywoodsmile.in',
+    phone: '+91 82888 38222',
+    bio: 'Certified Clear Aligner provider specializing in discreet bite alignment and 3D digital treatment planning for aesthetic smile transformations.',
+    rating: 4.9,
+    availability: {
+      Monday: ["12:00", "15:30", "17:30"],
+      Wednesday: ["12:00", "15:30", "17:30"],
+      Friday: ["12:00", "15:30", "17:30"]
+    }
+  }
+];
+
 const DEFAULT_REVIEWS: Review[] = [
   {
     id: 'rev-1',
@@ -333,14 +596,26 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (clinicParam && CLINIC_PRESETS[clinicParam]) {
         return CLINIC_PRESETS[clinicParam];
       }
-      if (clinicParam && (clinicParam.toLowerCase().includes('painless') || clinicParam.toLowerCase().includes('sohna'))) {
-        return CLINIC_PRESETS.PainlessDental;
-      }
-      if (clinicParam && (clinicParam.toLowerCase().includes('mangla') || clinicParam.toLowerCase().includes('sector31'))) {
-        return CLINIC_PRESETS.ManglaDental;
-      }
-      if (clinicParam && clinicParam.toLowerCase().includes('sita')) {
-        return CLINIC_PRESETS.SitaDental;
+      if (clinicParam) {
+        const lower = clinicParam.toLowerCase();
+        if (lower.includes('dentoplay') || lower.includes('kundu') || lower.includes('newtown') || lower.includes('pediatric')) {
+          return CLINIC_PRESETS.Dentoplay;
+        }
+        if (lower.includes('delhidental') || lower.includes('delhi') || lower.includes('gk1') || lower.includes('gautam') || lower.includes('nitu')) {
+          return CLINIC_PRESETS.DelhiDental;
+        }
+        if (lower.includes('hollywood') || lower.includes('prashant') || lower.includes('sector9') || lower.includes('chandigarh')) {
+          return CLINIC_PRESETS.HollywoodSmile;
+        }
+        if (lower.includes('painless') || lower.includes('sohna') || lower.includes('gaurav')) {
+          return CLINIC_PRESETS.PainlessDental;
+        }
+        if (lower.includes('mangla') || lower.includes('sector31')) {
+          return CLINIC_PRESETS.ManglaDental;
+        }
+        if (lower.includes('sita')) {
+          return CLINIC_PRESETS.SitaDental;
+        }
       }
     }
     // Default preset for Painless Dental Care pitch
@@ -348,6 +623,15 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const [doctors, setDoctors] = useState<Doctor[]>(() => {
+    if (activeClinic.key === 'Dentoplay') {
+      return DENTOPLAY_DOCTORS;
+    }
+    if (activeClinic.key === 'DelhiDental') {
+      return DELHIDE_DOCTORS;
+    }
+    if (activeClinic.key === 'HollywoodSmile') {
+      return HOLLYWOOD_DOCTORS;
+    }
     if (activeClinic.key === 'PainlessDental') {
       return PAINLESS_DOCTORS;
     }
@@ -360,6 +644,15 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [patients, setPatients] = useState<Patient[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [reviews, setReviews] = useState<Review[]>(() => {
+    if (activeClinic.key === 'Dentoplay') {
+      return DENTOPLAY_REVIEWS;
+    }
+    if (activeClinic.key === 'DelhiDental') {
+      return DELHIDE_REVIEWS;
+    }
+    if (activeClinic.key === 'HollywoodSmile') {
+      return HOLLYWOOD_REVIEWS;
+    }
     if (activeClinic.key === 'PainlessDental') {
       return PAINLESS_REVIEWS;
     }
@@ -381,7 +674,16 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Sync doctors and reviews whenever active clinic changes
   useEffect(() => {
-    if (activeClinic.key === 'PainlessDental') {
+    if (activeClinic.key === 'Dentoplay') {
+      setDoctors(DENTOPLAY_DOCTORS);
+      setReviews(DENTOPLAY_REVIEWS);
+    } else if (activeClinic.key === 'DelhiDental') {
+      setDoctors(DELHIDE_DOCTORS);
+      setReviews(DELHIDE_REVIEWS);
+    } else if (activeClinic.key === 'HollywoodSmile') {
+      setDoctors(HOLLYWOOD_DOCTORS);
+      setReviews(HOLLYWOOD_REVIEWS);
+    } else if (activeClinic.key === 'PainlessDental') {
       setDoctors(PAINLESS_DOCTORS);
       setReviews(PAINLESS_REVIEWS);
     } else if (activeClinic.key === 'ManglaDental') {

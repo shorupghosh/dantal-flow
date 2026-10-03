@@ -50,17 +50,37 @@ export const About: React.FC<AboutProps> = ({
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs sm:text-sm font-semibold mx-auto">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span>{activeClinic.key === 'PainlessDental' ? '14+ Years of Clinical Excellence' : activeClinic.key === 'ManglaDental' ? '22+ Years of Clinical Mastery' : '30+ Years of Clinical Practice'} • {activeClinic.name}</span>
+              <span>
+                {activeClinic.key === 'Dentoplay' 
+                  ? 'Premier Pediatric & Family Dental Studio' 
+                  : activeClinic.key === 'DelhiDental' 
+                  ? '16+ Years Specialist Orthodontics & Implants' 
+                  : activeClinic.key === 'HollywoodSmile' 
+                  ? '21+ Years International Practice (Germany & Dubai)' 
+                  : activeClinic.key === 'PainlessDental' 
+                  ? '14+ Years of Clinical Excellence' 
+                  : activeClinic.key === 'ManglaDental' 
+                  ? '22+ Years of Clinical Mastery' 
+                  : '30+ Years of Clinical Practice'} • {activeClinic.name}
+              </span>
             </div>
 
             <motion.h1 variants={fadeIn} className="text-4xl md:text-6xl font-extrabold tracking-tight">
               Master Craftsmanship in <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-300">
-                {activeClinic.key === 'PainlessDental' ? 'Painless Surgery & Smile Aesthetics' : 'Cosmetic & Restorative Dentistry'}
+                {activeClinic.key === 'Dentoplay' 
+                  ? 'Fear-Free Pediatric & Preventive Dentistry' 
+                  : activeClinic.key === 'DelhiDental' 
+                  ? 'Invisalign Mastery & Implantology' 
+                  : activeClinic.key === 'HollywoodSmile' 
+                  ? 'Porcelain Veneers & Smile Makeovers' 
+                  : activeClinic.key === 'PainlessDental' 
+                  ? 'Painless Surgery & Smile Aesthetics' 
+                  : 'Cosmetic & Restorative Dentistry'}
               </span>
             </motion.h1>
             <motion.p variants={fadeIn} className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Founded by <strong className="text-foreground">{activeClinic.doctorName}</strong>, {activeClinic.name} has served families across {activeClinic.location} for {activeClinic.key === 'PainlessDental' ? 'over 14 years with a strict 100% pain-free ethos' : activeClinic.key === 'ManglaDental' ? 'over two decades' : 'three decades'}. We combine specialized Oral Surgery, Pedodontics, and Prosthodontics with 24/7 intelligent patient care.
+              Founded by <strong className="text-foreground">{activeClinic.doctorName}</strong>, {activeClinic.name} has served patients across {activeClinic.location} with clinical excellence. We combine advanced restorative precision, cutting-edge equipment, and 24/7 intelligent patient triage.
             </motion.p>
             <motion.div variants={fadeIn} className="flex justify-center gap-4 pt-2">
               <button 

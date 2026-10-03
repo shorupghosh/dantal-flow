@@ -26,65 +26,168 @@ export const Home: React.FC<HomeProps> = ({
     setCurrentView('booking');
   };
 
-  const serviceCards = activeClinic.key === 'PainlessDental' ? [
-    {
-      title: "Painless Wisdom Tooth Surgery",
-      desc: "Surgical impactions & third molar extractions with computerized gentle anesthesia.",
-      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Emergency Pain Triage",
-      price: "From ₹4,500"
-    },
-    {
-      title: "Painless Dental Implants",
-      desc: "Permanent single-tooth & full arch guided implants with natural bite strength.",
-      image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Dental Implants",
-      price: "From ₹25,000"
-    },
-    {
-      title: "Pediatric & Gentle Kids Dentistry",
-      desc: "Fear-free treatments for children and teens led by our Consultant Pedodontist.",
-      image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Routine Clean & Check (₹1,500)",
-      price: "From ₹1,500"
-    },
-    {
-      title: "Single-Sitting Painless RCT",
-      desc: "Rotary microscopic root canal therapy saving infected natural teeth with zero pain.",
-      image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Root Canal Therapy",
-      price: "From ₹4,000"
+  const getServiceCards = () => {
+    if (activeClinic.key === 'Dentoplay') {
+      return [
+        {
+          title: "Pediatric Pulpectomy & Pain Relief",
+          desc: "100% gentle root treatment and stainless steel crowns for milk teeth with zero tears.",
+          image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Routine Clean & Check (₹1,500)",
+          price: "From ₹2,500"
+        },
+        {
+          title: "Interceptive Child Braces",
+          desc: "Early jaw alignment, myofunctional trainers, and space maintainers for developing teeth.",
+          image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Orthodontic Braces",
+          price: "From ₹25,000"
+        },
+        {
+          title: "Cavity Fluoride & Pit Sealants",
+          desc: "Preventive anti-cavity varnishes and painless ozone pit sealing for toddlers and teens.",
+          image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Routine Clean & Check (₹1,500)",
+          price: "From ₹1,200"
+        },
+        {
+          title: "Adult & Family Dental Implants",
+          desc: "Advanced permanent implants and restorative care for parents and adults.",
+          image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Implants",
+          price: "From ₹30,000"
+        }
+      ];
     }
-  ] : [
-    {
-      title: "Dental Implants",
-      desc: "Single-tooth & full arch 3D guided implants with lifetime warranty.",
-      image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Dental Implants",
-      price: "From ₹65,000"
-    },
-    {
-      title: "Smile Makeover & Veneers",
-      desc: "Complete aesthetic transformation of your smile using digital smile design.",
-      image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Dental Crowns",
-      price: "From ₹15,000 / tooth"
-    },
-    {
-      title: "Clear Aligners & Braces",
-      desc: "Invisible aligners with 3D digital simulation & 0% Bajaj Finserv EMI.",
-      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Orthodontic Braces",
-      price: "From ₹80,000"
-    },
-    {
-      title: "Root Canal Therapy",
-      desc: "Single-sitting rotary endodontics with zero pain microsurgical tech.",
-      image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
-      treatmentRef: "Root Canal Therapy",
-      price: "From ₹12,000"
+    if (activeClinic.key === 'DelhiDental') {
+      return [
+        {
+          title: "Invisalign & Clear Aligners",
+          desc: "Discreet orthodontic correction with 3D iTero digital simulation led by Fellow WFO Dr. Nitu Gautam.",
+          image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Orthodontic Braces",
+          price: "From ₹75,000"
+        },
+        {
+          title: "Immediate Swiss Dental Implants",
+          desc: "Single-sitting Straumann/Nobel Biocare implants by PGI Chandigarh trained prosthodontists.",
+          image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Implants",
+          price: "From ₹45,000"
+        },
+        {
+          title: "Microscopic Single-Sitting RCT",
+          desc: "Precision endodontics under surgical microscope saving natural teeth with zero pain.",
+          image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Root Canal Therapy",
+          price: "From ₹9,500"
+        },
+        {
+          title: "Porcelain Veneers & Smile Makeover",
+          desc: "Handcrafted aesthetic ceramic veneers and digital smile planning in Greater Kailash 1.",
+          image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Crowns",
+          price: "From ₹18,000 / tooth"
+        }
+      ];
     }
-  ];
+    if (activeClinic.key === 'HollywoodSmile') {
+      return [
+        {
+          title: "Hollywood Veneers & Smile Design",
+          desc: "Ultra-thin German porcelain veneers designed for camera-ready aesthetics in 5 to 7 days.",
+          image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Crowns",
+          price: "From ₹22,000 / tooth"
+        },
+        {
+          title: "Fast-Track NRI Dental Tourism",
+          desc: "Full mouth rehabilitation & smile transformation scheduled around international flight arrivals.",
+          image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Implants",
+          price: "Save up to 70% vs Canada/UK"
+        },
+        {
+          title: "Full-Arch All-on-4 Implants",
+          desc: "Immediate fixed teeth in 72 hours for international travelers and complex bite cases.",
+          image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Implants",
+          price: "From ₹1,80,000 / arch"
+        },
+        {
+          title: "Micro-Endodontics & Restorations",
+          desc: "21+ years international clinical expertise saving cracked or heavily damaged teeth.",
+          image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Root Canal Therapy",
+          price: "From ₹8,500"
+        }
+      ];
+    }
+    if (activeClinic.key === 'PainlessDental') {
+      return [
+        {
+          title: "Painless Wisdom Tooth Surgery",
+          desc: "Surgical impactions & third molar extractions with computerized gentle anesthesia.",
+          image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Emergency Pain Triage",
+          price: "From ₹4,500"
+        },
+        {
+          title: "Painless Dental Implants",
+          desc: "Permanent single-tooth & full arch guided implants with natural bite strength.",
+          image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Dental Implants",
+          price: "From ₹25,000"
+        },
+        {
+          title: "Pediatric & Gentle Kids Dentistry",
+          desc: "Fear-free treatments for children and teens led by our Consultant Pedodontist.",
+          image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Routine Clean & Check (₹1,500)",
+          price: "From ₹1,500"
+        },
+        {
+          title: "Single-Sitting Painless RCT",
+          desc: "Rotary microscopic root canal therapy saving infected natural teeth with zero pain.",
+          image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
+          treatmentRef: "Root Canal Therapy",
+          price: "From ₹4,000"
+        }
+      ];
+    }
+    return [
+      {
+        title: "Dental Implants",
+        desc: "Single-tooth & full arch 3D guided implants with lifetime warranty.",
+        image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600",
+        treatmentRef: "Dental Implants",
+        price: "From ₹65,000"
+      },
+      {
+        title: "Smile Makeover & Veneers",
+        desc: "Complete aesthetic transformation of your smile using digital smile design.",
+        image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600",
+        treatmentRef: "Dental Crowns",
+        price: "From ₹15,000 / tooth"
+      },
+      {
+        title: "Clear Aligners & Braces",
+        desc: "Invisible aligners with 3D digital simulation & 0% Bajaj Finserv EMI.",
+        image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600",
+        treatmentRef: "Orthodontic Braces",
+        price: "From ₹80,000"
+      },
+      {
+        title: "Root Canal Therapy",
+        desc: "Single-sitting rotary endodontics with zero pain microsurgical tech.",
+        image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&q=80&w=600",
+        treatmentRef: "Root Canal Therapy",
+        price: "From ₹12,000"
+      }
+    ];
+  };
+
+  const serviceCards = getServiceCards();
 
   const whyChooseUs = [
     { icon: <Award className="h-6 w-6" />, title: activeClinic.doctorTitle, desc: `Led by ${activeClinic.doctorName} with personalized patient care.` },
@@ -128,14 +231,46 @@ export const Home: React.FC<HomeProps> = ({
               </div>
 
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-foreground">
-                Premier Cosmetic &amp; Implant Dentistry by <br/>
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-300 bg-clip-text text-transparent">
-                  {activeClinic.doctorName}
-                </span>
+                {activeClinic.key === 'Dentoplay' ? (
+                  <>
+                    Premier Pediatric &amp; Family Dentistry by <br/>
+                    <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-emerald-300 bg-clip-text text-transparent">
+                      {activeClinic.doctorName}
+                    </span>
+                  </>
+                ) : activeClinic.key === 'DelhiDental' ? (
+                  <>
+                    Elite Orthodontics &amp; Swiss Implants by <br/>
+                    <span className="bg-gradient-to-r from-sky-400 via-teal-400 to-emerald-300 bg-clip-text text-transparent">
+                      {activeClinic.doctorName}
+                    </span>
+                  </>
+                ) : activeClinic.key === 'HollywoodSmile' ? (
+                  <>
+                    Red-Carpet Smile Makeovers &amp; Implants by <br/>
+                    <span className="bg-gradient-to-r from-pink-400 via-amber-300 to-emerald-300 bg-clip-text text-transparent">
+                      {activeClinic.doctorName}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Premier Cosmetic &amp; Implant Dentistry by <br/>
+                    <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-300 bg-clip-text text-transparent">
+                      {activeClinic.doctorName}
+                    </span>
+                  </>
+                )}
               </h1>
 
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl font-medium leading-relaxed">
-                Personalized restorative smile transformations, 3D CBCT guided implants, and pain-free treatments. Verified 5.0 Google rating in {activeClinic.location.split(',')[0]}.
+                {activeClinic.key === 'Dentoplay' 
+                  ? 'Gentle child dental care, fear-free milk teeth pulpectomies, early interceptive braces, and family restorative dentistry in Action Area 1 New Town.'
+                  : activeClinic.key === 'DelhiDental'
+                  ? 'Invisalign digital smile simulations, Fellow WFO orthodontic expertise, immediate Swiss dental implants, and microscopic single-sitting RCT in Greater Kailash 1.'
+                  : activeClinic.key === 'HollywoodSmile'
+                  ? '21+ years international clinical excellence across Germany & Dubai. Ultra-thin porcelain veneers, immediate All-on-4 implants, and fast-track NRI dental tourism packages in Sector 9C Chandigarh.'
+                  : `Personalized restorative smile transformations, 3D CBCT guided implants, and pain-free treatments. Verified 5.0 Google rating in ${activeClinic.location.split(',')[0]}.`
+                }
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3.5 pt-2">
@@ -162,10 +297,10 @@ export const Home: React.FC<HomeProps> = ({
                   ✓ Instant Clinical Triage
                 </span>
                 <span className="flex items-center gap-1 text-teal-400 font-bold">
-                  {activeClinic.key === 'PainlessDental' ? '✓ 100% Zero-Pain Protocol' : activeClinic.key === 'ManglaDental' ? '✓ 100% Doctor Calendar Control' : '✓ 100% Front Desk Control'}
+                  {activeClinic.key === 'Dentoplay' ? '✓ Zero Child Fear Protocol' : activeClinic.key === 'DelhiDental' ? '✓ Fellow WFO Orthodontist' : activeClinic.key === 'HollywoodSmile' ? '✓ 21+ Yrs Int’l Practice' : activeClinic.key === 'PainlessDental' ? '✓ 100% Zero-Pain Protocol' : activeClinic.key === 'ManglaDental' ? '✓ 100% Doctor Calendar Control' : '✓ 100% Front Desk Control'}
                 </span>
                 <span className="hidden sm:flex items-center gap-1 text-blue-400 font-bold">
-                  {activeClinic.key === 'PainlessDental' ? '✓ Eldeco / Sohna Specialist' : activeClinic.key === 'ManglaDental' ? '✓ Zero Auto-Booking' : '✓ 100% DPDPA Secure'}
+                  {activeClinic.key === 'Dentoplay' ? '✓ Action Area 1 New Town' : activeClinic.key === 'DelhiDental' ? '✓ GK-1 South Delhi' : activeClinic.key === 'HollywoodSmile' ? '✓ 24/7 NRI Night Booking' : activeClinic.key === 'PainlessDental' ? '✓ Eldeco / Sohna Specialist' : activeClinic.key === 'ManglaDental' ? '✓ Zero Auto-Booking' : '✓ 100% DPDPA Secure'}
                 </span>
               </div>
             </div>
@@ -186,7 +321,7 @@ export const Home: React.FC<HomeProps> = ({
                     <p className="text-xs text-primary font-semibold">{activeClinic.doctorTitle.split('(')[0]}</p>
                     <div className="flex items-center text-yellow-500 text-xs font-bold mt-1">
                       <Star className="h-3.5 w-3.5 fill-yellow-400 mr-1" />
-                      {activeClinic.key === 'PainlessDental' ? '4.8 (49+ Google Reviews)' : activeClinic.key === 'ManglaDental' ? '5.0 (500+ Patients • 22+ Yrs)' : '5.0 (300+ Patients)'}
+                      {activeClinic.key === 'Dentoplay' ? '4.9 (120+ Google Reviews)' : activeClinic.key === 'DelhiDental' ? '5.0 (200+ Verified GK-1 Reviews)' : activeClinic.key === 'HollywoodSmile' ? '5.0 (180+ NRI & Tricity Reviews)' : activeClinic.key === 'PainlessDental' ? '4.8 (49+ Google Reviews)' : activeClinic.key === 'ManglaDental' ? '5.0 (500+ Patients • 22+ Yrs)' : '5.0 (300+ Patients)'}
                     </div>
                   </div>
                 </div>
@@ -198,7 +333,7 @@ export const Home: React.FC<HomeProps> = ({
                   </div>
                   <div className="flex justify-between">
                     <span>Timings:</span>
-                    <strong className="text-foreground font-mono">{activeClinic.key === 'PainlessDental' ? 'Mon–Sat: 10 AM – 8 PM' : activeClinic.key === 'ManglaDental' ? 'Mon–Sat: Closes 8:30 PM' : 'Mon–Sat: Closes 8 PM'}</strong>
+                    <strong className="text-foreground font-mono">{activeClinic.key === 'DelhiDental' ? 'Tue–Sat: 10 AM – 7 PM | Mon: Closed' : activeClinic.key === 'Dentoplay' ? 'Mon–Sat: 10 AM – 8 PM | Sun: 10–1' : activeClinic.key === 'HollywoodSmile' ? 'Mon–Sat: 10:30 AM – 8 PM' : activeClinic.key === 'PainlessDental' ? 'Mon–Sat: 10 AM – 8 PM' : activeClinic.key === 'ManglaDental' ? 'Mon–Sat: Closes 8:30 PM' : 'Mon–Sat: Closes 8 PM'}</strong>
                   </div>
                   <div className="flex justify-between text-emerald-500 font-bold pt-1 border-t border-border">
                     <span>After-Hours Inquiries:</span>

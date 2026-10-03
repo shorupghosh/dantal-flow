@@ -11,6 +11,7 @@ interface LeadFormCardProps {
   initialName: string;
   initialPhone: string;
   initialTreatment: string;
+  clinicKey?: string;
   onSubmit: (name: string, phone: string, email: string, treatment: string) => void;
   onCancel: () => void;
 }
@@ -19,6 +20,7 @@ const LeadFormCard: React.FC<LeadFormCardProps> = ({
   initialName,
   initialPhone,
   initialTreatment,
+  clinicKey,
   onSubmit,
   onCancel
 }) => {
@@ -28,15 +30,55 @@ const LeadFormCard: React.FC<LeadFormCardProps> = ({
   const [treatment, setTreatment] = useState(initialTreatment);
   const [error, setError] = useState('');
 
-  const treatments = [
-    "Routine Clean & Check (₹1,500)",
-    "Teeth Whitening (₹8,000)",
-    "Root Canal Therapy (₹12,000)",
-    "Dental Crowns & Bridges (₹15,000)",
-    "Dental Implants (₹65,000)",
-    "Orthodontic Braces & Aligners (₹80,000)",
-    "Emergency Pain Triage"
-  ];
+  const getTreatments = () => {
+    if (clinicKey === 'Dentoplay') {
+      return [
+        "Pediatric Pulpectomy & Pain Relief (₹2,500)",
+        "Interceptive Child Braces (₹25,000)",
+        "Cavity Fluoride & Sealants (₹1,200)",
+        "Adult Family Dental Implants (₹30,000)",
+        "Kids Dental Emergency Triage"
+      ];
+    }
+    if (clinicKey === 'DelhiDental') {
+      return [
+        "Invisalign & Clear Aligners (₹75,000)",
+        "Immediate Swiss Dental Implants (₹45,000)",
+        "Microscopic Single-Sitting RCT (₹9,500)",
+        "Porcelain Veneers & Smile Makeover (₹18,000)",
+        "Specialist Consultation & 3D Scan (₹1,200)"
+      ];
+    }
+    if (clinicKey === 'HollywoodSmile') {
+      return [
+        "Hollywood Smile Porcelain Veneers (₹22,000 / tooth)",
+        "NRI Dental Tourism Fast-Track Package",
+        "Full-Arch All-on-4 Implants (₹1,80,000 / arch)",
+        "Micro-Endodontic Tooth Restoration (₹8,500)",
+        "Director Consultation & Smile Architecture (₹1,500)"
+      ];
+    }
+    if (clinicKey === 'PainlessDental') {
+      return [
+        "Painless Wisdom Tooth Surgery (₹4,500)",
+        "Painless Dental Implants (₹25,000)",
+        "Pediatric Gentle Dentistry (₹1,500)",
+        "Single-Sitting Painless RCT (₹4,000)",
+        "Emergency Pain Triage"
+      ];
+    }
+    return [
+      "Routine Clean & Check (₹1,500)",
+      "Teeth Whitening (₹8,000)",
+      "Root Canal Therapy (₹12,000)",
+      "Dental Crowns & Bridges (₹15,000)",
+      "Dental Implants (₹65,000)",
+      "Orthodontic Braces & Aligners (₹80,000)",
+      "Emergency Pain Triage"
+    ];
+  };
+
+  const treatments = getTreatments();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -254,6 +296,8 @@ interface SuccessCardProps {
   patientName: string;
   treatment: string;
   doctorName: string;
+  clinicName: string;
+  clinicPhone: string;
   scheduledAt: string;
   onReset: () => void;
   onOpenSimulator?: () => void;
@@ -263,10 +307,13 @@ const SuccessCard: React.FC<SuccessCardProps> = ({
   patientName,
   treatment,
   doctorName,
+  clinicName,
+  clinicPhone,
   scheduledAt,
   onReset,
   onOpenSimulator
 }) => {
+  const cleanPhone = clinicPhone.replace(/\D/g, '') || '917497859616';
   return (
     <div className="bg-[#1f2c34] border border-emerald-500/40 rounded-2xl p-4 space-y-3.5 text-center shadow-xl text-white">
       <div className="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
@@ -287,7 +334,7 @@ const SuccessCard: React.FC<SuccessCardProps> = ({
 
       <div className="space-y-2">
         <a
-          href={`https://wa.me/917497859616?text=${encodeURIComponent(`Hi Painless Dental Care! I booked an appointment via your 24/7 web assistant for ${treatment} on ${scheduledAt}. Name: ${patientName}.`)}`}
+          href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hi ${clinicName}! I booked an appointment via your 24/7 web assistant for ${treatment} on ${scheduledAt}. Name: ${patientName}.`)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full py-2 bg-[#25D366] hover:bg-[#20bd5a] text-slate-950 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
@@ -346,6 +393,60 @@ export const AIReceptionist: React.FC<{ onOpenSimulator?: () => void }> = ({ onO
 
   const getAssistantFallbackResponse = (input: string): string => {
     const text = input.toLowerCase();
+
+    if (activeClinic.key === 'Dentoplay') {
+      if (text.includes('child') || text.includes('kid') || text.includes('baby') || text.includes('pedo') || text.includes('fear') || text.includes('cry')) {
+        return `Dr. Ritesh Kundu is an MDS Pedodontist specializing in 100% fear-free pediatric dentistry. Our clinic is uniquely designed for kids so they feel excited rather than anxious!\n\nWould you like to schedule a gentle checkup or pulpectomy consultation for your child?`;
+      }
+      if (text.includes('pain') || text.includes('hurt') || text.includes('bleed') || text.includes('emergency')) {
+        return `We reserve emergency priority slots for children experiencing acute dental pain or tooth trauma. We ensure zero tears and instant relief.\n\nLet me open the priority booking form for Dr. Kundu immediately.`;
+      }
+      if (text.includes('brace') || text.includes('align') || text.includes('crooked') || text.includes('jaw')) {
+        return `We offer interceptive orthodontics and early jaw alignment trainers for growing children (ages 6–13), preventing severe misalignment later in life.\n\nWould you like to book an orthodontic evaluation?`;
+      }
+      if (text.includes('location') || text.includes('address') || text.includes('where') || text.includes('newtown') || text.includes('rajarhat')) {
+        return `Dentoplay is located at Action Area 1 (DE 93), New Town, Kolkata (convenient to Uniworld City and Rajarhat). Easy parking available right outside.`;
+      }
+      if (text.includes('price') || text.includes('cost') || text.includes('fee') || text.includes('how much') || text.includes('inr')) {
+        return `Here are starting treatment estimates at Dentoplay Pediatric & Family Dental:\n\n• Specialist Pedodontist Consultation: ₹${activeClinic.consultationFee}\n• Painless Milk Tooth Pulpectomy: from ₹2,500\n• Stainless Steel Pediatric Crown: from ₹2,200\n• Fluoride Varnish & Sealants: from ₹1,200\n• Interceptive Child Braces: from ₹25,000\n• Adult Family Implants: from ₹30,000\n\nWould you like to book a slot for your child?`;
+      }
+    }
+
+    if (activeClinic.key === 'DelhiDental') {
+      if (text.includes('invisalign') || text.includes('aligner') || text.includes('brace') || text.includes('crooked') || text.includes('ortho')) {
+        return `Dr. Nitu Gautam is an MDS Orthodontist (Nair Mumbai) and Fellow of the World Federation of Orthodontists (WFO) with 16+ years of clinical mastery. We provide 3D iTero digital scans and customized Invisalign clear aligners with 0% EMI options.\n\nWould you like to reserve a 3D digital aligner scan?`;
+      }
+      if (text.includes('implant') || text.includes('tooth loss') || text.includes('missing')) {
+        return `Our Senior Prosthodontist Dr. Vinod Khanna (MDS PGI Chandigarh) specializes in immediate Swiss/German implants with lifelong stability.\n\nWould you like to schedule an implant consultation?`;
+      }
+      if (text.includes('pain') || text.includes('rct') || text.includes('root canal') || text.includes('emergency')) {
+        return `We offer single-sitting painless microscopic root canals under high-magnification surgical operating microscopes to preserve natural teeth.\n\nLet me open our instant booking form to secure a slot with Dr. Gautam.`;
+      }
+      if (text.includes('location') || text.includes('address') || text.includes('where') || text.includes('gk') || text.includes('greater kailash')) {
+        return `Delhi Dental Clinic is located at R-241, Greater Kailash 1 (GK-1), South Delhi. Timings: Tuesday–Saturday 10 AM – 7 PM, Sunday 10 AM – 2 PM (Monday Closed). 24/7 WhatsApp AI is always online for after-hours bookings!`;
+      }
+      if (text.includes('price') || text.includes('cost') || text.includes('fee') || text.includes('how much') || text.includes('inr')) {
+        return `Here are treatment estimates at Delhi Dental Clinic & Orthodontic Centre (GK-1):\n\n• Senior Specialist Consultation: ₹${activeClinic.consultationFee}\n• Invisalign Clear Aligners: from ₹75,000 (0% EMI available)\n• Immediate Swiss Dental Implants: from ₹45,000\n• Microscopic Single-Sitting RCT: from ₹9,500\n• Porcelain Aesthetic Veneers: from ₹18,000 / tooth\n\nWould you like to reserve a priority consultation slot?`;
+      }
+    }
+
+    if (activeClinic.key === 'HollywoodSmile') {
+      if (text.includes('veneer') || text.includes('hollywood') || text.includes('makeover') || text.includes('cosmetic') || text.includes('smile design')) {
+        return `Dr. Prashant brings 21+ years of elite international practice across Germany, Dubai, and Muscat. We craft ultra-thin porcelain veneers and digital Hollywood smile transformations in just 5–7 days.\n\nWould you like to schedule an aesthetic digital smile preview?`;
+      }
+      if (text.includes('nri') || text.includes('canada') || text.includes('uk') || text.includes('touris') || text.includes('flight') || text.includes('travel')) {
+        return `We specialize in fast-track dental tourism for NRI patients traveling from Canada, the UK, and the US during October–March. We coordinate full-mouth rehabilitation or veneer makeovers tightly around your travel itinerary, saving up to 70% compared to North American and UK clinic rates!\n\nWould you like to schedule a priority NRI consultation with Dr. Prashant?`;
+      }
+      if (text.includes('implant') || text.includes('all on 4') || text.includes('all on 6') || text.includes('full arch')) {
+        return `We provide immediate-load Full-Arch All-on-4 and All-on-6 computer-guided dental implants, giving you permanent fixed teeth in 72 hours.\n\nWould you like to discuss implant restoration options?`;
+      }
+      if (text.includes('location') || text.includes('address') || text.includes('where') || text.includes('sector 9') || text.includes('chandigarh')) {
+        return `Hollywood Smile Dental & Aesthetic Studio is located at SCO 139–140, Sector 9C, Chandigarh. Valet and ample market parking available.`;
+      }
+      if (text.includes('price') || text.includes('cost') || text.includes('fee') || text.includes('how much') || text.includes('inr') || text.includes('dollar')) {
+        return `Here are treatment estimates at Hollywood Smile Studio (Sector 9C Chandigarh):\n\n• Director Aesthetic Consultation: ₹${activeClinic.consultationFee}\n• Ultra-Thin Porcelain Veneers: from ₹22,000 / tooth\n• Full-Arch All-on-4 Implants: from ₹1,80,000 / arch\n• Micro-Endodontic Restoration: from ₹8,500\n• International NRI Fast-Track Package: Custom quote upon 3D scan\n\nWould you like to lock in a consultation with Dr. Prashant?`;
+      }
+    }
 
     if (activeClinic.key === 'PainlessDental') {
       if (text.includes('pain') || text.includes('hurt') || text.includes('wisdom') || text.includes('bleed') || text.includes('emergency')) {
@@ -589,6 +690,7 @@ export const AIReceptionist: React.FC<{ onOpenSimulator?: () => void }> = ({ onO
                   initialName={patientName}
                   initialPhone={patientPhone}
                   initialTreatment={selectedTreatment}
+                  clinicKey={activeClinic.key}
                   onSubmit={handleLeadSubmit}
                   onCancel={handleReset}
                 />
@@ -606,6 +708,8 @@ export const AIReceptionist: React.FC<{ onOpenSimulator?: () => void }> = ({ onO
                   patientName={patientName}
                   treatment={selectedTreatment}
                   doctorName={bookedDoctorName || activeClinic.doctorName}
+                  clinicName={activeClinic.name}
+                  clinicPhone={activeClinic.phone}
                   scheduledAt={bookedTime}
                   onReset={handleReset}
                   onOpenSimulator={onOpenSimulator}
